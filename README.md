@@ -36,7 +36,12 @@ Common user events are automatically recorded:
 - User Registration
 - User Deletion
 - User Login
+- User Login Failed
 - User Logoff
+- Cashier Subscribed
+- Cashier Payment Information Submitted
+- Cashier Subscription Plan Changed
+- Cashier Unsubscribed
 
 To make custom events, simple get MixPanel from the IoC using DI:
 ```php
