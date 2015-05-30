@@ -1,4 +1,4 @@
-<?php namespace GeneaMatic\GeneaLabs\MixPanel\Facades;
+<?php namespace GeneaLabs\MixPanel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

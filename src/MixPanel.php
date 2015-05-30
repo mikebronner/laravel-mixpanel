@@ -1,4 +1,4 @@
-<?php namespace GeneaMatic\GeneaLabs\MixPanel;
+<?php namespace GeneaLabs\MixPanel;
 
 class MixPanel extends \Mixpanel
 {
