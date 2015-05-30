@@ -22,6 +22,9 @@ class MixPanelServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * @return array
+     */
     public function provides()
     {
         return ['mixpanel'];

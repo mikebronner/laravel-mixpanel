@@ -1,57 +1,95 @@
 <?php namespace GeneaLabs\MixPanel;
 
+use Illuminate\Database\Eloquent\Model;
+
 class MixPanelUserObserver
 {
     protected $mixPanel;
 
+    /**
+     * @param MixPanel $mixPanel
+     */
     public function __construct(MixPanel $mixPanel)
     {
         $this->mixPanel = $mixPanel;
     }
 
-    public function created($user)
+    /**
+     * @param Model $user
+     */
+    public function created(Model $user)
     {
         $this->mixPanel->identify($user->id);
         $this->mixPanel->people->set($user->id, [
             '$first_name' => $user->first_name,
             '$last_name' => $user->last_name,
             '$email' => $user->email,
-            '$created' => $user->created_at,
+            '$created' => $user->created_at->format('Y-m-d\Th:i:s'),
         ]);
         $this->mixPanel->track('User Registered');
     }
 
-    public function saving($user)
+    /**
+     * @param Model $user
+     */
+    public function saving(Model $user)
     {
         $this->mixPanel->identify($user->id);
+        $data = [];
 
-        if ($user->getAttribute('stripe_active') && ! $user->getOriginal('stripe_active')) {
+        if ($user->stripe_active && ! $user->getOriginal('stripe_active')) {
             $this->mixPanel->track('User Subscribed');
         }
 
-        if (! $user->getAttribute('stripe_active') && $user->getOriginal('stripe_active')) {
+        if (! $user->stripe_active && $user->getOriginal('stripe_active')) {
             $this->mixPanel->track('User Unsubscribed');
         }
 
-        if ($user->getAttribute('last_four') && ! $user->getOriginal('last_four')) {
+        if ($user->last_four && ! $user->getOriginal('last_four')) {
             $this->mixPanel->track('User Entered Payment Information');
         }
 
-        if ($user->getAttribute('stripe_plan') && ! $user->getOriginal('stripe_plan')) {
-            $this->mixPanel->people->set($user->id, [
-                'subscription' => $user->stripe_plan,
-            ]);
+        if ($user->stripe_plan && ! $user->getOriginal('stripe_plan')) {
+            $data[] = ['subscription' => $user->stripe_plan];
             $this->mixPanel->track('User Changed Subscription Plan');
+        }
+
+        if ($user->name) {
+            $nameParts = explode(' ', $user->name);
+            array_filter($nameParts);
+            $lastName = array_pop($nameParts);
+            $firstName = implode(' ', $nameParts);
+            $user->first_name = $firstName;
+            $user->last_name = $lastName;
+        }
+
+        $data[] = [
+            '$first_name' => $user->first_name,
+            '$last_name' => $user->last_name,
+            '$email' => $user->email,
+            '$created' => $user->created_at->format('Y-m-d\Th:i:s'),
+        ];
+
+        array_filter($data);
+
+        if (count($data)) {
+            $this->mixPanel->people->set($user->id, $data);
         }
     }
 
-    public function deleting($user)
+    /**
+     * @param Model $user
+     */
+    public function deleting(Model $user)
     {
         $this->mixPanel->identify($user->id);
         $this->mixPanel->track('User Deactivated');
     }
 
-    public function restored($user)
+    /**
+     * @param Model $user
+     */
+    public function restored(Model $user)
     {
         $this->mixPanel->identify($user->id);
         $this->mixPanel->track('User Reactivated');
