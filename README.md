@@ -10,11 +10,6 @@
           'GeneaLabs\MixPanel\MixPanelServiceProvider',
   ```
 
-3. Add the facade alias entry in `config\app.php`:
-  ```php
-          'MixPanel'  => 'GeneaLabs\MixPanel\Facades\MixPanel',
-  ```
-
 ## Configuration
 1. Update your `.env` file with your MixPanel token:
   ```
@@ -62,3 +57,11 @@ If DI is impractical in certain situations, you can also manually retrieve it fr
 ```php
 $mixPanel = App::make('GeneaLabs\MixPanel\MixPanel');
 ```
+
+After that you can make the usual calls to the MixPanel API:
+- `$mixPanel->identify($user->id);`
+- `$mixPanel->track('User just paid!');`
+- `$mixPanel->people->trackCharge($user->id, '9.99');`
+- `$mixPanel->people->set($user->id, [$data]);`
+
+  And so on ...
