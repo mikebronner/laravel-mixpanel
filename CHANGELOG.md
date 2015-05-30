@@ -6,8 +6,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - http://phppackagechecklist.com/#1,2,3,4,5,6,9,10,11,12,13,14
   Complete check list items.
 - Add unit tests.
+- Add facade(s) for use in views.
+- Inject JS into views.
 
 ## [0.1.0 - 0.1.4] - 2015-05-30
+### Changed
+- Updated `composer.json` details.
+- Updated README details.
+- Renamed events to model the formula <what + action>, i.e. "Login Succeeded" or "Page Viewed".
+
 ### Fixed
 - Update profile information if not set (i.e. for prior existing users).
 - Log signup date as string, not as object.
@@ -19,6 +26,3 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - User events handler.
 - DocBlocks.
 
-### Changed
-- Updated `composer.json` details.
-- Updated README details.

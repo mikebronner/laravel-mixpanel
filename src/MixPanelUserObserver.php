@@ -38,20 +38,20 @@ class MixPanelUserObserver
         $data = [];
 
         if ($user->stripe_active && ! $user->getOriginal('stripe_active')) {
-            $this->mixPanel->track('User Subscribed');
+            $this->mixPanel->track('Subscription Succeeded');
         }
 
         if (! $user->stripe_active && $user->getOriginal('stripe_active')) {
-            $this->mixPanel->track('User Unsubscribed');
+            $this->mixPanel->track('Subscription Cancelled');
         }
 
         if ($user->last_four && ! $user->getOriginal('last_four')) {
-            $this->mixPanel->track('User Entered Payment Information');
+            $this->mixPanel->track('Payment Information Entered');
         }
 
         if ($user->stripe_plan && ! $user->getOriginal('stripe_plan')) {
             $data[] = ['subscription' => $user->stripe_plan];
-            $this->mixPanel->track('User Changed Subscription Plan');
+            $this->mixPanel->track('Subscription Plan Changed');
         }
 
         if ($user->name) {
