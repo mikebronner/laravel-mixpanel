@@ -7,10 +7,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   Complete check list items.
 - Add unit tests.
 
-## [0.1.0 - 0.1.2] - 2015-05-30
+## [0.1.0 - 0.1.3] - 2015-05-30
+### Fixed
+- Update profile information if not set (i.e. for prior existing users).
+- Log signup date as string, not as object.
+- Name detection on user model.
+
 ### Added
 - Initial package development.
 - User observer.
+- User events handler.
+- DocBlocks.
 
 ### Changed
 - Updated `composer.json` details.
