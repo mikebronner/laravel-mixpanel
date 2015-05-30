@@ -1,5 +1,13 @@
 {
   "name": "genealabs/mixpanel",
+  "description": "MixPanel wrapper for Laravel 5.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mike Bronner",
+      "email": "hello@genealabs.com"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "GeneaLabs\\MixPanel\\": "src/"
