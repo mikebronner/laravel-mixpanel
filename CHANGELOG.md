@@ -9,13 +9,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add facade(s) for use in views.
 - Inject JS into views.
 
-## [0.1.6 - 0.2.0] - 2015-05-30
+## [0.1.6 - 0.2.1] - 2015-05-30
 ### Added
 - Webhook for tracking Stripe events.
 - Documented MixPanel events in README.
 
 ### Fixed
 - Formatting of non-existent dates during profile setting.
+- Detection of stripe customer id in webhook.
 
 ## [0.1.0 - 0.1.4] - 2015-05-30
 ### Changed
