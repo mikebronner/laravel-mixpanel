@@ -19,6 +19,15 @@ class MixPanelUserObserver
      */
     public function created(Model $user)
     {
+        if ($user->name) {
+            $nameParts = explode(' ', $user->name);
+            array_filter($nameParts);
+            $lastName = array_pop($nameParts);
+            $firstName = implode(' ', $nameParts);
+            $user->first_name = $firstName;
+            $user->last_name = $lastName;
+        }
+
         $this->mixPanel->identify($user->id);
         $this->mixPanel->people->set($user->id, [
             '$first_name' => $user->first_name,
@@ -26,7 +35,7 @@ class MixPanelUserObserver
             '$email' => $user->email,
             '$created' => $user->created_at->format('Y-m-d\Th:i:s'),
         ]);
-        $this->mixPanel->track('User Registered');
+        $this->mixPanel->track('User', ['Status' => 'Registered']);
     }
 
     /**
@@ -36,23 +45,6 @@ class MixPanelUserObserver
     {
         $this->mixPanel->identify($user->id);
         $data = [];
-
-        if ($user->stripe_active && ! $user->getOriginal('stripe_active')) {
-            $this->mixPanel->track('Subscription Succeeded');
-        }
-
-        if (! $user->stripe_active && $user->getOriginal('stripe_active')) {
-            $this->mixPanel->track('Subscription Cancelled');
-        }
-
-        if ($user->last_four && ! $user->getOriginal('last_four')) {
-            $this->mixPanel->track('Payment Information Entered');
-        }
-
-        if ($user->stripe_plan && ! $user->getOriginal('stripe_plan')) {
-            $data[] = ['subscription' => $user->stripe_plan];
-            $this->mixPanel->track('Subscription Plan Changed');
-        }
 
         if ($user->name) {
             $nameParts = explode(' ', $user->name);
@@ -86,7 +78,7 @@ class MixPanelUserObserver
     public function deleting(Model $user)
     {
         $this->mixPanel->identify($user->id);
-        $this->mixPanel->track('User Deactivated');
+        $this->mixPanel->track('User', ['Status' => 'Deactivated']);
     }
 
     /**
@@ -95,6 +87,6 @@ class MixPanelUserObserver
     public function restored(Model $user)
     {
         $this->mixPanel->identify($user->id);
-        $this->mixPanel->track('User Reactivated');
+        $this->mixPanel->track('User', ['Status' => 'Reactivated']);
     }
 }
