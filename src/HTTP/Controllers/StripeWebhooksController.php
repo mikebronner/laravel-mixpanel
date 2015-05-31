@@ -31,7 +31,7 @@ class StripeWebhooksController extends Controller
 
         $mixPanel->identify($user->id);
 
-        if ($transaction['object'] === 'charge') {
+        if ($transaction['object'] === 'charge' && ! count($originalValues)) {
             $this->recordCharge($mixPanel, $transaction, $user);
         }
 
