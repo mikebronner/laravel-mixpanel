@@ -9,6 +9,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add facade(s) for use in views.
 - Inject JS into views.
 
+## [0.1.6] - 2015-05-30
+### Fixed
+- Formatting of non-existent dates during profile setting.
+
 ## [0.1.0 - 0.1.4] - 2015-05-30
 ### Changed
 - Updated `composer.json` details.
