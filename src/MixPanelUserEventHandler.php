@@ -33,7 +33,7 @@ class MixPanelUserEventHandler
             && ! $guard->getProvider()->validateCredentials($user, ['email' => $email, 'password' => $password])
         ) {
             $this->mixPanel->identify($user->id);
-            $this->mixPanel->track('Login Failed');
+            $this->mixPanel->track('Session', ['Status' => 'Login Failed']);
         }
     }
 
@@ -42,6 +42,15 @@ class MixPanelUserEventHandler
      */
     public function onUserLogin(Model $user)
     {
+        if ($user->name) {
+            $nameParts = explode(' ', $user->name);
+            array_filter($nameParts);
+            $lastName = array_pop($nameParts);
+            $firstName = implode(' ', $nameParts);
+            $user->first_name = $firstName;
+            $user->last_name = $lastName;
+        }
+
         $this->mixPanel->identify($user->id);
         $this->mixPanel->people->set($user->id, [
             '$first_name' => $user->first_name,
@@ -49,7 +58,7 @@ class MixPanelUserEventHandler
             '$email' => $user->email,
             '$created' => $user->created_at->format('Y-m-d\Th:i:s'),
         ]);
-        $this->mixPanel->track('Login Succeeded');
+        $this->mixPanel->track('Session', ['Status' => 'Logged In']);
     }
 
     /**
@@ -58,7 +67,7 @@ class MixPanelUserEventHandler
     public function onUserLogout(Model $user)
     {
         $this->mixPanel->identify($user->id);
-        $this->mixPanel->track('Logout Succeeded');
+        $this->mixPanel->track('Session', ['Status' => 'Logged Out']);
     }
 
     /**
