@@ -1,4 +1,8 @@
 # MixPanel for Laravel 5
+## Considerations
+1. This package adds the multiple routes under `mixpanel/webhooks/*`. Please verify that these don't collide with your 
+existing routes.
+
 ## Installation
 1. Install MixPanel via composer:
   ```sh
@@ -22,6 +26,22 @@
           'token' => env('MIXPANEL_TOKEN'),
       ],
   ```
+  
+3. We need to disable CSRF checking for the stripe webhook endpoints. To do that, open 
+ `app/HTTP/Middleware/VerifyCsrfToken.php` and add the following above the return statement:
+  ```php
+          if ($request->is('mixpanel/webhooks/*')) {
+              return $next($request);
+          }
+  ```
+  
+4. Configure Stripe webhook (if you're using Stripe):
+  Log into your Stripe account: https://dashboard.stripe.com/dashboard, and open your account settings' webhook tab:
+  
+  Enter your MixPanel webhook URL, similar to the following: `http://<your server.com>/mixpanel/webhooks/stripe/transaction`:
+  
+  Be sure to select "Live" if you are actually running live (otherwise put into test mode and update when you go live). 
+  Also, choose "Send me all events" to make sure the mixpanel endpoint can make full use of the Stripe data.
 
 ## Usage
 MixPanel is loaded into the IoC as a singleton. This means you don't have to manually call $mixPanel::getInstance() as
@@ -65,3 +85,179 @@ After that you can make the usual calls to the MixPanel API:
 - `$mixPanel->people->set($user->id, [$data]);`
 
   And so on ...
+
+## Laravel Integration
+Out of the box it will record the common events anyone would want to track. Also, if the default `$user->name` field is
+used that comes with Laravel, it will split up the name and use the last word as the last name, and everything prior for
+the first name. Otherwise it will look for `first_name` and `last_name` fields in the users table.
+
+- User registers:
+  ```
+  Track:
+    User:
+      - Status: Registered
+  People:
+    - $first_name: <user's first name>
+    - $last_name: <user's last name>
+    - $email: <user's email address>
+    - $created: <date user registered>
+  ```
+
+- User is updated:
+  ```
+  People:
+    - $first_name: <user's first name>
+    - $last_name: <user's last name>
+    - $email: <user's email address>
+    - $created: <date user registered>
+  ```
+
+- User is deleted:
+  ```
+  Track:
+    User:
+      - Status: Deactivated
+  ```
+
+- User is restored (from soft-deletes):
+  ```
+  Track:
+    User:
+      - Status: Reactivated
+  ```
+
+- User logs in:
+  ```
+  Track:
+    Session:
+      - Status: Logged In
+  People:
+    - $first_name: <user's first name>
+    - $last_name: <user's last name>
+    - $email: <user's email address>
+    - $created: <date user registered>
+  ```
+
+- User login fails:
+  ```
+  Track:
+    Session:
+      - Status: Login Failed
+  People:
+    - $first_name: <user's first name>
+    - $last_name: <user's last name>
+    - $email: <user's email address>
+    - $created: <date user registered>
+  ```
+
+- User logs out:
+  ```
+  Track:
+    Session:
+      - Status: Logged Out
+  ```
+
+## Stripe Integration
+Many L5 sites are running Cashier to manage their subscriptions. This package creates an API webhook endpoint that keeps
+ vital payment analytics recorded in MixPanel to help identify customer churn.
+
+Out of the box it will record the following Stripe events in MixPanel for you:
+
+### Charges
+- Authorized Charge (when only authorizing a payment for a later charge date):
+  ```
+  Track:
+    Payment:
+      - Status: Authorized
+      - Amount: <amount authorized>
+  ```
+  
+- Captured Charge (when completing a previously authorized charge):
+  ```
+  Track:
+    Payment:
+      - Status: Captured
+      - Amount: <amount of payment>
+  People TrackCharge: <amount of intended payment>
+  ```
+  
+- Completed Charge:
+  ```
+  Track:
+    Payment:
+      - Status: Successful
+      - Amount: <amount of payment>
+  People TrackCharge: <amount of payment>
+  ```
+  
+- Refunded Charge:
+  ```
+  Track:
+    Payment:
+      - Status: Refunded
+      - Amount: <amount of refund>
+  People TrackCharge: -<amount of refund>
+  ```
+  
+- Failed Charge:
+  ```
+  Track:
+    Payment:
+      - Status: Failed
+      - Amount: <amount of intended payment>
+  ```
+
+### Subscriptions
+- Customer subscribed:
+  ```
+  Track:
+    Subscription:
+      - Status: Created
+  People:
+    - Subscription: <plan name>
+  ```
+
+- Customer unsubscribed:
+  ```
+  Track:
+    Subscription:
+      - Status: Canceled
+      - Upgraded: false
+    Churn! :(
+  People:
+    - Subscription: None
+    - Churned: <date canceled>
+    - Plan When Churned: <subscribed plan when canceled>
+    - Paid Lifetime: <number of days from subscription to cancelation> days
+  ```
+
+- Customer started trial:
+  ```
+  Track:
+    Subscription:
+      - Status: Trial
+  People:
+    - Subscription: Trial
+  ```
+
+- Customer upgraded plan:
+  ```
+  Track:
+    Subscription:
+      - Upgraded: true
+    Unchurn! :-)
+  People:
+    - Subscription: <new plan name>
+  ```
+
+- Customer downgraded plan (based on dollar value compared to previous plan):
+  ```
+  Track:
+    Subscription:
+      - Upgraded: false
+    Churn! :-(
+  People:
+    - Subscription: <new plan name>
+    - Churned: <date plan was downgraded>
+    - Plan When Churned: <plan name prior to downgrading>
+  ```
