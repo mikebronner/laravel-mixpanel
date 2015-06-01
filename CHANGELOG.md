@@ -8,16 +8,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Add unit tests.
 - Add facade(s) for use in views.
 - Inject JS into views.
+- Detect through subscription create when a user had previously unsubscribed (churn), then resubscribes (unchurn).
+(This is already detected in subscription update.)
+- Filter any incoming webhook events that are in test mode.
 
-## [0.1.6 - 0.2.2] - 2015-05-30
+## [0.1.6 - 0.2.3] - 2015-05-30
 ### Added
 - Webhook for tracking Stripe events.
 - Documented MixPanel events in README.
 
 ### Fixed
+- Setting of user IP address.
+- Ignore charge updates.
 - Formatting of non-existent dates during profile setting.
 - Detection of stripe customer id in webhook.
-- Ignore charge updates.
 
 ## [0.1.0 - 0.1.4] - 2015-05-30
 ### Changed

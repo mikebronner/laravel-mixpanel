@@ -5,17 +5,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class MixPanelUserEventHandler
 {
     protected $mixPanel;
+    protected $request;
 
     /**
      *
      */
-    public function __construct()
+    public function __construct(MixPanel $mixPanel, Request $request)
     {
-        $this->mixPanel = App::make(MixPanel::class);
+        $this->mixPanel = $mixPanel;
+        $this->request = $request;
     }
 
     /**
@@ -57,7 +60,7 @@ class MixPanelUserEventHandler
             '$last_name' => $user->last_name,
             '$email' => $user->email,
             '$created' => $user->created_at->format('Y-m-d\Th:i:s'),
-        ]);
+        ], $this->request->ip);
         $this->mixPanel->track('Session', ['Status' => 'Logged In']);
     }
 
