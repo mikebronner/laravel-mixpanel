@@ -1,17 +1,20 @@
 <?php namespace GeneaLabs\MixPanel;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class MixPanelUserObserver
 {
     protected $mixPanel;
+    protected $request;
 
     /**
      * @param MixPanel $mixPanel
      */
-    public function __construct(MixPanel $mixPanel)
+    public function __construct(MixPanel $mixPanel, Request $request)
     {
         $this->mixPanel = $mixPanel;
+        $this->request = $request;
     }
 
     /**
@@ -34,7 +37,7 @@ class MixPanelUserObserver
             '$last_name' => $user->last_name,
             '$email' => $user->email,
             '$created' => $user->created_at->format('Y-m-d\Th:i:s'),
-        ]);
+        ], $this->request->ip);
         $this->mixPanel->track('User', ['Status' => 'Registered']);
     }
 
@@ -68,7 +71,7 @@ class MixPanelUserObserver
         array_filter($data);
 
         if (count($data)) {
-            $this->mixPanel->people->set($user->id, $data);
+            $this->mixPanel->people->set($user->id, $data, $this->request->ip);
         }
     }
 
