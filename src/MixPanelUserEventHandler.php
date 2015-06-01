@@ -5,18 +5,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\HTTP\Request;
 
 class MixPanelUserEventHandler
 {
+    protected $guard;
     protected $mixPanel;
     protected $request;
 
     /**
      *
      */
-    public function __construct(MixPanel $mixPanel, Request $request)
+    public function __construct(Guard $guard, MixPanel $mixPanel, Request $request)
     {
+        $this->guard = $guard;
         $this->mixPanel = $mixPanel;
         $this->request = $request;
     }
@@ -29,11 +31,10 @@ class MixPanelUserEventHandler
         $email = (array_key_exists('email', $event) ? $event['email'] : '');
         $password = (array_key_exists('password', $event) ? $event['password'] : '');
 
-        $guard = App::make(Guard::class);
         $user = App::make(config('auth.model'))->where('email', $email)->first();
 
         if ($user
-            && ! $guard->getProvider()->validateCredentials($user, ['email' => $email, 'password' => $password])
+            && ! $this->guard->getProvider()->validateCredentials($user, ['email' => $email, 'password' => $password])
         ) {
             $this->mixPanel->identify($user->id);
             $this->mixPanel->track('Session', ['Status' => 'Login Failed']);
@@ -54,13 +55,16 @@ class MixPanelUserEventHandler
             $user->last_name = $lastName;
         }
 
-        $this->mixPanel->identify($user->id);
-        $this->mixPanel->people->set($user->id, [
+        $data = [
             '$first_name' => $user->first_name,
             '$last_name' => $user->last_name,
             '$email' => $user->email,
             '$created' => $user->created_at->format('Y-m-d\Th:i:s'),
-        ], $this->request->ip);
+        ];
+        array_filter($data);
+
+        $this->mixPanel->identify($user->id);
+        $this->mixPanel->people->set($user->id, $data, $this->request->ip);
         $this->mixPanel->track('Session', ['Status' => 'Logged In']);
     }
 

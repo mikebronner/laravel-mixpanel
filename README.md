@@ -39,7 +39,8 @@ existing routes.
   Log into your Stripe account: https://dashboard.stripe.com/dashboard, and open your account settings' webhook tab:
   
   Enter your MixPanel webhook URL, similar to the following: `http://<your server.com>/mixpanel/webhooks/stripe/transaction`:
-  
+  ![screen shot 2015-05-31 at 1 35 01 pm](https://cloud.githubusercontent.com/assets/1791050/7903765/53ba6fe4-079b-11e5-9f92-a588bd81641d.png)
+
   Be sure to select "Live" if you are actually running live (otherwise put into test mode and update when you go live). 
   Also, choose "Send me all events" to make sure the mixpanel endpoint can make full use of the Stripe data.
 

@@ -12,31 +12,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-## [0.1.6 - 0.2.0] - 2015-05-30
-=======
-## [0.1.6 - 0.2.2] - 2015-05-30
->>>>>>> Stashed changes
-=======
-## [0.1.6 - 0.2.3] - 2015-05-30
->>>>>>> Stashed changes
+## [0.1.6 - 0.2.4] - 2015-05-30
 ### Added
 - Webhook for tracking Stripe events.
 - Documented MixPanel events in README.
 
 ### Fixed
-- Setting of user IP address.
+- Sanitize People data before setting it, so that values don't get erased if something is not set.
+- Fix method parameters.
+- Track client IP address.
 - Ignore charge updates.
 - Formatting of non-existent dates during profile setting.
-<<<<<<< Updated upstream
-=======
 - Detection of stripe customer id in webhook.
-<<<<<<< Updated upstream
-- Ignore charge updates.
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 ## [0.1.0 - 0.1.4] - 2015-05-30
 ### Changed

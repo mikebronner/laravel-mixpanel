@@ -31,13 +31,16 @@ class MixPanelUserObserver
             $user->last_name = $lastName;
         }
 
-        $this->mixPanel->identify($user->id);
-        $this->mixPanel->people->set($user->id, [
+        $data = [
             '$first_name' => $user->first_name,
             '$last_name' => $user->last_name,
             '$email' => $user->email,
             '$created' => $user->created_at->format('Y-m-d\Th:i:s'),
-        ], $this->request->ip);
+        ];
+        array_filter($data);
+
+        $this->mixPanel->identify($user->id);
+        $this->mixPanel->people->set($user->id, $data, $this->request->ip);
         $this->mixPanel->track('User', ['Status' => 'Registered']);
     }
 
