@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
+## [0.2.5] - 2015-06-2
+### Fixed
+- Checked for existence of user when logging out before identifying with MixPanel.
+
 ## [0.1.6 - 0.2.4] - 2015-05-30
 ### Added
 - Webhook for tracking Stripe events.
@@ -24,10 +28,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ignore charge updates.
 - Formatting of non-existent dates during profile setting.
 - Detection of stripe customer id in webhook.
-
-## [0.1.5] - 2015-06-2
-### Fixed
-- Checked for existence of user when logging out before identifying with MixPanel.
 
 ## [0.1.0 - 0.1.4] - 2015-05-30
 ### Changed
