@@ -25,6 +25,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Formatting of non-existent dates during profile setting.
 - Detection of stripe customer id in webhook.
 
+## [0.1.5] - 2015-06-2
+### Fixed
+- Checked for existence of user when logging out before identifying with MixPanel.
+
 ## [0.1.0 - 0.1.4] - 2015-05-30
 ### Changed
 - Updated `composer.json` details.
