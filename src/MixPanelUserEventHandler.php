@@ -71,9 +71,12 @@ class MixPanelUserEventHandler
     /**
      * @param Model $user
      */
-    public function onUserLogout(Model $user)
+    public function onUserLogout(Model $user = null)
     {
-        $this->mixPanel->identify($user->id);
+        if ($user) {
+            $this->mixPanel->identify($user->id);
+        }
+
         $this->mixPanel->track('Session', ['Status' => 'Logged Out']);
     }
 

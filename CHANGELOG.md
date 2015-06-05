@@ -12,6 +12,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
+## [0.2.6] - 2015-06-03
+### Changed
+- Added FromPlan and ToPlan when tracking subscription changes.
+
+### Fixed
+- Subscription updates check for previous subscription information, as not all subscription changes have it.
+
+## [0.2.5] - 2015-06-2
+### Fixed
+- Checked for existence of user when logging out before identifying with MixPanel.
+
+
 ## [0.1.6 - 0.2.4] - 2015-05-30
 ### Added
 - Webhook for tracking Stripe events.
