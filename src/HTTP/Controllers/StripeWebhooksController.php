@@ -23,7 +23,7 @@ class StripeWebhooksController extends Controller
         $transaction = $data['data']['object'];
         $originalValues = (array_key_exists('previous_attributes', $data['data']) ? $data['data']['previous_attributes'] : []);
         $stripeCustomerId = array_key_exists('customer', $transaction) ? $transaction['customer'] : $transaction['subscriptions']['data'][0]['customer'];
-        $user = App::make(config('auth.model'))->where('stripe_id', $transaction['customer'])->first();
+        $user = App::make(config('auth.model'))->where('stripe_id', $stripeCustomerId)->first();
 
         if (! $user) {
             return;
@@ -79,6 +79,8 @@ class StripeWebhooksController extends Controller
     }
 
     /**
+     * @todo refactor all these if statements
+     *
      * @param MixPanel $mixPanel
      * @param          $transaction
      * @param          $user
@@ -104,30 +106,54 @@ class StripeWebhooksController extends Controller
             ]);
         }
 
-        if ($transaction['status'] === 'trialing') {
-            $mixPanel->track('Subscription', ['Status' => 'Trial']);
-            $mixPanel->people->set($user->id, [
-                'Subscription' => 'Trial',
-            ]);
-        }
-
         if (count($originalValues)) {
-            if ($transaction['plan']['amount'] < $originalValues['plan']['amount']) {
-                $mixPanel->people->set($user->id, [
-                    'Subscription' => $transaction['plan']['name'],
-                    'Churned' => Carbon::now('UTC')->format('Y-m-d\Th:i:s'),
-                    'Plan When Churned' => $originalValues['plan']['name'],
-                ]);
-                $mixPanel->track('Subscription', ['Upgraded' => false]);
-                $mixPanel->track('Churn! :-(');
-            }
+            if (array_key_exists('plan', $originalValues)
+                && array_key_exists('amount', $originalValues['plan'])
+            ) {
+                if ($transaction['plan']['amount'] < $originalValues['plan']['amount']) {
+                    $mixPanel->people->set($user->id, [
+                        'Subscription' => $transaction['plan']['name'],
+                        'Churned' => Carbon::now('UTC')->format('Y-m-d\Th:i:s'),
+                        'Plan When Churned' => $originalValues['plan']['name'],
+                    ]);
+                    $mixPanel->track('Subscription', [
+                        'Upgraded' => false,
+                        'FromPlan' => $originalValues['plan']['name'],
+                        'ToPlan' => $transaction['plan']['name'],
+                    ]);
+                    $mixPanel->track('Churn! :-(');
+                }
 
-            if ($transaction['plan']['amount'] > $originalValues['plan']['amount']) {
+                if ($transaction['plan']['amount'] > $originalValues['plan']['amount']) {
+                    $mixPanel->people->set($user->id, [
+                        'Subscription' => $transaction['plan']['name'],
+                    ]);
+                    $mixPanel->track('Subscription', [
+                        'Upgraded' => true,
+                        'FromPlan' => $originalValues['plan']['name'],
+                        'ToPlan' => $transaction['plan']['name'],
+                    ]);
+                    $mixPanel->track('Unchurn! :-)');
+                }
+            } else {
+                if ($transaction['status'] === 'trialing' && ! array_key_exists('plan', $originalValues)) {
+                    $mixPanel->people->set($user->id, [
+                        'Subscription' => $transaction['plan']['name'],
+                    ]);
+                    $mixPanel->track('Subscription', [
+                        'Upgraded' => true,
+                        'FromPlan' => $originalValues['plan']['name'],
+                        'ToPlan' => $transaction['plan']['name'],
+                    ]);
+                    $mixPanel->track('Unchurn! :-)');
+                }
+            }
+        } else {
+            if ($transaction['status'] === 'trialing') {
+                $mixPanel->track('Subscription', ['Status' => 'Trial']);
                 $mixPanel->people->set($user->id, [
-                    'Subscription' => $transaction['plan']['name'],
+                    'Subscription' => 'Trial',
                 ]);
-                $mixPanel->track('Subscription', ['Upgraded' => true]);
-                $mixPanel->track('Unchurn! :-)');
             }
         }
     }
