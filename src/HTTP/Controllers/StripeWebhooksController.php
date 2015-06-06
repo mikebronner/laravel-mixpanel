@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Exception;
 use GeneaLabs\MixPanel\MixPanel;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
@@ -24,7 +25,7 @@ class StripeWebhooksController extends Controller
 
         $transaction = $data['data']['object'];
         $originalValues = (array_key_exists('previous_attributes', $data['data']) ? $data['data']['previous_attributes'] : []);
-        $stripeCustomerId = array_key_exists('customer', $transaction) ? $transaction['customer'] : isset($transaction['subscriptions']['data'][0]['customer']) ? $transaction['subscriptions']['data'][0]['customer'] : null;
+        $stripeCustomerId = $this->findStripeCustomerId($transaction);
         $user = App::make(config('auth.model'))->where('stripe_id', $stripeCustomerId)->first();
 
         if (! $user) {
@@ -163,5 +164,29 @@ class StripeWebhooksController extends Controller
                 $mixPanel->track('Subscription', ['Status' => 'Trial']);
             }
         }
+    }
+
+    /**
+     * @param $transaction
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    private function findStripeCustomerId($transaction)
+    {
+
+        if (array_key_exists('customer', $transaction)) {
+            return $transaction['customer'];
+        }
+
+        if ($transaction['subscriptions']
+            && $transaction['subscriptions']['data']
+            && $transaction['subscriptions']['data'][0]
+            && $transaction['subscriptions']['data'][0]['customer']
+        ) {
+            return $transaction['subscriptions']['data'][0]['customer'];
+        }
+
+        throw new Exception('Stripe customer not found in JSON: ' . json_encode($transaction));
     }
 }
