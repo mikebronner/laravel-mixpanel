@@ -24,7 +24,7 @@ class StripeWebhooksController extends Controller
 
         $transaction = $data['data']['object'];
         $originalValues = (array_key_exists('previous_attributes', $data['data']) ? $data['data']['previous_attributes'] : []);
-        $stripeCustomerId = array_key_exists('customer', $transaction) ? $transaction['customer'] : isset($transaction['subscriptions']['data'][0]['customer']) ?: null;
+        $stripeCustomerId = array_key_exists('customer', $transaction) ? $transaction['customer'] : isset($transaction['subscriptions']['data'][0]['customer']) ? $transaction['subscriptions']['data'][0]['customer'] : null;
         $user = App::make(config('auth.model'))->where('stripe_id', $stripeCustomerId)->first();
 
         if (! $user) {

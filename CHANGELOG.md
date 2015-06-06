@@ -12,6 +12,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
+## [0.2.8] - 2015-06-03
+- Fixed logic error in customer ID parsing.
+
 ## [0.2.7] - 2015-06-03
 ### Fixed
 - Refactored subscription update functionality to be a little more robust. Testing all aspects of this has proven
