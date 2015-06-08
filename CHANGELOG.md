@@ -36,7 +36,6 @@ difficult, as Stripes webhook tests don't account for all variations possible in
 ### Fixed
 - Checked for existence of user when logging out before identifying with MixPanel.
 
-
 ## [0.1.6 - 0.2.4] - 2015-05-30
 ### Added
 - Webhook for tracking Stripe events.
