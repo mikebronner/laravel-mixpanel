@@ -179,6 +179,10 @@ class StripeWebhooksController extends Controller
             return $transaction['customer'];
         }
 
+        if (array_key_exists('object', $transaction) && $transaction['object'] === 'customer') {
+            return $transaction['id'];
+        }
+
         if ($transaction['subscriptions']
             && $transaction['subscriptions']['data']
             && $transaction['subscriptions']['data'][0]
