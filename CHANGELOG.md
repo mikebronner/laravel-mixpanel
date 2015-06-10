@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
+## [0.2.13] - 2015-06-10
+### Added
+- Ignore transfer transactions.
+
 ## [0.2.11 - 0.2.12] - 2015-06-09
 ### Added
 - Additional check to detect stripe customer number.
