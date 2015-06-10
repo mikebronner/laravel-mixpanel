@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
+## [0.2.11] - 2015-06-09
+### Added
+- Additional check to detect stripe customer number.
+
 ## [0.2.10] - 2015-06-06
 ### Fixed
 - Extracted logic to get stripe customer id and throw exception if not found.
