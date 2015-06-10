@@ -20,7 +20,7 @@ class StripeWebhooksController extends Controller
         $data = Input::json()->all();
 
         if (! $data || ! array_key_exists('data', $data)) {
-            throw new Exception('Missing "data" parameter in Stripe webhook POST request.');
+            throw new Exception('Missing "data" parameter in Stripe webhook POST request: ' . $data);
         }
 
         $transaction = $data['data']['object'];
@@ -29,7 +29,7 @@ class StripeWebhooksController extends Controller
         $user = App::make(config('auth.model'))->where('stripe_id', $stripeCustomerId)->first();
 
         if (! $user) {
-            throw new UsernameNotFoundException('Stripe customer "' . $stripeCustomerId . '" not found.');
+            return;
         }
 
         $mixPanel->identify($user->id);
@@ -189,6 +189,10 @@ class StripeWebhooksController extends Controller
             && array_key_exists('customer', $transaction['subscriptions']['data'][0])
         ) {
             return $transaction['subscriptions']['data'][0]['customer'];
+        }
+
+        if (array_key_exists('object', $transaction) && $transaction['object'] === 'transfer') {
+            return;
         }
 
         throw new Exception('Stripe customer not found in JSON: ' . json_encode($transaction));
