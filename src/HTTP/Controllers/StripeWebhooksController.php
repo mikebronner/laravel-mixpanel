@@ -183,10 +183,10 @@ class StripeWebhooksController extends Controller
             return $transaction['id'];
         }
 
-        if ($transaction['subscriptions']
-            && $transaction['subscriptions']['data']
-            && $transaction['subscriptions']['data'][0]
-            && $transaction['subscriptions']['data'][0]['customer']
+        if (array_key_exists('subscriptions', $transaction)
+            && array_key_exists('data', $transaction['subscriptions'])
+            && array_key_exists(0, $transaction['subscriptions']['data'])
+            && array_key_exists('customer', $transaction['subscriptions']['data'][0])
         ) {
             return $transaction['subscriptions']['data'][0]['customer'];
         }
