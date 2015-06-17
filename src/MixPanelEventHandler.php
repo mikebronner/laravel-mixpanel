@@ -17,11 +17,10 @@ class MixPanelEventHandler
     /**
      *
      */
-    public function __construct(Guard $guard, MixPanel $mixPanel, Request $request)
+    public function __construct(Guard $guard, MixPanel $mixPanel)
     {
         $this->guard = $guard;
         $this->mixPanel = $mixPanel;
-        $this->request = $request;
     }
 
     /**
@@ -65,7 +64,8 @@ class MixPanelEventHandler
         array_filter($data);
 
         $this->mixPanel->identify($user->id);
-        $this->mixPanel->people->set($user->id, $data, $this->request->ip);
+        $request = App::make(Request::class);
+        $this->mixPanel->people->set($user->id, $data, $request->ip());
         $this->mixPanel->track('Session', ['Status' => 'Logged In']);
     }
 

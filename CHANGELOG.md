@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
+## [0.3.1] - 2015-06-17
+### Fixed
+- Attempt at fixing client IP detection.
+
 ## [0.3.0] - 2015-06-16
 ### Changed
 - Upgraded to Laravel 5.1

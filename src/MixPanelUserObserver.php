@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class MixPanelUserObserver
 {
@@ -11,10 +12,9 @@ class MixPanelUserObserver
     /**
      * @param MixPanel $mixPanel
      */
-    public function __construct(MixPanel $mixPanel, Request $request)
+    public function __construct(MixPanel $mixPanel)
     {
         $this->mixPanel = $mixPanel;
-        $this->request = $request;
     }
 
     /**
@@ -40,7 +40,8 @@ class MixPanelUserObserver
         array_filter($data);
 
         $this->mixPanel->alias($user->id);
-        $this->mixPanel->people->set($user->id, $data, $this->request->ip);
+        $request = App::make(Request::class);
+        $this->mixPanel->people->set($user->id, $data, $request->ip());
         $this->mixPanel->track('User', ['Status' => 'Registered']);
     }
 
@@ -74,7 +75,8 @@ class MixPanelUserObserver
         array_filter($data);
 
         if (count($data)) {
-            $this->mixPanel->people->set($user->id, $data, $this->request->ip);
+            $request = App::make(Request::class);
+            $this->mixPanel->people->set($user->id, $data, $request->ip());
         }
     }
 
