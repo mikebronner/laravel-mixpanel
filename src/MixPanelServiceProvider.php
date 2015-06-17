@@ -11,11 +11,12 @@ class MixPanelServiceProvider extends ServiceProvider
 
     public function boot(Guard $guard, MixPanel $mixPanel, Request $request)
     {
-        include __DIR__ . '/HTTP/routes.php';
+        include __DIR__ . '/Http/routes.php';
 
         $this->app->make(config('auth.model'))->observe(new MixPanelUserObserver($mixPanel, $request));
         $eventHandler = new MixPanelUserEventHandler($guard, $mixPanel, $request);
 
+        view()->composer('*', MixPanelViewComposer::class);
         Event::subscribe($eventHandler);
     }
 
