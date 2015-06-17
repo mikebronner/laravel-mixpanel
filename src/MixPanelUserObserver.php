@@ -39,7 +39,7 @@ class MixPanelUserObserver
         ];
         array_filter($data);
 
-        $this->mixPanel->identify($user->id);
+        $this->mixPanel->alias($user->id);
         $this->mixPanel->people->set($user->id, $data, $this->request->ip);
         $this->mixPanel->track('User', ['Status' => 'Registered']);
     }
