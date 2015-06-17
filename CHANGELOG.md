@@ -12,6 +12,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
+## [0.3.0] - 2015-06-16
+### Changed
+- Upgraded to Laravel 5.1
+
+### Added
+- Page View tracking.
+- MixPanel alias() on registration to enabled proper funneling.
+
 ## [0.2.13] - 2015-06-10
 ### Added
 - Ignore transfer transactions.
