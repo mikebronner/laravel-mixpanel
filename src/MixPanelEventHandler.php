@@ -3,11 +3,12 @@
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Events\Dispatcher;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\HTTP\Request;
+use Illuminate\Support\Facades\Request as CurrentRequest;
 
-class MixPanelUserEventHandler
+class MixPanelEventHandler
 {
     protected $guard;
     protected $mixPanel;
@@ -80,13 +81,24 @@ class MixPanelUserEventHandler
         $this->mixPanel->track('Session', ['Status' => 'Logged Out']);
     }
 
+    public function onViewLoad($route)
+    {
+//        dd($route);
+        $this->mixPanel->track('Page View', [
+            'Url' => $route->uri,
+            'Route' => $route->action['as'],
+        ]);
+    }
+
     /**
      * @param Dispatcher $events
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen('auth.attempt', 'GeneaLabs\MixPanel\MixPanelUserEventHandler@onUserLoginAttempt');
-        $events->listen('auth.login', 'GeneaLabs\MixPanel\MixPanelUserEventHandler@onUserLogin');
-        $events->listen('auth.logout', 'GeneaLabs\MixPanel\MixPanelUserEventHandler@onUserLogout');
+        $events->listen('auth.attempt', 'GeneaLabs\MixPanel\MixPanelEventHandler@onUserLoginAttempt');
+        $events->listen('auth.login', 'GeneaLabs\MixPanel\MixPanelEventHandler@onUserLogin');
+        $events->listen('auth.logout', 'GeneaLabs\MixPanel\MixPanelEventHandler@onUserLogout');
+
+        $events->listen('router.matched', 'GeneaLabs\MixPanel\MixPanelEventHandler@onViewLoad');
     }
 }
