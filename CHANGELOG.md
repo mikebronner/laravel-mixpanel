@@ -12,17 +12,28 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.3.1 - 0.3.6] - 2015-06-17
+## [0.3.12 - 0.3.13] - 2015-06-18
+### Added
+- Identify user when tracking Page View if logged in.
+- Update "Last Seen" timestamp when logged-in user views a page.
+
+## [0.3.1 - 0.3.11] - 2015-06-17
+### Added
+- Referrer is now also recorded in Page View tracks.
+
 ### Removed
 - Temporarily disabled alias() until its purpose and usefulness is better assessed.
 
 ### Changed
 - Namespace HTTP/Controllers changed to Http/Controllers.
+- Fixed method to detect current URL.
 
 ### Fixed
 - Attempt at fixing client IP detection.
 - PHP version requirement updated to >5.5.
 - Fix namespace and path references.
+- Fix URL and Route detection for 'Page View' tracking.
+- Fixed detection of Page View elements to only be added if they exist.
 
 ## [0.3.0] - 2015-06-16
 ### Changed
