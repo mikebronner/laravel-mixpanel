@@ -39,7 +39,8 @@ class MixPanelUserObserver
         ];
         array_filter($data);
 
-        $this->mixPanel->alias($user->id);
+        // TODO: need to find out more on how alias works.
+//        $this->mixPanel->alias($user->id);
         $request = App::make(Request::class);
         $this->mixPanel->people->set($user->id, $data, $request->ip());
         $this->mixPanel->track('User', ['Status' => 'Registered']);
