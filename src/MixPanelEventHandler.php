@@ -83,10 +83,9 @@ class MixPanelEventHandler
 
     public function onViewLoad($route)
     {
-//        dd($route);
         $this->mixPanel->track('Page View', [
-            'Url' => $route->uri,
-            'Route' => $route->action['as'],
+            'Url' => $route->getUri(),
+            'Route' => $route->getAction()['as'],
         ]);
     }
 

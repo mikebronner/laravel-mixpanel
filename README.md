@@ -157,6 +157,14 @@ the first name. Otherwise it will look for `first_name` and `last_name` fields i
     Session:
       - Status: Logged Out
   ```
+  
+- View loaded:
+  ```
+  Track:
+    Page View:
+      - Url: <page URL>
+      - Route: <route name>
+  ```
 
 ## Stripe Integration
 Many L5 sites are running Cashier to manage their subscriptions. This package creates an API webhook endpoint that keeps

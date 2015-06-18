@@ -12,7 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.3.1 - 0.3.6] - 2015-06-17
+## [0.3.1 - 0.3.7] - 2015-06-17
 ### Removed
 - Temporarily disabled alias() until its purpose and usefulness is better assessed.
 
@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Attempt at fixing client IP detection.
 - PHP version requirement updated to >5.5.
 - Fix namespace and path references.
+- Fix URL and Route detection for 'Page View' tracking.  
 
 ## [0.3.0] - 2015-06-16
 ### Changed
