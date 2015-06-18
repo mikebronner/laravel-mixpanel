@@ -86,6 +86,10 @@ class MixPanelEventHandler
         $data = [];
         $routeAction = $route->getAction();
 
+        if (Auth::check()) {
+            $this->mixPanel->identify(Auth::user()->id);
+        }
+
         if (CurrentRequest::url()) {
             $data['Url'] = CurrentRequest::url();
         }
