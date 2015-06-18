@@ -87,7 +87,10 @@ class MixPanelEventHandler
         $routeAction = $route->getAction();
 
         if (Auth::check()) {
+            $request = App::make(Request::class);
+
             $this->mixPanel->identify(Auth::user()->id);
+            $this->mixPanel->people->set(Auth::user()->id, [], $request->ip());
         }
 
         if (CurrentRequest::url()) {
