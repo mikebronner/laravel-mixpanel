@@ -12,7 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.3.1 - 0.3.2] - 2015-06-17
+## [0.3.1 - 0.3.4] - 2015-06-17
+### Removed
+- Temporarily disabled alias() until its purpose and usefulness is better assessed.
+
 ### Fixed
 - Attempt at fixing client IP detection.
 - PHP version requirement updated to >5.5.
