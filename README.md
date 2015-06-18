@@ -164,6 +164,7 @@ the first name. Otherwise it will look for `first_name` and `last_name` fields i
     Page View:
       - Url: <page URL>
       - Route: <route name>
+      - Referrer: <referring URL>
   ```
 
 ## Stripe Integration

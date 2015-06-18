@@ -86,6 +86,7 @@ class MixPanelEventHandler
         $this->mixPanel->track('Page View', [
             'Url' => $route->getUri(),
             'Route' => $route->getAction()['as'],
+            'Referrer' => CurrentRequest::server('HTTP_REFERER')
         ]);
     }
 
