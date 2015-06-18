@@ -83,11 +83,22 @@ class MixPanelEventHandler
 
     public function onViewLoad($route)
     {
-        $this->mixPanel->track('Page View', [
-            'Url' => $route->getUri(),
-            'Route' => $route->getAction()['as'],
-            'Referrer' => CurrentRequest::server('HTTP_REFERER')
-        ]);
+        $data = [];
+        $routeAction = $route->getAction();
+
+        if ($route->getUri()) {
+            $data[] = ['Url' => $route->getUri()];
+        }
+
+        if (is_array($routeAction) && array_key_exists('as', $routeAction)) {
+            $data[] = ['Route' => $routeAction['as']];
+        }
+
+        if (CurrentRequest::server('HTTP_REFERER')) {
+            $data[] = ['Referrer' => CurrentRequest::server('HTTP_REFERER')];
+        }
+
+        $this->mixPanel->track('Page View', $data);
     }
 
     /**

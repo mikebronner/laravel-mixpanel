@@ -12,7 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.3.1 - 0.3.8] - 2015-06-17
+## [0.3.1 - 0.3.9] - 2015-06-17
 ### Added
 - Referrer is now also recorded in Page View tracks.
 
@@ -26,7 +26,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Attempt at fixing client IP detection.
 - PHP version requirement updated to >5.5.
 - Fix namespace and path references.
-- Fix URL and Route detection for 'Page View' tracking.  
+- Fix URL and Route detection for 'Page View' tracking.
+- Fixed detection of Page View elements to only be added if they exist.
 
 ## [0.3.0] - 2015-06-16
 ### Changed
