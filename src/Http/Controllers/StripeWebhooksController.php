@@ -1,4 +1,4 @@
-<?php namespace GeneaLabs\MixPanel\HTTP\Controllers;
+<?php namespace GeneaLabs\MixPanel\Http\Controllers;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
@@ -7,8 +7,6 @@ use GeneaLabs\MixPanel\MixPanel;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
-use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class StripeWebhooksController extends Controller
 {
