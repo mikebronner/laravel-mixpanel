@@ -12,7 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.3.1 - 0.3.10] - 2015-06-17
+## [0.3.1 - 0.3.11] - 2015-06-17
 ### Added
 - Referrer is now also recorded in Page View tracks.
 
@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Namespace HTTP/Controllers changed to Http/Controllers.
+- Fixed method to detect current URL.
 
 ### Fixed
 - Attempt at fixing client IP detection.

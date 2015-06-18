@@ -86,8 +86,8 @@ class MixPanelEventHandler
         $data = [];
         $routeAction = $route->getAction();
 
-        if ($route->getUri()) {
-            $data['Url'] = $route->getUri();
+        if (CurrentRequest::url()) {
+            $data['Url'] = CurrentRequest::url();
         }
 
         if (is_array($routeAction) && array_key_exists('as', $routeAction)) {
