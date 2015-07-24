@@ -168,7 +168,6 @@ class StripeWebhooksController extends Controller
      * @param $transaction
      *
      * @return mixed
-     * @throws Exception
      */
     private function findStripeCustomerId($transaction)
     {
@@ -189,10 +188,6 @@ class StripeWebhooksController extends Controller
             return $transaction['subscriptions']['data'][0]['customer'];
         }
 
-        if (array_key_exists('object', $transaction) && $transaction['object'] === 'transfer') {
-            return;
-        }
-
-        throw new Exception('Stripe customer not found in JSON: ' . json_encode($transaction));
+        return;
     }
 }
