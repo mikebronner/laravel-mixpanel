@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\App;
 class MixPanel extends \Mixpanel
 {
     private $defaults = [
+        'consumer' => 'socket',
         'connect_timeout' => 2,
         'timeout' => 2,
     ];
