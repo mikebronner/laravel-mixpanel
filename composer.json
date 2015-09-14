@@ -1,5 +1,5 @@
 {
-  "name": "genealabs/mixpanel",
+  "name": "genealabs/laravel-mixpanel",
   "description": "MixPanel wrapper for Laravel 5.",
   "license": "MIT",
   "authors": [
