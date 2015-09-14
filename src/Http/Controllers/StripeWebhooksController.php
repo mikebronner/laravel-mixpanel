@@ -1,4 +1,4 @@
-<?php namespace GeneaLabs\MixPanel\Http\Controllers;
+<?php namespace GeneaLabs\LaravelMixpanel\Http\Controllers;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
