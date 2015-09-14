@@ -6,7 +6,7 @@ existing routes.
 ## Installation
 1. Install MixPanel via composer:
   ```sh
-  composer require genealabs\laravel-mixpanel:~0.4.0
+  composer require genealabs\laravel-mixpanel:~0.4.3
   ```
 
 2. Add the service provider entry in `config\app.php`:
