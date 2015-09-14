@@ -108,10 +108,9 @@ class LaravelMixpanelEventHandler
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen('auth.attempt', 'GeneaLabs\MixPanel\MixPanelEventHandler@onUserLoginAttempt');
-        $events->listen('auth.login', 'GeneaLabs\MixPanel\MixPanelEventHandler@onUserLogin');
-        $events->listen('auth.logout', 'GeneaLabs\MixPanel\MixPanelEventHandler@onUserLogout');
-
-        $events->listen('router.matched', 'GeneaLabs\MixPanel\MixPanelEventHandler@onViewLoad');
+        $events->listen('auth.attempt', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLoginAttempt');
+        $events->listen('auth.login', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLogin');
+        $events->listen('auth.logout', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLogout');
+        $events->listen('router.matched', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onViewLoad');
     }
 }

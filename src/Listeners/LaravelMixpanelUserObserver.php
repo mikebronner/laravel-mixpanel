@@ -11,7 +11,7 @@ class LaravelMixpanelUserObserver
     protected $request;
 
     /**
-     * @param MixPanel $mixPanel
+     * @param LaravelMixpanel $mixPanel
      */
     public function __construct(LaravelMixpanel $mixPanel)
     {
