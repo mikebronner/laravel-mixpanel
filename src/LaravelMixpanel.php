@@ -1,8 +1,8 @@
-<?php namespace GeneaLabs\MixPanel;
+<?php namespace GeneaLabs\LaravelMixpanel;
 
 use Illuminate\Support\Facades\App;
 
-class MixPanel extends \Mixpanel
+class LaravelMixpanel extends \Mixpanel
 {
     private $defaults = [
         'consumer' => 'socket',

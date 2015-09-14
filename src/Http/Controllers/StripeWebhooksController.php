@@ -3,7 +3,7 @@
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Exception;
-use GeneaLabs\MixPanel\MixPanel;
+use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Input;
 class StripeWebhooksController extends Controller
 {
     /**
-     * @param MixPanel $mixPanel
+     * @param LaravelMixpanel $mixPanel
      */
-    public function postTransaction(MixPanel $mixPanel)
+    public function postTransaction(LaravelMixpanel $mixPanel)
     {
         $data = Input::json()->all();
 
@@ -42,11 +42,11 @@ class StripeWebhooksController extends Controller
     }
 
     /**
-     * @param MixPanel $mixPanel
+     * @param LaravelMixpanel $mixPanel
      * @param          $transaction
      * @param          $user
      */
-    private function recordCharge(MixPanel $mixPanel, $transaction, $user)
+    private function recordCharge(LaravelMixpanel $mixPanel, $transaction, $user)
     {
         if ($transaction['paid'] && $transaction['captured'] && ! $transaction['refunded']) {
             $mixPanel->people->trackCharge($user->id, ($transaction['amount'] / 100));
@@ -82,12 +82,12 @@ class StripeWebhooksController extends Controller
     /**
      * @todo refactor all these if statements
      *
-     * @param MixPanel $mixPanel
+     * @param LaravelMixpanel $mixPanel
      * @param          $transaction
      * @param          $user
      * @param array    $originalValues
      */
-    private function recordSubscription(MixPanel $mixPanel, $transaction, $user, array $originalValues = [])
+    private function recordSubscription(LaravelMixpanel $mixPanel, $transaction, $user, array $originalValues = [])
     {
         $planStatus = array_key_exists('status', $transaction) ? $transaction['status'] : null;
         $planName = isset($transaction['plan']['name']) ? $transaction['plan']['name'] : null;
@@ -187,7 +187,5 @@ class StripeWebhooksController extends Controller
         ) {
             return $transaction['subscriptions']['data'][0]['customer'];
         }
-
-        return;
     }
 }

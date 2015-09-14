@@ -1,10 +1,11 @@
-<?php namespace GeneaLabs\MixPanel;
+<?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
+use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
-class MixPanelUserObserver
+class LaravelMixpanelUserObserver
 {
     protected $mixPanel;
     protected $request;
@@ -12,7 +13,7 @@ class MixPanelUserObserver
     /**
      * @param MixPanel $mixPanel
      */
-    public function __construct(MixPanel $mixPanel)
+    public function __construct(LaravelMixpanel $mixPanel)
     {
         $this->mixPanel = $mixPanel;
     }
@@ -39,8 +40,6 @@ class MixPanelUserObserver
         ];
         array_filter($data);
 
-        // TODO: need to find out more on how alias works.
-//        $this->mixPanel->alias($user->id);
         $request = App::make(Request::class);
         $this->mixPanel->people->set($user->id, $data, $request->ip());
         $this->mixPanel->track('User', ['Status' => 'Registered']);

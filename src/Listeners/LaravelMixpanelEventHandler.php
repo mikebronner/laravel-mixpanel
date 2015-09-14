@@ -1,5 +1,6 @@
-<?php namespace GeneaLabs\MixPanel;
+<?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
+use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Events\Dispatcher;
@@ -8,7 +9,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as CurrentRequest;
 
-class MixPanelEventHandler
+class LaravelMixpanelEventHandler
 {
     protected $guard;
     protected $mixPanel;
@@ -17,7 +18,7 @@ class MixPanelEventHandler
     /**
      *
      */
-    public function __construct(Guard $guard, MixPanel $mixPanel)
+    public function __construct(Guard $guard, LaravelMixpanel $mixPanel)
     {
         $this->guard = $guard;
         $this->mixPanel = $mixPanel;

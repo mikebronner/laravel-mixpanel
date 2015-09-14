@@ -10,7 +10,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "GeneaLabs\\MixPanel\\": "src/"
+      "GeneaLabs\\LaravelMixpanel\\": "src/"
     }
   },
   "require": {
@@ -27,7 +27,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "GeneaLabs\\MixPanel\\Tests\\": "tests/"
+      "GeneaLabs\\LaravelMixpanel\\Tests\\": "tests/"
     }
   }
 }
