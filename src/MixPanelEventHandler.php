@@ -85,25 +85,19 @@ class MixPanelEventHandler
     {
         $data = [];
         $routeAction = $route->getAction();
+        $request = App::make(Request::class);
 
         if (Auth::check()) {
-            $request = App::make(Request::class);
-
             $this->mixPanel->identify(Auth::user()->id);
             $this->mixPanel->people->set(Auth::user()->id, [], $request->ip());
-        }
-
-        if (CurrentRequest::url()) {
-            $data['Url'] = CurrentRequest::url();
         }
 
         if (is_array($routeAction) && array_key_exists('as', $routeAction)) {
             $data['Route'] = $routeAction['as'];
         }
 
-        if (CurrentRequest::server('HTTP_REFERER')) {
-            $data['Referrer'] = CurrentRequest::server('HTTP_REFERER');
-        }
+        $data['Url'] = $request->getUri();
+        $data['Referrer'] = $request->header('referer');
 
         $this->mixPanel->track('Page View', $data);
     }
