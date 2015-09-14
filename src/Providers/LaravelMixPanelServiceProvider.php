@@ -1,5 +1,6 @@
-<?php namespace GeneaLabs\LaravelMixpanel;
+<?php namespace GeneaLabs\LaravelMixpanel\Providers;
 
+use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 use GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler;
 use GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelUserObserver;
 use Illuminate\Auth\Guard;
@@ -11,9 +12,9 @@ class LaravelMixpanelServiceProvider extends ServiceProvider
 {
     protected $defer = false;
 
-    public function boot(Guard $guard, MixPanel $mixPanel)
+    public function boot(Guard $guard, LaravelMixpanel $mixPanel)
     {
-        include __DIR__ . '/Http/routes.php';
+        include __DIR__ . '/../Http/routes.php';
 
         $this->app->make(config('auth.model'))->observe(new LaravelMixpanelUserObserver($mixPanel));
         $eventHandler = new LaravelMixpanelEventHandler($guard, $mixPanel);
@@ -24,7 +25,7 @@ class LaravelMixpanelServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(LaravelMixpanel::class, function () {
-            return new MixPanel();
+            return new LaravelMixpanel();
         });
     }
 

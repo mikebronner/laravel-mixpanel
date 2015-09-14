@@ -12,7 +12,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.4.0] - 13 Sep 2015
+## [0.4.0 - 0.4.1] - 13 Sep 2015
+### Fixed
+- namespace for service provider.
+- path to routes file.
+
 ### Changed
 - Move to new repository, change namespace.
 - Change referer detection.
