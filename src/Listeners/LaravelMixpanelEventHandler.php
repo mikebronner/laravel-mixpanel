@@ -60,8 +60,12 @@ class LaravelMixpanelEventHandler
             '$first_name' => $user->first_name,
             '$last_name' => $user->last_name,
             '$email' => $user->email,
-            '$created' => $user->created_at->format('Y-m-d\Th:i:s'),
         ];
+        
+        if ($user->created_at) {
+            $data['$created'] = $user->created_at->format('Y-m-d\Th:i:s');
+        }
+
         array_filter($data);
 
         $this->mixPanel->identify($user->id);
