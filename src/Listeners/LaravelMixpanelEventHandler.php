@@ -47,21 +47,22 @@ class LaravelMixpanelEventHandler
      */
     public function onUserLogin(Model $user)
     {
+        $firstName = $user->first_name ?: '';
+        $lastName = $user->last_name ?: '';
+
         if ($user->name) {
             $nameParts = explode(' ', $user->name);
             array_filter($nameParts);
             $lastName = array_pop($nameParts);
             $firstName = implode(' ', $nameParts);
-            $user->first_name = $firstName;
-            $user->last_name = $lastName;
         }
 
-        $data = [
-            '$first_name' => $user->first_name,
-            '$last_name' => $user->last_name,
+        $data[] = [
+            '$first_name' => $firstName,
+            '$last_name' => $lastName,
             '$email' => $user->email,
         ];
-        
+
         if ($user->created_at) {
             $data['$created'] = $user->created_at->format('Y-m-d\Th:i:s');
         }

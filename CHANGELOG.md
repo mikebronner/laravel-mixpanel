@@ -7,12 +7,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   Complete check list items.
 - Add unit tests.
 - Add facade(s) for use in views.
-- Inject JS into views.
 - Detect through subscription create when a user had previously unsubscribed (churn), then resubscribes (unchurn).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.4.0 - 0.4.3] - 13 Sep 2015
+## [0.4.6] - 25 Sep 2015
+### Fixed
+- documentation references to old Mixpanel class.
+- usage of first_name and last_name attributes on User classes that don't have them.
+
+## [0.4.5] - 24 Sep 2015
+### Fixed
+- Exception if no `$user->created_at` attribute exists.
+
+## [0.4.0 - 0.4.4] - 13 Sep 2015
 ### Fixed
 - FQCN references in event handler.
 - namespace for controller in routes file.

@@ -61,13 +61,13 @@ Common user events are automatically recorded:
 
 To make custom events, simple get MixPanel from the IoC using DI:
 ```php
-use GeneaLabs\MixPanel\MixPanel;
+use GeneaLabs\LaravelMixPanel\LaravelMixPanel;
 
 class MyClass
 {
     protected $mixPanel;
 
-    public function __construct(MixPanel $mixPanel)
+    public function __construct(LaravelMixPanel $mixPanel)
     {
         $this->mixPanel = $mixPanel;
     }
@@ -76,7 +76,7 @@ class MyClass
 
 If DI is impractical in certain situations, you can also manually retrieve it from the IoC:
 ```php
-$mixPanel = App::make('GeneaLabs\MixPanel\MixPanel');
+$mixPanel = App::make('GeneaLabs\LaravelMixPanel\LaravelMixPanel');
 ```
 
 After that you can make the usual calls to the MixPanel API:
