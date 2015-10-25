@@ -11,7 +11,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.4.7] - 25 Oct 2015
+## [0.4.7 - 0.4.8] - 25 Oct 2015
+### Added
+- tracking of `name` in addition to `first name` and `last name`.
+- tracking of `referrer` and `referring domain` to help get additional information for Live View (may not yet work
+  fully).
+
 ### Fixed
 - improper tracking of user details, which caused users' names to be blank and a `0 Object [object]` field to be tracked
   erroneously.

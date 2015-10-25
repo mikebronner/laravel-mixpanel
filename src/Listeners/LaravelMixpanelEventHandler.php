@@ -60,6 +60,7 @@ class LaravelMixpanelEventHandler
         $data = [
             '$first_name' => $firstName,
             '$last_name' => $lastName,
+            '$name' => $user->name,
             '$email' => $user->email,
         ];
 
@@ -104,8 +105,9 @@ class LaravelMixpanelEventHandler
 
         $data['Url'] = $request->getUri();
         $data['Referrer'] = $request->header('referer');
+        $data['$initial_referrer'] = $request->header('referer');
+        $data['$initial_referring_domain'] = parse_url($request->header('referer'))['host'];
         array_filter($data);
-
         $this->mixPanel->track('Page View', $data);
     }
 

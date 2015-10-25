@@ -36,6 +36,8 @@ class LaravelMixpanelUserObserver
         $data = [
             '$first_name' => $firstName,
             '$last_name' => $lastName,
+            '$name' => $user->name,
+            '$email' => $user->email,
         ];
 
         if ($user->created_at) {
@@ -68,6 +70,7 @@ class LaravelMixpanelUserObserver
         $data = [
             '$first_name' => $firstName,
             '$last_name' => $lastName,
+            '$name' => $user->name,
             '$email' => $user->email,
         ];
 
