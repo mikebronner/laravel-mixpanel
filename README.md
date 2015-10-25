@@ -1,6 +1,6 @@
 # MixPanel for Laravel 5
 ## Considerations
-1. This package adds the multiple routes under `genealabs/laravel-mixpanel/*`. Please verify that these don't collide with your 
+1. This package adds the multiple routes under `genealabs/laravel-mixpanel/*`. Please verify that these don't collide with your
 existing routes.
 
 ## Installation
@@ -26,22 +26,31 @@ existing routes.
           'token' => env('MIXPANEL_TOKEN'),
       ],
   ```
-  
-3. We need to disable CSRF checking for the stripe webhook endpoints. To do that, open 
+
+3. If to track the user's names, make sure a `name` attribute is available on your user model. For example, if you only
+  have a `username` field that contains the users' first and last names, you could add the following to your user model:
+  ```php
+      public function getNameAttribute()
+      {
+          return $this->username;
+      }
+  ```
+
+4. We need to disable CSRF checking for the stripe webhook endpoints. To do that, open
  `app/HTTP/Middleware/VerifyCsrfToken.php` and add the following above the return statement:
   ```php
           if ($request->is('genealabs/laravel-mixpanel/*')) {
               return $next($request);
           }
   ```
-  
-4. Configure Stripe webhook (if you're using Stripe):
+
+5. Configure Stripe webhook (if you're using Stripe):
   Log into your Stripe account: https://dashboard.stripe.com/dashboard, and open your account settings' webhook tab:
-  
+
   Enter your MixPanel webhook URL, similar to the following: `http://<your server.com>/genealabs/laravel-mixpanel/stripe/transaction`:
   ![screen shot 2015-05-31 at 1 35 01 pm](https://cloud.githubusercontent.com/assets/1791050/7903765/53ba6fe4-079b-11e5-9f92-a588bd81641d.png)
 
-  Be sure to select "Live" if you are actually running live (otherwise put into test mode and update when you go live). 
+  Be sure to select "Live" if you are actually running live (otherwise put into test mode and update when you go live).
   Also, choose "Send me all events" to make sure the mixpanel endpoint can make full use of the Stripe data.
 
 ## Usage
@@ -157,7 +166,7 @@ the first name. Otherwise it will look for `first_name` and `last_name` fields i
     Session:
       - Status: Logged Out
   ```
-  
+
 - View loaded:
   ```
   Track:
@@ -181,7 +190,7 @@ Out of the box it will record the following Stripe events in MixPanel for you:
       - Status: Authorized
       - Amount: <amount authorized>
   ```
-  
+
 - Captured Charge (when completing a previously authorized charge):
   ```
   Track:
@@ -190,7 +199,7 @@ Out of the box it will record the following Stripe events in MixPanel for you:
       - Amount: <amount of payment>
   People TrackCharge: <amount of intended payment>
   ```
-  
+
 - Completed Charge:
   ```
   Track:
@@ -199,7 +208,7 @@ Out of the box it will record the following Stripe events in MixPanel for you:
       - Amount: <amount of payment>
   People TrackCharge: <amount of payment>
   ```
-  
+
 - Refunded Charge:
   ```
   Track:
@@ -208,7 +217,7 @@ Out of the box it will record the following Stripe events in MixPanel for you:
       - Amount: <amount of refund>
   People TrackCharge: -<amount of refund>
   ```
-  
+
 - Failed Charge:
   ```
   Track:
