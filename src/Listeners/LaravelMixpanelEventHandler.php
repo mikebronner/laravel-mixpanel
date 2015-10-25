@@ -37,7 +37,7 @@ class LaravelMixpanelEventHandler
         if ($user
             && ! $this->guard->getProvider()->validateCredentials($user, ['email' => $email, 'password' => $password])
         ) {
-            $this->mixPanel->identify($user->id);
+            $this->mixPanel->identify($user->getKey());
             $this->mixPanel->track('Session', ['Status' => 'Login Failed']);
         }
     }
@@ -57,7 +57,7 @@ class LaravelMixpanelEventHandler
             $firstName = implode(' ', $nameParts);
         }
 
-        $data[] = [
+        $data = [
             '$first_name' => $firstName,
             '$last_name' => $lastName,
             '$email' => $user->email,
@@ -69,9 +69,9 @@ class LaravelMixpanelEventHandler
 
         array_filter($data);
 
-        $this->mixPanel->identify($user->id);
+        $this->mixPanel->identify($user->getKey());
         $request = App::make(Request::class);
-        $this->mixPanel->people->set($user->id, $data, $request->ip());
+        $this->mixPanel->people->set($user->getKey(), $data, $request->ip());
         $this->mixPanel->track('Session', ['Status' => 'Logged In']);
     }
 
@@ -81,7 +81,7 @@ class LaravelMixpanelEventHandler
     public function onUserLogout(Model $user = null)
     {
         if ($user) {
-            $this->mixPanel->identify($user->id);
+            $this->mixPanel->identify($user->getKey());
         }
 
         $this->mixPanel->track('Session', ['Status' => 'Logged Out']);
@@ -94,8 +94,8 @@ class LaravelMixpanelEventHandler
         $request = App::make(Request::class);
 
         if (Auth::check()) {
-            $this->mixPanel->identify(Auth::user()->id);
-            $this->mixPanel->people->set(Auth::user()->id, [], $request->ip());
+            $this->mixPanel->identify(Auth::user()->getKey());
+            $this->mixPanel->people->set(Auth::user()->getKey(), [], $request->ip());
         }
 
         if (is_array($routeAction) && array_key_exists('as', $routeAction)) {
@@ -104,6 +104,7 @@ class LaravelMixpanelEventHandler
 
         $data['Url'] = $request->getUri();
         $data['Referrer'] = $request->header('referer');
+        array_filter($data);
 
         $this->mixPanel->track('Page View', $data);
     }
