@@ -47,11 +47,11 @@ class LaravelMixpanelEventHandler
      */
     public function onUserLogin(Model $user)
     {
-        $firstName = $user->first_name ?: '';
-        $lastName = $user->last_name ?: '';
+        $firstName = $user->getAttribute('first_name');
+        $lastName = $user->getAttribute('last_name');
 
-        if ($user->name) {
-            $nameParts = explode(' ', $user->name);
+        if ($user->getAttribute('name')) {
+            $nameParts = explode(' ', $user->getAttribute('name'));
             array_filter($nameParts);
             $lastName = array_pop($nameParts);
             $firstName = implode(' ', $nameParts);
@@ -60,13 +60,12 @@ class LaravelMixpanelEventHandler
         $data = [
             '$first_name' => $firstName,
             '$last_name' => $lastName,
-            '$name' => $user->name,
-            '$email' => $user->email,
+            '$name' => $user->getAttribute('name'),
+            '$email' => $user->getAttribute('email'),
+            '$created' => ($user->getAttribute('created_at')
+                ? $user->getAttribute('created_at')->format('Y-m-d\Th:i:s')
+                : null),
         ];
-
-        if ($user->created_at) {
-            $data['$created'] = $user->created_at->format('Y-m-d\Th:i:s');
-        }
 
         array_filter($data);
 
@@ -106,7 +105,9 @@ class LaravelMixpanelEventHandler
         $data['Url'] = $request->getUri();
         $data['Referrer'] = $request->header('referer');
         $data['$initial_referrer'] = $request->header('referer');
-        $data['$initial_referring_domain'] = parse_url($request->header('referer'))['host'];
+        $data['$initial_referring_domain'] = ($request->header('referer')
+            ? parse_url($request->header('referer'))['host']
+            : null);
         array_filter($data);
         $this->mixPanel->track('Page View', $data);
     }

@@ -12,6 +12,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Filter any incoming webhook events that are in test mode.
 
 ## [0.4.7 - 0.4.8] - 25 Oct 2015
+### Changed
+- referenced to user model properties to use `getAttribute()` instead of referencing them directly.
+
 ### Added
 - tracking of `name` in addition to `first name` and `last name`.
 - tracking of `referrer` and `referring domain` to help get additional information for Live View (may not yet work
