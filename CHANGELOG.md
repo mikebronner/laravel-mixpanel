@@ -11,10 +11,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.4.9] - 28 OCt 2015
+## [0.4.10 - 0.4.11] - 28 OCt 2015
+### Added
+- tracking of robots, if a browser isn't detected, and it is confirmed as a robot.
+
 ### Changed
 - reverted from using getAttribute(), as it is redundant.
 - refactored `track()` method to track: Url, Operating System, Hardware, Browser, Referring Domain, IP (For GeoLocation)
+
+### Removed
+- any "unknown" values from being passed.
 
 ## [0.4.7 - 0.4.8] - 25 Oct 2015
 ### Changed

@@ -40,13 +40,14 @@ class LaravelMixpanel extends \Mixpanel
         $browserInfo = new Browser();
         $osInfo = new Os();
         $deviceInfo = new Device();
-        $osVersion = $osInfo->getName() . ' ' . $osInfo->getVersion();
-        $hardware = $deviceInfo->getName() . ' ' . $deviceInfo->getVersion();
+        $browserVersion = trim(str_replace('unknown', '', $browserInfo->getName() . ' ' . $browserInfo->getVersion()));
+        $osVersion = trim(str_replace('unknown', '', $osInfo->getName() . ' ' . $osInfo->getVersion()));
+        $hardwareVersion = trim(str_replace('unknown', '', $deviceInfo->getName() . ' ' . $deviceInfo->getVersion()));
         $data = [
             'Url' => $this->request->getUri(),
             'Operating System' => $osVersion,
-            'Hardware' => $hardware,
-            '$browser' => $browserInfo->getName() . ' ' . $browserInfo->getVersion(),
+            'Hardware' => $hardwareVersion,
+            '$browser' => $browserVersion,
             'Referrer' => $this->request->header('referer'),
             '$referring_domain' => ($this->request->header('referer')
                 ? parse_url($this->request->header('referer'))['host']
@@ -55,8 +56,11 @@ class LaravelMixpanel extends \Mixpanel
         ];
         array_filter($data);
         array_filter($properties);
-        $properties = $data + $properties;
 
-        parent::track($event, $properties);
+        if ((! array_key_exists('$browser', $data)) && $browserInfo->isRobot()) {
+            $data['$browser'] = 'Robot';
+        }
+
+        parent::track($event, $data + $properties);
     }
 }
