@@ -50,10 +50,7 @@ class LaravelMixpanelUserObserver
             $this->mixPanel->people->set($user->getKey(), $data, $this->request->ip());
         }
 
-        $this->mixPanel->track('User', [
-            'Status' => 'Registered',
-            '$ip' => $this->request->ip(),
-        ]);
+        $this->mixPanel->track('User', ['Status' => 'Registered']);
     }
 
     /**
@@ -94,10 +91,7 @@ class LaravelMixpanelUserObserver
     public function deleting(Model $user)
     {
         $this->mixPanel->identify($user->getKey());
-        $this->mixPanel->track('User', [
-            'Status' => 'Deactivated',
-            'ip' => $this->request->ip(),
-        ]);
+        $this->mixPanel->track('User', ['Status' => 'Deactivated']);
     }
 
     /**
@@ -106,9 +100,6 @@ class LaravelMixpanelUserObserver
     public function restored(Model $user)
     {
         $this->mixPanel->identify($user->getKey());
-        $this->mixPanel->track('User', [
-            'Status' => 'Reactivated',
-            'ip' => $this->request->ip(),
-        ]);
+        $this->mixPanel->track('User', ['Status' => 'Reactivated']);
     }
 }

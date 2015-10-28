@@ -72,10 +72,7 @@ class LaravelMixpanelEventHandler
         array_filter($data);
         $this->mixPanel->identify($user->getKey());
         $this->mixPanel->people->set($user->getKey(), $data, $this->request->ip());
-        $this->mixPanel->track('Session', [
-            'Status' => 'Logged In',
-            'ip' => $this->request->ip(),
-        ]);
+        $this->mixPanel->track('Session', ['Status' => 'Logged In']);
     }
 
     /**
@@ -87,33 +84,22 @@ class LaravelMixpanelEventHandler
             $this->mixPanel->identify($user->getKey());
         }
 
-        $this->mixPanel->track('Session', [
-            'Status' => 'Logged Out',
-            'ip' => $this->request->ip(),
-        ]);
+        $this->mixPanel->track('Session', ['Status' => 'Logged Out']);
     }
 
+    /**
+     * @param $route
+     */
     public function onViewLoad($route)
     {
-        $routeAction = $route->getAction();
-
         if (Auth::check()) {
             $this->mixPanel->identify(Auth::user()->getKey());
             $this->mixPanel->people->set(Auth::user()->getKey(), [], $this->request->ip());
         }
 
-        $data = [
-            'Route' => (is_array($routeAction) && array_key_exists('as', $routeAction) ? $routeAction['as'] : null),
-            'Url' => $this->request->getUri(),
-            'Referrer' => $this->request->header('referer'),
-            '$initial_referrer' => $this->request->header('referer'),
-            '$initial_referring_domain' => ($this->request->header('referer')
-                ? parse_url($this->request->header('referer'))['host']
-                : null),
-            'ip' => $this->request->ip(),
-        ];
-        array_filter($data);
-        $this->mixPanel->track('Page View', $data);
+        $routeAction = $route->getAction();
+        $route = (is_array($routeAction) && array_key_exists('as', $routeAction) ? $routeAction['as'] : null);
+        $this->mixPanel->track('Page View', ['Route' => $route]);
     }
 
     /**
