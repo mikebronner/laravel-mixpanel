@@ -54,8 +54,8 @@ class LaravelMixpanel extends \Mixpanel
                 : null),
             'ip' => $this->request->ip(),
         ];
-        array_filter($data);
-        array_filter($properties);
+        $data = array_filter($data);
+        $properties = array_filter($properties);
 
         if ((! array_key_exists('$browser', $data)) && $browserInfo->isRobot()) {
             $data['$browser'] = 'Robot';
