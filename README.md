@@ -58,6 +58,7 @@ MixPanel is loaded into the IoC as a singleton. This means you don't have to man
 described in the MixPanel docs. This is already done for you in the ServiceProvider.
 
 Common user events are automatically recorded:
+- Page View
 - User Registration
 - User Deletion
 - User Login
@@ -174,6 +175,11 @@ the first name. Otherwise it will look for `first_name` and `last_name` fields i
       - Url: <page URL>
       - Route: <route name>
       - Referrer: <referring URL>
+      - Referring Domain: <referring domain>
+      - IP (for geolocation)
+      - Browser
+      - Operating System
+      - Hardware
   ```
 
 ## Stripe Integration

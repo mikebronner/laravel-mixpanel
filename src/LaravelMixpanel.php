@@ -47,6 +47,7 @@ class LaravelMixpanel extends \Mixpanel
             'Operating System' => $osVersion,
             'Hardware' => $hardware,
             '$browser' => $browserInfo->getName() . ' ' . $browserInfo->getVersion(),
+            'Referrer' => $this->request->header('referer'),
             '$referring_domain' => ($this->request->header('referer')
                 ? parse_url($this->request->header('referer'))['host']
                 : null),
