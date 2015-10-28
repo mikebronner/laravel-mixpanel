@@ -96,7 +96,7 @@ class LaravelMixpanelUserObserver
         $this->mixPanel->identify($user->getKey());
         $this->mixPanel->track('User', [
             'Status' => 'Deactivated',
-            '$ip' => $this->request->ip(),
+            'ip' => $this->request->ip(),
         ]);
     }
 
@@ -108,7 +108,7 @@ class LaravelMixpanelUserObserver
         $this->mixPanel->identify($user->getKey());
         $this->mixPanel->track('User', [
             'Status' => 'Reactivated',
-            '$ip' => $this->request->ip(),
+            'ip' => $this->request->ip(),
         ]);
     }
 }

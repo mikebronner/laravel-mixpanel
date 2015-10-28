@@ -74,7 +74,7 @@ class LaravelMixpanelEventHandler
         $this->mixPanel->people->set($user->getKey(), $data, $this->request->ip());
         $this->mixPanel->track('Session', [
             'Status' => 'Logged In',
-            '$ip' => $this->request->ip(),
+            'ip' => $this->request->ip(),
         ]);
     }
 
@@ -89,7 +89,7 @@ class LaravelMixpanelEventHandler
 
         $this->mixPanel->track('Session', [
             'Status' => 'Logged Out',
-            '$ip' => $this->request->ip(),
+            'ip' => $this->request->ip(),
         ]);
     }
 
@@ -110,7 +110,7 @@ class LaravelMixpanelEventHandler
             '$initial_referring_domain' => ($this->request->header('referer')
                 ? parse_url($this->request->header('referer'))['host']
                 : null),
-            '$ip' => $this->request->ip(),
+            'ip' => $this->request->ip(),
         ];
         array_filter($data);
         $this->mixPanel->track('Page View', $data);
