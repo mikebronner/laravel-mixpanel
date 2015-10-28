@@ -1,9 +1,10 @@
 <?php namespace GeneaLabs\LaravelMixpanel;
 
-use hisorange\BrowserDetect\Parser;
-use hisorange\BrowserDetect\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Sinergi\BrowserDetector\Browser;
+use Sinergi\BrowserDetector\Device;
+use Sinergi\BrowserDetector\Os;
 
 class LaravelMixpanel extends \Mixpanel
 {
@@ -12,32 +13,17 @@ class LaravelMixpanel extends \Mixpanel
         'connect_timeout' => 2,
         'timeout' => 2,
     ];
-    /**
-     * @var Request
-     */
     private $request;
-    /**
-     * @var Parser
-     */
-    private $browserParser;
-    /**
-     * @var Result
-     */
-    private $browserResult;
 
     /**
      * @param Request $request
-     * @param Parser  $browserParser
-     * @param Result  $browserResult
      * @param array   $options
      *
      * @internal param Result $browser
      */
-    public function __construct(Request $request, Parser $browserParser, Result $browserResult, array $options = [])
+    public function __construct(Request $request, array $options = [])
     {
         $this->request = $request;
-        $this->browserParser = $browserParser;
-        $this->browserResult = $browserResult;
 
         $options = array_merge($this->defaults, $options);
         parent::__construct(config('services.mixpanel.token'), $options);
@@ -49,16 +35,18 @@ class LaravelMixpanel extends \Mixpanel
      *
      * @internal param array $data
      */
-    public function track($event, array $properties = [])
+    public function track($event, $properties = [])
     {
-        $browserInfo = $this->browserParser->detect();
-        $osVersion = $this->browserResult->osName();
-        $hardware = $browserInfo['deviceFamily'] . ' ' . $browserInfo['deviceModel'];
+        $browserInfo = new Browser();
+        $osInfo = new Os();
+        $deviceInfo = new Device();
+        $osVersion = $osInfo->getName() . ' ' . $osInfo->getVersion();
+        $hardware = $deviceInfo->getName() . ' ' . $deviceInfo->getVersion();
         $data = [
             'Url' => $this->request->getUri(),
             'Operating System' => $osVersion,
             'Hardware' => $hardware,
-            '$browser' => $this->browserResult->browserName(),
+            '$browser' => $browserInfo->getName() . ' ' . $browserInfo->getVersion(),
             '$referring_domain' => ($this->request->header('referer')
                 ? parse_url($this->request->header('referer'))['host']
                 : null),
