@@ -12,12 +12,12 @@ class LaravelMixpanelServiceProvider extends ServiceProvider
 {
     protected $defer = false;
 
-    public function boot(Guard $guard, LaravelMixpanel $mixPanel)
+    public function boot(Request $request, Guard $guard, LaravelMixpanel $mixPanel)
     {
         include __DIR__ . '/../Http/routes.php';
 
-        $this->app->make(config('auth.model'))->observe(new LaravelMixpanelUserObserver($mixPanel));
-        $eventHandler = new LaravelMixpanelEventHandler($guard, $mixPanel);
+        $this->app->make(config('auth.model'))->observe(new LaravelMixpanelUserObserver($request, $mixPanel));
+        $eventHandler = new LaravelMixpanelEventHandler($request, $guard, $mixPanel);
 
         Event::subscribe($eventHandler);
     }

@@ -11,11 +11,13 @@ class LaravelMixpanelUserObserver
     protected $request;
 
     /**
+     * @param Request         $request
      * @param LaravelMixpanel $mixPanel
      */
-    public function __construct(LaravelMixpanel $mixPanel)
+    public function __construct(Request $request, LaravelMixpanel $mixPanel)
     {
         $this->mixPanel = $mixPanel;
+        $this->request = $request;
     }
 
     /**
@@ -42,12 +44,16 @@ class LaravelMixpanelUserObserver
                 ? $user->getAttribute('created_at')->format('Y-m-d\Th:i:s')
                 : null),
         ];
-
         array_filter($data);
 
-        $request = App::make(Request::class);
-        $this->mixPanel->people->set($user->getKey(), $data, $request->ip());
-        $this->mixPanel->track('User', ['Status' => 'Registered']);
+        if (count($data)) {
+            $this->mixPanel->people->set($user->getKey(), $data, $this->request->ip());
+        }
+
+        $this->mixPanel->track('User', [
+            'Status' => 'Registered',
+            '$ip' => $this->request->ip(),
+        ]);
     }
 
     /**
@@ -75,12 +81,10 @@ class LaravelMixpanelUserObserver
                 ? $user->getAttribute('created_at')->format('Y-m-d\Th:i:s')
                 : null),
         ];
-
         array_filter($data);
 
         if (count($data)) {
-            $request = App::make(Request::class);
-            $this->mixPanel->people->set($user->getKey(), $data, $request->ip());
+            $this->mixPanel->people->set($user->getKey(), $data, $this->request->ip());
         }
     }
 
@@ -90,7 +94,10 @@ class LaravelMixpanelUserObserver
     public function deleting(Model $user)
     {
         $this->mixPanel->identify($user->getKey());
-        $this->mixPanel->track('User', ['Status' => 'Deactivated']);
+        $this->mixPanel->track('User', [
+            'Status' => 'Deactivated',
+            '$ip' => $this->request->ip(),
+        ]);
     }
 
     /**
@@ -99,6 +106,9 @@ class LaravelMixpanelUserObserver
     public function restored(Model $user)
     {
         $this->mixPanel->identify($user->getKey());
-        $this->mixPanel->track('User', ['Status' => 'Reactivated']);
+        $this->mixPanel->track('User', [
+            'Status' => 'Reactivated',
+            '$ip' => $this->request->ip(),
+        ]);
     }
 }

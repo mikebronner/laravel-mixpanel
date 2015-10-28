@@ -11,6 +11,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
+## [0.4.9] - 28 OCt 2015
+### Added
+- `ip` on on all Mixpanel `track()` calls.
+
 ## [0.4.7 - 0.4.8] - 25 Oct 2015
 ### Changed
 - referenced to user model properties to use `getAttribute()` instead of referencing them directly.
