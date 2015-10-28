@@ -26,14 +26,14 @@ class LaravelMixpanel extends \Mixpanel
     private $browserResult;
 
     /**
-     * @param array   $options
      * @param Request $request
      * @param Parser  $browserParser
      * @param Result  $browserResult
+     * @param array   $options
      *
      * @internal param Result $browser
      */
-    public function __construct(array $options = [], Request $request, Parser $browserParser, Result $browserResult)
+    public function __construct(Request $request, Parser $browserParser, Result $browserResult, array $options = [])
     {
         $this->request = $request;
         $this->browserParser = $browserParser;

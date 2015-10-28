@@ -24,9 +24,8 @@ class LaravelMixpanelServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->singleton(LaravelMixpanel::class, function () {
-            return new LaravelMixpanel();
-        });
+        $this->app->register(hisorange\BrowserDetect\Provider\BrowserDetectService::class);
+        $this->app->singleton(LaravelMixpanel::class);
     }
 
     /**
