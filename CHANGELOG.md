@@ -12,11 +12,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Filter any incoming webhook events that are in test mode.
 
 ## [0.4.9] - 28 OCt 2015
-### Added
-- `ip` on on all Mixpanel `track()` calls.
-
 ### Changed
 - reverted from using getAttribute(), as it is redundant.
+- refactored `track()` method to track: Url, Operating System, Hardware, Browser, Referring Domain, IP (For GeoLocation)
 
 ## [0.4.7 - 0.4.8] - 25 Oct 2015
 ### Changed
