@@ -15,6 +15,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - `ip` on on all Mixpanel `track()` calls.
 
+### Changed
+- reverted from using getAttribute(), as it is redundant.
+
 ## [0.4.7 - 0.4.8] - 25 Oct 2015
 ### Changed
 - referenced to user model properties to use `getAttribute()` instead of referencing them directly.
