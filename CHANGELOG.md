@@ -11,9 +11,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming webhook events that are in test mode.
 
-## [0.4.10 - 0.4.11] - 28 OCt 2015
+## [0.4.10 - 0.4.12] - 28 OCt 2015
 ### Added
 - tracking of robots, if a browser isn't detected, and it is confirmed as a robot.
+
+### Fixed
+- incorrect usage of array_filter, causing empty strings to be passed.
 
 ### Changed
 - reverted from using getAttribute(), as it is redundant.
