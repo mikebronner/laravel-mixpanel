@@ -42,7 +42,7 @@ class LaravelMixpanel extends \Mixpanel
         $deviceInfo = new Device();
         $browserVersion = trim(str_replace('unknown', '', $browserInfo->getName() . ' ' . $browserInfo->getVersion()));
         $osVersion = trim(str_replace('unknown', '', $osInfo->getName() . ' ' . $osInfo->getVersion()));
-        $hardwareVersion = trim(str_replace('unknown', '', $deviceInfo->getName() . ' ' . $deviceInfo->getVersion()));
+        $hardwareVersion = trim(str_replace('unknown', '', $deviceInfo->getName());
         $data = [
             'Url' => $this->request->getUri(),
             'Operating System' => $osVersion,
