@@ -3,7 +3,7 @@
 use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 use GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler;
 use GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelUserObserver;
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Event;
 use Illuminate\HTTP\Request;
 use Illuminate\Support\ServiceProvider;
