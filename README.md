@@ -4,30 +4,43 @@
 existing routes.
 
 ## Installation
-1. Install MixPanel via composer:
+1. Install MixPanel via composer
+  Laravel 5.2.x and above:
   ```sh
-  composer require genealabs/laravel-mixpanel:~0.4.3
+  composer require genealabs/laravel-mixpanel:~0.5.0
   ```
 
+  For Laravel 5.0.x through 5.1.x:
+  ```sh
+  composer require genealabs/laravel-mixpanel:0.4.14
+  ```
+  
 2. Add the service provider entry in `config\app.php`:
   ```php
           'GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelServiceProvider',
   ```
 
 ## Configuration
-1. Update your `.env` file with your MixPanel token:
+1. If you are using Laravel 5.2 or above, add the following entry to `config/auth.php`. Be sure to use the correct 
+   namespace for your application. (Yes, this is a duplicate of `providers.users.model`, but necessary for now, in case 
+   a different driver is used.
+  ```php
+      'model' => App\User::class,
+  ```
+  
+2. Update your `.env` file with your MixPanel token:
   ```
   MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
   ```
 
-2. Load the token in the services configuration (`config\services.php`):
+3. Load the token in the services configuration (`config\services.php`):
   ```php
       'mixpanel' => [
           'token' => env('MIXPANEL_TOKEN'),
       ],
   ```
 
-3. If to track the user's names, make sure a `name` attribute is available on your user model. For example, if you only
+4. If to track the user's names, make sure a `name` attribute is available on your user model. For example, if you only
   have a `username` field that contains the users' first and last names, you could add the following to your user model:
   ```php
       public function getNameAttribute()
@@ -36,7 +49,7 @@ existing routes.
       }
   ```
 
-4. We need to disable CSRF checking for the stripe webhook endpoints. To do that, open
+5. We need to disable CSRF checking for the stripe webhook endpoints. To do that, open
  `app/HTTP/Middleware/VerifyCsrfToken.php` and add the following above the return statement:
   ```php
           if ($request->is('genealabs/laravel-mixpanel/*')) {
@@ -44,7 +57,7 @@ existing routes.
           }
   ```
 
-5. Configure Stripe webhook (if you're using Stripe):
+6. Configure Stripe webhook (if you're using Stripe):
   Log into your Stripe account: https://dashboard.stripe.com/dashboard, and open your account settings' webhook tab:
 
   Enter your MixPanel webhook URL, similar to the following: `http://<your server.com>/genealabs/laravel-mixpanel/stripe/transaction`:
