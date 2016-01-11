@@ -5,9 +5,9 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request as CurrentRequest;
 
 class LaravelMixpanelEventHandler
 {
@@ -88,15 +88,16 @@ class LaravelMixpanelEventHandler
     }
 
     /**
-     * @param $route
+     * @param RouteMatched $route
      */
-    public function onViewLoad($route)
+    public function onViewLoad(RouteMatched $routeMatched)
     {
         if (Auth::check()) {
             $this->mixPanel->identify(Auth::user()->getKey());
             $this->mixPanel->people->set(Auth::user()->getKey(), [], $this->request->ip());
         }
 
+        $route = $routeMatched->route;
         $routeAction = $route->getAction();
         $route = (is_array($routeAction) && array_key_exists('as', $routeAction) ? $routeAction['as'] : null);
         $this->mixPanel->track('Page View', ['Route' => $route]);
@@ -107,9 +108,9 @@ class LaravelMixpanelEventHandler
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen('auth.attempt', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLoginAttempt');
-        $events->listen('auth.login', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLogin');
-        $events->listen('auth.logout', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLogout');
-        $events->listen('router.matched', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onViewLoad');
+        $events->listen('Illuminate\Auth\Events\Attempting', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLoginAttempt');
+        $events->listen('Illuminate\Auth\Events\Login', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLogin');
+        $events->listen('Illuminate\Auth\Events\Logout', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLogout');
+        $events->listen('Illuminate\Routing\Events\RouteMatched', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onViewLoad');
     }
 }
