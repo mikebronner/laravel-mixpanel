@@ -7,7 +7,7 @@ existing routes.
 1. Install MixPanel via composer
   Laravel 5.2.x and above:
   ```sh
-  composer require genealabs/laravel-mixpanel:~0.5.0
+  composer require genealabs/laravel-mixpanel:~0.5.1
   ```
 
   For Laravel 5.0.x through 5.1.x:
