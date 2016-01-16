@@ -1,6 +1,7 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
 use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
+use Illuminate\Auth\Events\Attempting;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Events\Dispatcher;
@@ -30,7 +31,7 @@ class LaravelMixpanelEventHandler
     /**
      * @param array $event
      */
-    public function onUserLoginAttempt(array $event)
+    public function onUserLoginAttempt(Attempting $event)
     {
         $email = (array_key_exists('email', $event) ? $event['email'] : '');
         $password = (array_key_exists('password', $event) ? $event['password'] : '');
