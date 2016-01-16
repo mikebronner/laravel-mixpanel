@@ -51,8 +51,9 @@ class LaravelMixpanelEventHandler
     /**
      * @param Model $user
      */
-    public function onUserLogin(Login $user)
+    public function onUserLogin(Login $login)
     {
+        $user = $login->user;
         $firstName = $user->first_name;
         $lastName = $user->last_name;
 
@@ -81,8 +82,10 @@ class LaravelMixpanelEventHandler
     /**
      * @param Model $user
      */
-    public function onUserLogout(Logout $user = null)
+    public function onUserLogout(Logout $logout)
     {
+        $user = $logout->user;
+        
         if ($user) {
             $this->mixPanel->identify($user->getKey());
         }
