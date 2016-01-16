@@ -2,6 +2,7 @@
 
 use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 use Illuminate\Auth\Events\Attempting;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Events\Dispatcher;
@@ -33,8 +34,8 @@ class LaravelMixpanelEventHandler
      */
     public function onUserLoginAttempt(Attempting $event)
     {
-        $email = (array_key_exists('email', $event) ? $event['email'] : '');
-        $password = (array_key_exists('password', $event) ? $event['password'] : '');
+        $email = $event->credentials['email'] ?: '';
+        $password = $event->credentials['password'] ?: '';
 
         $user = App::make(config('auth.model'))->where('email', $email)->first();
 
@@ -49,8 +50,9 @@ class LaravelMixpanelEventHandler
     /**
      * @param Model $user
      */
-    public function onUserLogin(Model $user)
+    public function onUserLogin(Login $user)
     {
+        dd($user);
         $firstName = $user->first_name;
         $lastName = $user->last_name;
 
