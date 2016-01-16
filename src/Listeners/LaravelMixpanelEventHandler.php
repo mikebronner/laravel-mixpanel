@@ -3,6 +3,7 @@
 use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 use Illuminate\Auth\Events\Attempting;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Events\Dispatcher;
@@ -52,7 +53,6 @@ class LaravelMixpanelEventHandler
      */
     public function onUserLogin(Login $user)
     {
-        dd($user);
         $firstName = $user->first_name;
         $lastName = $user->last_name;
 
@@ -81,7 +81,7 @@ class LaravelMixpanelEventHandler
     /**
      * @param Model $user
      */
-    public function onUserLogout(Model $user = null)
+    public function onUserLogout(Logout $user = null)
     {
         if ($user) {
             $this->mixPanel->identify($user->getKey());
