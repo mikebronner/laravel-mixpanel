@@ -56,6 +56,14 @@ existing routes.
               return $next($request);
           }
   ```
+  
+  For Laravel 5.2:
+  ```php
+      protected $except = [
+        'genealabs/laravel-mixpanel/*',
+        // your other CSRF token exceptions
+    ];
+  ```
 
 6. Configure Stripe webhook (if you're using Stripe):
   Log into your Stripe account: https://dashboard.stripe.com/dashboard, and open your account settings' webhook tab:
