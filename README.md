@@ -14,31 +14,34 @@ existing routes.
   ```sh
   composer require genealabs/laravel-mixpanel:0.4.14
   ```
-  
+
 2. Add the service provider entry in `config\app.php`:
   ```php
           'GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelServiceProvider',
   ```
 
 ## Configuration
-1. If you are using Laravel 5.2 or above, add the following entry to `config/auth.php`. Be sure to use the correct 
-   namespace for your application. (Yes, this is a duplicate of `providers.users.model`, but necessary for now, in case 
+1. If you are using Laravel 5.2 or above, add the following entry to `config/auth.php`. Be sure to use the correct
+   namespace for your application. (Yes, this is a duplicate of `providers.users.model`, but necessary for now, in case
    a different driver is used.
   ```php
       'model' => App\User::class,
   ```
-  
-2. Update your `.env` file with your MixPanel token:
+
+2. Update your `.env` file with your MixPanel token (it will automatically be
+ picked up by the in-built configuration):
   ```
   MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
   ```
 
-3. Load the token in the services configuration (`config\services.php`):
+3. If you want to disable the in-built default tracking and implement your own,
+ add the following to your services configuration (`config\services.php`):
   ```php
       'mixpanel' => [
-          'token' => env('MIXPANEL_TOKEN'),
+          'enable-default-tracking' => false,
       ],
   ```
+  Disabling the default hooks will not disable the Stripe web-hook functionality.
 
 4. If to track the user's names, make sure a `name` attribute is available on your user model. For example, if you only
   have a `username` field that contains the users' first and last names, you could add the following to your user model:
@@ -56,8 +59,8 @@ existing routes.
               return $next($request);
           }
   ```
-  
-  For Laravel 5.2:
+
+  For Laravel 5.2+:
   ```php
       protected $except = [
         'genealabs/laravel-mixpanel/*',
