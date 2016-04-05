@@ -16,14 +16,18 @@ class LaravelMixpanelServiceProvider extends ServiceProvider
     {
         include __DIR__ . '/../Http/routes.php';
 
-        $this->app->make(config('auth.model'))->observe(new LaravelMixpanelUserObserver($request, $mixPanel));
-        $eventHandler = new LaravelMixpanelEventHandler($request, $guard, $mixPanel);
+        if (config('services.mixpanel.enable-default-tracking')) {
+            $this->app->make(config('auth.model'))->observe(new LaravelMixpanelUserObserver($request, $mixPanel));
+            $eventHandler = new LaravelMixpanelEventHandler($request, $guard, $mixPanel);
 
-        Event::subscribe($eventHandler);
+            Event::subscribe($eventHandler);
+        }
     }
 
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__ . '/../../config/services.php', 'services');
+
         $this->app->singleton(LaravelMixpanel::class);
     }
 
