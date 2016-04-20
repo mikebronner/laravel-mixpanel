@@ -33,12 +33,12 @@ existing routes.
   ```
   MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
   ```
-
-3. If you want to disable the in-built default tracking and implement your own,
+3. If you are running Laravel < 5.2, or if you want to disable the in-built default tracking and implement your own,
  add the following to your services configuration (`config\services.php`):
   ```php
       'mixpanel' => [
-          'enable-default-tracking' => false,
+        'token' => env('MIXPANEL_TOKEN'),
+        'enable-default-tracking' => [false|true],
       ],
   ```
   Disabling the default hooks will not disable the Stripe web-hook functionality.
