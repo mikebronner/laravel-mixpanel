@@ -38,7 +38,7 @@ existing routes.
   ```php
       'mixpanel' => [
         'token' => env('MIXPANEL_TOKEN'),
-        'enable-default-tracking' => [false|true],
+        'enable-default-tracking' => false|true,
       ],
   ```
   Disabling the default hooks will not disable the Stripe web-hook functionality.
