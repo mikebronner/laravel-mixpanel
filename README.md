@@ -10,10 +10,7 @@ existing routes.
   composer require genealabs/laravel-mixpanel:~0.5.1
   ```
 
-  For Laravel 5.0.x through 5.1.x:
-  ```sh
-  composer require genealabs/laravel-mixpanel:0.4.14
-  ```
+  For Laravel 5.1.x you should require version 0.4.14; for 5.0.x, version 0.2.13.
 
 2. Add the service provider entry in `config\app.php`:
   ```php
