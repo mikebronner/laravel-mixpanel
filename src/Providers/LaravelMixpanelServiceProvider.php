@@ -14,7 +14,7 @@ class LaravelMixpanelServiceProvider extends ServiceProvider
 
     public function boot(Request $request, Guard $guard, LaravelMixpanel $mixPanel)
     {
-        include __DIR__ . '/../Http/routes.php';
+        include __DIR__ . '/../../../routes/api.php';
 
         if (config('services.mixpanel.enable-default-tracking')) {
             $this->app->make(config('auth.model'))->observe(new LaravelMixpanelUserObserver($request, $mixPanel));
