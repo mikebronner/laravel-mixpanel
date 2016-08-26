@@ -5,7 +5,7 @@ existing routes.
 
 ## Installation
 1. Install via composer
-  - Laravel 5.3.x: `composer require genealabs/laravel-mixpanel:0.6.*`
+  - __Laravel 5.3.x: `composer require genealabs/laravel-mixpanel:0.6.*` (recommended)__
   - Laravel 5.2.x: `composer require genealabs/laravel-mixpanel:0.5.*`
   - Laravel 5.1.x: `composer require genealabs/laravel-mixpanel:0.4.*`
   - Laravel 5.0.x: `composer require genealabs/laravel-mixpanel:0.2.*`
