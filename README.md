@@ -1,20 +1,18 @@
 # MixPanel for Laravel 5
 ## Considerations
-1. This package adds the multiple routes under `genealabs/laravel-mixpanel/*`. Please verify that these don't collide with your
+This package adds the multiple routes under `genealabs/laravel-mixpanel/*`. Please verify that these don't collide with your
 existing routes.
 
 ## Installation
-1. Install MixPanel via composer
-  Laravel 5.2.x and above:
-  ```sh
-  composer require genealabs/laravel-mixpanel:~0.5.1
-  ```
-
-  For Laravel 5.1.x you should require version 0.4.14; for 5.0.x, version 0.2.13.
+1. Install via composer
+  - Laravel 5.3.x: `composer require genealabs/laravel-mixpanel:0.6.*`
+  - Laravel 5.2.x: `composer require genealabs/laravel-mixpanel:0.5.*`
+  - Laravel 5.1.x: `composer require genealabs/laravel-mixpanel:0.4.*`
+  - Laravel 5.0.x: `composer require genealabs/laravel-mixpanel:0.2.*`
 
 2. Add the service provider entry in `config\app.php`:
   ```php
-          'GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelServiceProvider',
+  GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelServiceProvider::class,
   ```
 
 ## Configuration
