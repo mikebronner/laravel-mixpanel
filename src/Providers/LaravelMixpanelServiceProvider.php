@@ -16,11 +16,14 @@ class LaravelMixpanelServiceProvider extends ServiceProvider
     {
         include __DIR__ . '/../../../routes/api.php';
 
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'genealabs-laravel-mixpanel');
+        $this->publishes([
+            __DIR__ . '/../../public' => public_path('vendor'),
+        ], 'assets');
+
         if (config('services.mixpanel.enable-default-tracking')) {
             $this->app->make(config('auth.model'))->observe(new LaravelMixpanelUserObserver($request, $mixPanel));
-            $eventHandler = new LaravelMixpanelEventHandler($request, $guard, $mixPanel);
-
-            Event::subscribe($eventHandler);
+            Event::subscribe(new LaravelMixpanelEventHandler($request, $guard, $mixPanel));
         }
     }
 
@@ -36,6 +39,6 @@ class LaravelMixpanelServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['laravel-mixpanel'];
+        return ['genealabs-laravel-mixpanel'];
     }
 }

@@ -74,6 +74,28 @@ existing routes.
   Be sure to select "Live" if you are actually running live (otherwise put into test mode and update when you go live).
   Also, choose "Send me all events" to make sure the mixpanel endpoint can make full use of the Stripe data.
 
+ ### Front-end Tracking (Mixpanel JS and Autotrack)
+ #### Laravel Elixir (recommended)
+1. Add the following lines to your `/resources/js/app.js` (or equivalent), and
+ don't forget to replace `YOUR_MIXPANEL_TOKEN` with your actual token:
+    ```js
+    global.mixpanel = require('./../../../public/vendor/genealabs-laravel-mixpanel/js/mixpanel.js');
+    mixpanel.init("YOUR_MIXPANEL_TOKEN");
+    ```
+
+ #### Standalone Script
+ 1. Publish the required assets:
+    ```sh
+    php artisan mixpanel:pubish --assets
+    ```
+
+ 2. Add the following _Blade_ directive in the `<head></head>` section of your layout file:
+    ```html
+    @include ('genealabs-laravel-mixpanel::partials.mixpanel')
+    ```
+
+    The included scripts will load asynchronously and not cause render-blocking.
+
 ## Usage
 MixPanel is loaded into the IoC as a singleton. This means you don't have to manually call $mixPanel::getInstance() as
 described in the MixPanel docs. This is already done for you in the ServiceProvider.

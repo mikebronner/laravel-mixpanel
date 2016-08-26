@@ -13,6 +13,7 @@ var elixir = require('laravel-elixir');
 
 
 elixir(function(mix) {
-    // TODO: build a normal and a minified version
+    // TODO: also build a minified version without a map file
+
     mix.browserify('mixpanel.js', 'public/genealabs-laravel-mixpanel/js');
 });

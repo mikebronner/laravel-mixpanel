@@ -5544,9 +5544,10 @@ var mixpanel = init_as_module();
 module.exports = mixpanel;
 },{}],2:[function(require,module,exports){
 (function (global){
-'use strict';
+"use strict";
 
 global.mixpanel = require('mixpanel-browser');
+mixpanel.init("MIXPANEL_TOKEN");
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"mixpanel-browser":1}]},{},[2]);

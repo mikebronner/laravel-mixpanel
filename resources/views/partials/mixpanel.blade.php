@@ -1,4 +1,4 @@
-<script src="{!! assets('vendor/genealabs/laravel-mixpanel/js/mixpanel.js') !!}"></script>
 <script>
-    mixpanel.init("{{ config('genealabs-laravel-mixpanel.client-key')}}");
+    {!! file_get_contents(public_path('vendor/genealabs-laravel-mixpanel/js/mixpanel.js')) !!}
+    mixpanel.init("{{ config('services.mixpanel.token')}}");
 </script>
