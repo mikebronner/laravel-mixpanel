@@ -16,3 +16,13 @@ These steps should be converted to automated tests at some point.
 - [ ] When a user attempts to log in, is it tracked?
 - [ ] When a user successfully logs in, is it tracked?
 - [ ] When a user views a page, is it tracked?
+
+### Stripe Web-Hook
+- [ ] When POSTing to the stripe web-hook endpoint, does it provide a 204
+ response?
+- [ ] When POSTing a successful charge event, does it track the charge in
+  Mixpanel?
+- [ ] When POSTing a failed charge event, does it track the charge in Mixpanel?
+- [ ] When POSTing a new user subscription event, does it track it in Mixpanel?
+- [ ] When POSTing an unsubscribe event, does it track it in Mixpanel?
+- [ ] When POSTing a subscription change event, does it track it in Mixpanel?

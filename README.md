@@ -59,6 +59,29 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
 ## Usage
 ### PHP Events
 
+### Stripe Web-Hook
+If you wish to take advantage of the Stripe web-hook, you should install Cashier:
+- [Laravel 5.3](https://www.laravel.com/docs/5.3/billing)
+- [Laravel 5.1](https://www.laravel.com/docs/5.1/billing)
+
+Once that has been completed, exempt the web-hook endpoint from CSRF-validation
+ in `/app/Http/Middleware/VerifyCsrfToken.php`:
+```php
+    protected $except = [
+        'genealabs/laravel-mixpanel/stripe',
+    ];
+```
+
+The only other step remaining is to register the web-hook with Stripe:
+  Log into your Stripe account: https://dashboard.stripe.com/dashboard, and open
+   your account settings' webhook tab:
+
+  Enter your MixPanel web-hook URL, similar to the following: `http://<your server.com>/genealabs/laravel-mixpanel/stripe`:
+   ![screen shot 2015-05-31 at 1 35 01 pm](https://cloud.githubusercontent.com/assets/1791050/7903765/53ba6fe4-079b-11e5-9f92-a588bd81641d.png)
+
+  Be sure to select "Live" if you are actually running live (otherwise put into test mode and update when you go live).
+   Also, choose "Send me all events" to make sure Laravel Mixpanel can make full use of the Stripe data.
+
 ### JavaScript Events & Auto-Track
 #### Laravel Elixir
 Add the following lines to your `/resources/js/app.js` (or equivalent), and
