@@ -15,10 +15,10 @@
   },
   "require": {
     "php": ">=5.6.4",
-    "illuminate/config": "5.2.* || 5.3.*",
-    "illuminate/support": "5.2.* || 5.3.*",
-    "illuminate/events": "5.2.* || 5.3.*",
-    "illuminate/routing": "5.2.* || 5.3.*",
+    "illuminate/config": ">=5.2",
+    "illuminate/support": ">=5.2",
+    "illuminate/events": ">=5.2",
+    "illuminate/routing": ">=5.2",
     "nesbot/carbon": "^1.19",
     "mixpanel/mixpanel-php": "~2.0",
     "sinergi/browser-detector": "~5.0"
