@@ -1,11 +1,8 @@
 {
-  "private": true,
-  "devDependencies": {
-    "dotenv": "^2.0.0",
-    "envify": "^3.4.1",
-    "envs": "^0.1.6",
-    "gulp": ">=3.8.8",
-    "laravel-elixir": "^4.0.0",
-    "mixpanel-browser": "^2.9.14"
-  }
+    "private": true,
+    "devDependencies": {
+        "gulp": ">=3.8.8",
+        "laravel-elixir": "^4.0.0",
+        "mixpanel-browser": "^2.9.14"
+    }
 }

@@ -18,11 +18,6 @@ class LaravelMixpanelEventHandler
     protected $mixPanel;
     protected $request;
 
-    /**
-     * @param Request         $request
-     * @param Guard           $guard
-     * @param LaravelMixpanel $mixPanel
-     */
     public function __construct(Request $request, Guard $guard, LaravelMixpanel $mixPanel)
     {
         $this->guard = $guard;
@@ -30,15 +25,21 @@ class LaravelMixpanelEventHandler
         $this->request = $request;
     }
 
-    /**
-     * @param array $event
-     */
-    public function onUserLoginAttempt(Attempting $event)
+    public function onUserLoginAttempt($event)
     {
-        $email = $event->credentials['email'] ?: '';
-        $password = $event->credentials['password'] ?: '';
+        if (starts_with(app()->version(), '5.1.')) {
+            $email = $event['email'] ?? '';
+            $password = $event['password'] ?? '';
+        }
 
-        $user = App::make(config('auth.model'))->where('email', $email)->first();
+        if (starts_with(app()->version(), '5.3.')) {
+            $email = $event->credentials['email'] ?? '';
+            $password = $event->credentials['password'] ?? '';
+        }
+
+        $user = app(config('auth.model'))
+            ->where('email', $email)
+            ->first();
 
         if ($user
             && ! $this->guard->getProvider()->validateCredentials($user, ['email' => $email, 'password' => $password])
@@ -48,12 +49,16 @@ class LaravelMixpanelEventHandler
         }
     }
 
-    /**
-     * @param Model $user
-     */
-    public function onUserLogin(Login $login)
+    public function onUserLogin($login)
     {
-        $user = $login->user;
+        if (starts_with(app()->version(), '5.1.')) {
+            $user = $login;
+        }
+
+        if (starts_with(app()->version(), '5.3.')) {
+            $user = $login->user;
+        }
+
         $firstName = $user->first_name;
         $lastName = $user->last_name;
 
@@ -79,13 +84,16 @@ class LaravelMixpanelEventHandler
         $this->mixPanel->track('Session', ['Status' => 'Logged In']);
     }
 
-    /**
-     * @param Model $user
-     */
-    public function onUserLogout(Logout $logout)
+    public function onUserLogout($logout)
     {
-        $user = $logout->user;
-        
+        if (starts_with(app()->version(), '5.1.')) {
+            $user = $logout;
+        }
+
+        if (starts_with(app()->version(), '5.3.')) {
+            $user = $logout->user;
+        }
+
         if ($user) {
             $this->mixPanel->identify($user->getKey());
         }
@@ -93,30 +101,38 @@ class LaravelMixpanelEventHandler
         $this->mixPanel->track('Session', ['Status' => 'Logged Out']);
     }
 
-    /**
-     * @param RouteMatched $route
-     */
-    public function onViewLoad(RouteMatched $routeMatched)
+    public function onViewLoad($routeMatched)
     {
-        if (Auth::check()) {
-            $this->mixPanel->identify(Auth::user()->getKey());
-            $this->mixPanel->people->set(Auth::user()->getKey(), [], $this->request->ip());
+        $route = '';
+
+        if (auth()->check()) {
+            $this->mixPanel->identify(auth()->user()->getKey());
+            $this->mixPanel->people->set(auth()->user()->getKey(), [], $this->request->ip());
         }
 
-        $route = $routeMatched->route;
-        $routeAction = $route->getAction();
-        $route = (is_array($routeAction) && array_key_exists('as', $routeAction) ? $routeAction['as'] : null);
+        if (starts_with(app()->version(), '5.1.')) {
+            $route = $routeMatched->uri;
+        }
+
+        if (starts_with(app()->version(), '5.3.')) {
+            $route = $routeMatched->route;
+            $routeAction = $route->getAction();
+            $route = (is_array($routeAction) && array_key_exists('as', $routeAction) ? $routeAction['as'] : null);
+        }
+
         $this->mixPanel->track('Page View', ['Route' => $route]);
     }
 
-    /**
-     * @param Dispatcher $events
-     */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen('Illuminate\Auth\Events\Attempting', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLoginAttempt');
-        $events->listen('Illuminate\Auth\Events\Login', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLogin');
-        $events->listen('Illuminate\Auth\Events\Logout', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onUserLogout');
-        $events->listen('Illuminate\Routing\Events\RouteMatched', 'GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler@onViewLoad');
+        $events->listen('auth.attempt', self::class . '@onUserLoginAttempt');
+        $events->listen('auth.login', self::class . '@onUserLogin');
+        $events->listen('auth.logout', self::class . '@onUserLogout');
+        $events->listen('router.matched', self::class . '@onViewLoad');
+
+        $events->listen(Attempting::class, self::class . '@onUserLoginAttempt');
+        $events->listen(Login::class, self::class . '@onUserLogin');
+        $events->listen(Logout::class, self::class . '@onUserLogout');
+        $events->listen(RouteMatched::class, self::class . '@onViewLoad');
     }
 }

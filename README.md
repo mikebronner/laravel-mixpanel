@@ -1,7 +1,91 @@
 # MixPanel for Laravel 5
-## Considerations
-This package adds the multiple routes under `genealabs/laravel-mixpanel/*`. Please verify that these don't collide with your
-existing routes.
+## Features
+- Asynchronous data transmission to Mixpanel's services. This prevents any
+ delays to your application if Mixpanel is down, or slow to respond.
+- Drop-in installation and configuration into your Laravel app, tracking the
+ most common events out of the box.
+- Simple Stripe integration allowing you to track revenues at the user level.
+- Front-end-ready Mixpanel JS library, both for Laravel Elixir inclusion or
+ Blade template use.
+
+## Requirements and Compatibility
+- PHP 7
+- Laravel 5.1 (LTS)
+- Laravel 5.3 (current)
+
+### Legacy Versions
+- [Laravel 5.2](https://github.com/GeneaLabs/laravel-mixpanel/tree/afcf3737412c1aebfa9dd1d7687001f78bdb3956)
+- [Laravel 5.0](https://github.com/GeneaLabs/laravel-mixpanel/tree/ce110ebd89658cbf8a91f2cfb5db57e2b449e7f3)
+
+## Installation
+```sh
+composer require genealabs/laravel-mixpanel
+```
+
+Add the service provider entry in `config\app.php`:
+```php
+GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelService::class,
+```
+
+Verify that your auth configuration file `config/auth.php` has the user model
+ specified in `auth.providers.users.model` (or in `auth.model` for L5.1). If
+ that entry is missing, go ahead and add it.
+```php
+// Laravel 5.3
+'providers' => [
+    'users' => [
+        'driver' => '...',
+        'model' => App\User::class,
+    ],
+
+// Laravel 5.1
+'model' => App\User::class,
+```
+
+Lastly, add your Mixpanel API token to your `.env` file:
+```env
+MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
+```
+
+## Configuration
+### Default Values
+- `services.mixpanel.token`: pulls the 'MIXPANEL_TOKEN' value from your `.env`
+ file.
+- `enable-default-tracking`: (default: true) enable or disable Laravel user
+ event tracking.
+
+### Customization
+
+## Usage
+### PHP Events
+
+### JavaScript Events & Auto-Track
+#### Laravel Elixir
+Add the following lines to your `/resources/js/app.js` (or equivalent), and
+ don't forget to replace `YOUR_MIXPANEL_TOKEN` with your actual token:
+```js
+require('./../../../public/genealabs-laravel-mixpanel/js/mixpanel.js');
+mixpanel.init("YOUR_MIXPANEL_TOKEN");
+```
+
+#### Blade Template
+First publish the necessary assets:
+```sh
+php artisan mixpanel:publish --assets
+```
+
+Then add the following to the head section of your layout template:
+```blade
+@include ('genealabs-laravel-mixpanel::partials.mixpanel')
+```
+
+
+
+
+
+
+
+
 
 ## Installation
 //TODO: link to previous readmes for installation instructions.

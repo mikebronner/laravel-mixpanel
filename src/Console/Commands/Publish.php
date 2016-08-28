@@ -2,7 +2,7 @@
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Kernel;
-use GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelServiceProvider;
+use GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelService;
 
 class Publish extends Command
 {
@@ -13,7 +13,7 @@ class Publish extends Command
     {
         if ($this->option('assets')) {
             $this->call('vendor:publish', [
-                '--provider' => LaravelMixpanelServiceProvider::class,
+                '--provider' => LaravelMixpanelService::class,
                 '--tag' => ['assets'],
                 '--force' => true,
             ]);
