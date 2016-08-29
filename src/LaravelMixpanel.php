@@ -29,12 +29,6 @@ class LaravelMixpanel extends \Mixpanel
         parent::__construct(config('services.mixpanel.token'), $options);
     }
 
-    public function identify($key)
-    {
-        parent::identify($key);
-        \Log::debug(['identify', $key]);
-    }
-
     /**
      * @param string $event
      * @param array  $properties
@@ -67,7 +61,6 @@ class LaravelMixpanel extends \Mixpanel
             $data['$browser'] = 'Robot';
         }
 
-\Log::debug(['track', $event, $data + $properties]);
         parent::track($event, $data + $properties);
     }
 }
