@@ -7,16 +7,14 @@ use Illuminate\Support\Facades\App;
 
 class LaravelMixpanelUserObserver
 {
-    protected $mixPanel;
     protected $request;
 
     /**
      * @param Request         $request
      * @param LaravelMixpanel $mixPanel
      */
-    public function __construct(Request $request, LaravelMixpanel $mixPanel)
+    public function __construct(Request $request)
     {
-        $this->mixPanel = $mixPanel;
         $this->request = $request;
     }
 
@@ -47,10 +45,10 @@ class LaravelMixpanelUserObserver
         array_filter($data);
 
         if (count($data)) {
-            $this->mixPanel->people->set($user->getKey(), $data, $this->request->ip());
+            app('mixpanel')->people->set($user->getKey(), $data, $this->request->ip());
         }
 
-        $this->mixPanel->track('User', ['Status' => 'Registered']);
+        app('mixpanel')->track('User', ['Status' => 'Registered']);
     }
 
     /**
@@ -58,7 +56,7 @@ class LaravelMixpanelUserObserver
      */
     public function saving(Model $user)
     {
-        $this->mixPanel->identify($user->getKey());
+        app('mixpanel')->identify($user->getKey());
         $firstName = $user->first_name;
         $lastName = $user->last_name;
 
@@ -81,7 +79,7 @@ class LaravelMixpanelUserObserver
         array_filter($data);
 
         if (count($data)) {
-            $this->mixPanel->people->set($user->getKey(), $data, $this->request->ip());
+            app('mixpanel')->people->set($user->getKey(), $data, $this->request->ip());
         }
     }
 
@@ -90,8 +88,8 @@ class LaravelMixpanelUserObserver
      */
     public function deleting(Model $user)
     {
-        $this->mixPanel->identify($user->getKey());
-        $this->mixPanel->track('User', ['Status' => 'Deactivated']);
+        app('mixpanel')->identify($user->getKey());
+        app('mixpanel')->track('User', ['Status' => 'Deactivated']);
     }
 
     /**
@@ -99,7 +97,7 @@ class LaravelMixpanelUserObserver
      */
     public function restored(Model $user)
     {
-        $this->mixPanel->identify($user->getKey());
-        $this->mixPanel->track('User', ['Status' => 'Reactivated']);
+        app('mixpanel')->identify($user->getKey());
+        app('mixpanel')->track('User', ['Status' => 'Reactivated']);
     }
 }

@@ -45,8 +45,8 @@ class LaravelMixpanelEventHandler
         if ($user
             && ! $this->guard->getProvider()->validateCredentials($user, ['email' => $email, 'password' => $password])
         ) {
-            app(LaravelMixpanel::class)->identify($user->getKey());
-            app(LaravelMixpanel::class)->track('Session', ['Status' => 'Login Failed']);
+            app('mixpanel')->identify($user->getKey());
+            app('mixpanel')->track('Session', ['Status' => 'Login Failed']);
         }
     }
 
@@ -80,9 +80,9 @@ class LaravelMixpanelEventHandler
                 : null),
         ];
         array_filter($data);
-        app(LaravelMixpanel::class)->identify($user->getKey());
-        app(LaravelMixpanel::class)->people->set($user->getKey(), $data, $this->request->ip());
-        app(LaravelMixpanel::class)->track('Session', ['Status' => 'Logged In']);
+        app('mixpanel')->identify($user->getKey());
+        app('mixpanel')->people->set($user->getKey(), $data, $this->request->ip());
+        app('mixpanel')->track('Session', ['Status' => 'Logged In']);
     }
 
     public function onUserLogout($logout)
@@ -96,10 +96,10 @@ class LaravelMixpanelEventHandler
         }
 
         if ($user) {
-            app(LaravelMixpanel::class)->identify($user->getKey());
+            app('mixpanel')->identify($user->getKey());
         }
 
-        app(LaravelMixpanel::class)->track('Session', ['Status' => 'Logged Out']);
+        app('mixpanel')->track('Session', ['Status' => 'Logged Out']);
     }
 
     public function onViewLoad($routeMatched)
@@ -117,11 +117,11 @@ class LaravelMixpanelEventHandler
         }
 
         if ($user) {
-            app(LaravelMixpanel::class)->identify($user->getKey());
-            app(LaravelMixpanel::class)->people->set($user->getKey(), [], $this->request->ip());
+            app('mixpanel')->identify($user->getKey());
+            app('mixpanel')->people->set($user->getKey(), [], $this->request->ip());
         }
 
-        app(LaravelMixpanel::class)->track('Page View', ['Route' => $route]);
+        app('mixpanel')->track('Page View', ['Route' => $route]);
     }
 
     public function subscribe(Dispatcher $events)

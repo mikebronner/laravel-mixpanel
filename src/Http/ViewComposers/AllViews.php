@@ -20,10 +20,10 @@ class AllViews
         }
 
         if ($user) {
-            app(LaravelMixpanel::class)->identify($user->getKey());
-            app(LaravelMixpanel::class)->people->set($user->getKey(), [], request()->ip());
+            app('mixpanel')->identify($user->getKey());
+            app('mixpanel')->people->set($user->getKey(), [], request()->ip());
         }
 
-        app(LaravelMixpanel::class)->track('Page View', ['Route' => $route]);
+        app('mixpanel')->track('Page View', ['Route' => $route]);
     }
 }

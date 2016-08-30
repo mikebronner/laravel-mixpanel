@@ -35,7 +35,7 @@ class LaravelMixpanelService extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/services.php', 'services');
         $this->commands(Publish::class);
-        $this->app->singleton(LaravelMixpanel::class);
+        $this->app->singleton('mixpanel', LaravelMixpanel::class);
     }
 
     /**
