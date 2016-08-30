@@ -1,103 +1,38 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
-use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
+use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
 
 class LaravelMixpanelUserObserver
 {
-    protected $request;
-
-    /**
-     * @param Request         $request
-     * @param LaravelMixpanel $mixPanel
-     */
-    public function __construct(Request $request)
+    public function created($user)
     {
-        $this->request = $request;
-    }
-
-    /**
-     * @param Model $user
-     */
-    public function created(Model $user)
-    {
-        $firstName = $user->first_name;
-        $lastName = $user->last_name;
-
-        if ($user->name) {
-            $nameParts = explode(' ', $user->name);
-            array_filter($nameParts);
-            $lastName = array_pop($nameParts);
-            $firstName = implode(' ', $nameParts);
-        }
-
-        $data = [
-            '$first_name' => $firstName,
-            '$last_name' => $lastName,
-            '$name' => $user->name,
-            '$email' => $user->email,
-            '$created' => ($user->created_at
-                ? $user->created_at->format('Y-m-d\Th:i:s')
-                : null),
+        $trackingData = [
+            ['User', ['Status' => 'Registered']],
         ];
-        array_filter($data);
-
-        if (count($data)) {
-            app('mixpanel')->people->set($user->getKey(), $data, $this->request->ip());
-        }
-
-        app('mixpanel')->track('User', ['Status' => 'Registered']);
+        event(new MixpanelEvent($user, $trackingData));
     }
 
-    /**
-     * @param Model $user
-     */
-    public function saving(Model $user)
+    public function saving($user)
     {
-        app('mixpanel')->identify($user->getKey());
-        $firstName = $user->first_name;
-        $lastName = $user->last_name;
-
-        if ($user->name) {
-            $nameParts = explode(' ', $user->name);
-            array_filter($nameParts);
-            $lastName = array_pop($nameParts);
-            $firstName = implode(' ', $nameParts);
-        }
-
-        $data = [
-            '$first_name' => $firstName,
-            '$last_name' => $lastName,
-            '$name' => $user->name,
-            '$email' => $user->email,
-            '$created' => ($user->created_at
-                ? $user->created_at->format('Y-m-d\Th:i:s')
-                : null),
+        $trackingData = [
+            ['User', ['Status' => 'Updated']],
         ];
-        array_filter($data);
-
-        if (count($data)) {
-            app('mixpanel')->people->set($user->getKey(), $data, $this->request->ip());
-        }
+        event(new MixpanelEvent($user, $trackingData));
     }
 
-    /**
-     * @param Model $user
-     */
-    public function deleting(Model $user)
+    public function deleting($user)
     {
-        app('mixpanel')->identify($user->getKey());
-        app('mixpanel')->track('User', ['Status' => 'Deactivated']);
+        $trackingData = [
+            ['User', ['Status' => 'Deactivated']],
+        ];
+        event(new MixpanelEvent($user, $trackingData));
     }
 
-    /**
-     * @param Model $user
-     */
-    public function restored(Model $user)
+    public function restored($user)
     {
-        app('mixpanel')->identify($user->getKey());
-        app('mixpanel')->track('User', ['Status' => 'Reactivated']);
+        $trackingData = [
+            ['User', ['Status' => 'Reactivated']],
+        ];
+        event(new MixpanelEvent($user, $trackingData));
     }
 }

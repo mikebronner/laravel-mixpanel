@@ -19,11 +19,9 @@ class AllViews
             $route = $view->view;
         }
 
-        if ($user) {
-            app('mixpanel')->identify($user->getKey());
-            app('mixpanel')->people->set($user->getKey(), [], request()->ip());
-        }
-
-        app('mixpanel')->track('Page View', ['Route' => $route]);
+        $trackingData = [
+            ['Page View', ['Route' => $route]],
+        ];
+        event(new MixpanelEvent($user, $trackingData));
     }
 }

@@ -48,41 +48,47 @@ class RecordStripeEvent extends FormRequest
         }
     }
 
-    /**
-     * @param          $transaction
-     * @param          $user
-     */
     private function recordCharge($transaction, $user)
     {
         if ($transaction['paid'] && $transaction['captured'] && ! $transaction['refunded']) {
-            app('mixpanel')->people->trackCharge($user->id, ($transaction['amount'] / 100));
-            app('mixpanel')->track('Payment', [
-                'Status' => 'Successful',
-                'Amount' => ($transaction['amount'] / 100),
-            ]);
+            $charge = 0 - ($transaction['amount'] / 100);
+            $trackingData = [
+                ['Payment', [
+                    'Status' => 'Successful',
+                    'Amount' => ($transaction['amount'] / 100),
+                ]],
+            ];
         }
 
         if ($transaction['paid'] && $transaction['captured'] && $transaction['refunded']) {
-            app('mixpanel')->people->trackCharge($user->id, 0 - ($transaction['amount'] / 100));
-            app('mixpanel')->track('Payment', [
-                'Status' => 'Refunded',
-                'Amount' => ($transaction['amount'] / 100),
-            ]);
+            $charge = 0 - ($transaction['amount'] / 100);
+            $trackingData = [
+                ['Payment', [
+                    'Status' => 'Refunded',
+                    'Amount' => ($transaction['amount'] / 100),
+                ]],
+            ];
         }
 
         if (! $transaction['paid'] && $transaction['captured'] && ! $transaction['refunded']) {
-            app('mixpanel')->track('Payment', [
-                'Status' => 'Failed',
-                'Amount' => ($transaction['amount'] / 100),
-            ]);
+            $trackingData = [
+                ['Payment', [
+                    'Status' => 'Failed',
+                    'Amount' => ($transaction['amount'] / 100),
+                ]],
+            ];
         }
 
         if ($transaction['paid'] && ! $transaction['captured'] && ! $transaction['refunded']) {
-            app('mixpanel')->track('Payment', [
-                'Status' => 'Authorized',
-                'Amount' => ($transaction['amount'] / 100),
-            ]);
+            $trackingData = [
+                ['Payment', [
+                    'Status' => 'Authorized',
+                    'Amount' => ($transaction['amount'] / 100),
+                ]],
+            ];
         }
+
+        event(new MixpanelEvent($user, $trackingData, $charge));
     }
 
     /**
@@ -102,71 +108,85 @@ class RecordStripeEvent extends FormRequest
         $oldPlanAmount = isset($originalValues['plan']['amount']) ? $originalValues['plan']['amount'] : null;
 
         if ($planStatus === 'canceled') {
-            app('mixpanel')->people->set($user->id, [
+            $profileData = [
                 'Subscription' => 'None',
                 'Churned' => Carbon::now('UTC')->format('Y-m-d\Th:i:s'),
                 'Plan When Churned' => $planName,
                 'Paid Lifetime' => Carbon::createFromTimestampUTC($planStart)->diffInDays(Carbon::now('UTC')) . ' days'
-            ]);
-            app('mixpanel')->track('Subscription', ['Status' => 'Canceled', 'Upgraded' => false]);
-            app('mixpanel')->track('Churn! :-(');
+            ];
+            $trackingData = [
+                ['Subscription', ['Status' => 'Canceled', 'Upgraded' => false]],
+                ['Churn! :-('],
+            ];
         }
 
         if (count($originalValues)) {
             if ($planAmount && $oldPlanAmount) {
                 if ($planAmount < $oldPlanAmount) {
-                    app('mixpanel')->people->set($user->id, [
+                    $profileData = [
                         'Subscription' => $planName,
                         'Churned' => Carbon::now('UTC')->format('Y-m-d\Th:i:s'),
                         'Plan When Churned' => $oldPlanName,
-                    ]);
-                    app('mixpanel')->track('Subscription', [
-                        'Upgraded' => false,
-                        'FromPlan' => $oldPlanName,
-                        'ToPlan' => $planName,
-                    ]);
-                    app('mixpanel')->track('Churn! :-(');
+                    ];
+                    $trackingData = [
+                        ['Subscription', [
+                            'Upgraded' => false,
+                            'FromPlan' => $oldPlanName,
+                            'ToPlan' => $planName,
+                        ]],
+                        ['Churn! :-('],
+                    ];
                 }
 
                 if ($planAmount > $oldPlanAmount) {
-                    app('mixpanel')->people->set($user->id, [
+                    $profileData = [
                         'Subscription' => $planName,
-                    ]);
-                    app('mixpanel')->track('Subscription', [
-                        'Upgraded' => true,
-                        'FromPlan' => $oldPlanName,
-                        'ToPlan' => $planName,
-                    ]);
-                    app('mixpanel')->track('Unchurn! :-)');
+                    ];
+                    $trackingData = [
+                        ['Subscription', [
+                            'Upgraded' => true,
+                            'FromPlan' => $oldPlanName,
+                            'ToPlan' => $planName,
+                        ]],
+                        ['Unchurn! :-)'],
+                    ];
                 }
             } else {
                 if ($planStatus === 'trialing' && ! $oldPlanName) {
-                    app('mixpanel')->people->set($user->id, [
+                    $profileData = [
                         'Subscription' => $planName,
-                    ]);
-                    app('mixpanel')->track('Subscription', [
-                        'Upgraded' => true,
-                        'FromPlan' => 'Trial',
-                        'ToPlan' => $planName,
-                    ]);
-                    app('mixpanel')->track('Unchurn! :-)');
+                    ];
+                    $trackingData = [
+                        ['Subscription', [
+                            'Upgraded' => true,
+                            'FromPlan' => 'Trial',
+                            'ToPlan' => $planName,
+                        ]],
+                        ['Unchurn! :-)'],
+                    ];
                 }
             }
         } else {
             if ($planStatus === 'active') {
-                app('mixpanel')->people->set($user->id, [
+                $profileData = [
                     'Subscription' => $planName,
-                ]);
-                app('mixpanel')->track('Subscription', ['Status' => 'Created']);
+                ];
+                $trackingData = [
+                    ['Subscription', ['Status' => 'Created']],
+                ];
             }
 
             if ($planStatus === 'trialing') {
-                app('mixpanel')->people->set($user->id, [
+                $profileData = [
                     'Subscription' => 'Trial',
-                ]);
-                app('mixpanel')->track('Subscription', ['Status' => 'Trial']);
+                ];
+                $trackingData = [
+                    ['Subscription', ['Status' => 'Trial']],
+                ];
             }
         }
+
+        event(new MixpanelEvent($user, $trackingData, $charge, $profileData));
     }
 
     /**
