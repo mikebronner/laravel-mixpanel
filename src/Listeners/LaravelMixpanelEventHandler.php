@@ -33,7 +33,9 @@ class LaravelMixpanelEventHandler
         $user = app($authModel)
             ->where('email', $email)
             ->first();
-        $trackingData = ['Session', ['Status' => 'Login Attempt Succeeded']];
+        $trackingData = [
+            ['Session', ['Status' => 'Login Attempt Succeeded']],
+        ];
 
         if ($user
             && ! $this->guard->getProvider()->validateCredentials($user, ['email' => $email, 'password' => $password])

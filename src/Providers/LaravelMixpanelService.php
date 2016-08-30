@@ -25,8 +25,8 @@ class LaravelMixpanelService extends ServiceProvider
 
         if (config('services.mixpanel.enable-default-tracking')) {
             $authModel = config('auth.providers.users.model') ?? config('auth.model');
-            $this->app->make($authModel)->observe(new LaravelMixpanelUserObserver($request, $mixPanel));
-            app('events')->subscribe(new LaravelMixpanelEventHandler($request, $guard, $mixPanel));
+            $this->app->make($authModel)->observe(new LaravelMixpanelUserObserver());
+            app('events')->subscribe(new LaravelMixpanelEventHandler($guard));
             view()->composer('*', AllViews::class);
         }
     }
