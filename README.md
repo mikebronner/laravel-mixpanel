@@ -57,13 +57,15 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
 
 ## Upgrade Notes
 ### Page Views
-- Page view tracking has been removed in favor of Mixpanels in-built Autotrack functionality, which tracks all page views. To turn it on, visit your Mixpanel dashboard, click Apps, Web Application, and enable Autotracking.
+- Page view tracking has been removed in favor of Mixpanels in-built Autotrack functionality, which tracks all page views. To turn it on, visit your Mixpanel dashboard, click *Applications > Autotrack > Web > etc.* and enable Autotracking.
 
 ## Usage
 ### PHP Events
 
 ### Stripe Web-Hook
-If you wish to take advantage of the Stripe web-hook, you should install Cashier:
+If you wish to take advantage of the Stripe web-hook and track revenue per user,
+ you should install Cashier:
+- [Laravel 5.4](https://www.laravel.com/docs/5.4/billing)
 - [Laravel 5.3](https://www.laravel.com/docs/5.3/billing)
 - [Laravel 5.1](https://www.laravel.com/docs/5.1/billing)
 
