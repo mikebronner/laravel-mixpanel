@@ -52,8 +52,13 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
 ### Default Values
 - `services.mixpanel.token`: pulls the 'MIXPANEL_TOKEN' value from your `.env`
  file.
-- `enable-default-tracking`: (default: true) enable or disable Laravel user
+- `services.mixpanel.enable-default-tracking`: (default: true) enable or disable Laravel user
  event tracking.
+- `services.mixpanel.consumer`: (default: socket) set the Guzzle adapter you want to use.
+- `services.mixpanel.connect-timeout`: (default: 2) set the number of seconds after which
+ connections timeout.
+- `services.mixpanel.timeout`: (default: 2) set the number of seconds after which event tracking
+ times out.
 
 ## Upgrade Notes
 ### Page Views

@@ -9,9 +9,9 @@ use Sinergi\BrowserDetector\Os;
 class LaravelMixpanel extends \Mixpanel
 {
     private $defaults = [
-        'consumer' => 'socket',
-        'connect_timeout' => 2,
-        'timeout' => 2,
+        'consumer' => config('services.mixpanel.consumer', 'socket'),
+        'connect_timeout' => config('services.mixpanel.connect-timeout', 2),
+        'timeout' => config('services.mixpanel.timeout', 2),
     ];
     private $request;
 
