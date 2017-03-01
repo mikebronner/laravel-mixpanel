@@ -8,11 +8,7 @@ use Sinergi\BrowserDetector\Os;
 
 class LaravelMixpanel extends \Mixpanel
 {
-    private $defaults = [
-        'consumer' => config('services.mixpanel.consumer', 'socket'),
-        'connect_timeout' => config('services.mixpanel.connect-timeout', 2),
-        'timeout' => config('services.mixpanel.timeout', 2),
-    ];
+    private $defaults;
     private $request;
 
     /**
@@ -23,10 +19,17 @@ class LaravelMixpanel extends \Mixpanel
      */
     public function __construct(Request $request, array $options = [])
     {
+        $this->defaults = [
+            'consumer' => config('services.mixpanel.consumer', 'socket'),
+            'connect_timeout' => config('services.mixpanel.connect-timeout', 2),
+            'timeout' => config('services.mixpanel.timeout', 2),
+        ];
         $this->request = $request;
 
-        $options = array_merge($this->defaults, $options);
-        parent::__construct(config('services.mixpanel.token'), $options);
+        parent::__construct(
+            config('services.mixpanel.token'),
+            array_merge($this->defaults, $options)
+        );
     }
 
     /**
