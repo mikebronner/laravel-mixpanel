@@ -19,14 +19,12 @@ class LaravelMixpanelEventHandler
 
     public function onUserLoginAttempt($event)
     {
+        $email = $event->credentials['email'] ?? '';
+        $password = $event->credentials['password'] ?? '';
+
         if (starts_with(app()->version(), '5.1.')) {
             $email = $event['email'] ?? '';
             $password = $event['password'] ?? '';
-        }
-
-        if (starts_with(app()->version(), '5.3.')) {
-            $email = $event->credentials['email'] ?? '';
-            $password = $event->credentials['password'] ?? '';
         }
 
         $authModel = config('auth.providers.users.model') ?? config('auth.model');
@@ -50,33 +48,15 @@ class LaravelMixpanelEventHandler
 
     public function onUserLogin($login)
     {
-        if (starts_with(app()->version(), '5.1.')) {
-            $user = $login;
-        }
-
-        if (starts_with(app()->version(), '5.3.')) {
-            $user = $login->user;
-        }
-
-        $trackingData = [
-            ['Session', ['Status' => 'Logged In']],
-        ];
+        $user = $login->user ?? $login;
+        $trackingData = [['Session', ['Status' => 'Logged In']]];
         event(new MixpanelEvent($user, $trackingData));
     }
 
     public function onUserLogout($logout)
     {
-        if (starts_with(app()->version(), '5.1.')) {
-            $user = $logout;
-        }
-
-        if (starts_with(app()->version(), '5.3.')) {
-            $user = $logout->user;
-        }
-
-        $trackingData = [
-            ['Session', ['Status' => 'Logged Out']],
-        ];
+        $user = $logout->user ?? $logout;
+        $trackingData = [['Session', ['Status' => 'Logged Out']]];
         event(new MixpanelEvent($user, $trackingData));
     }
 
