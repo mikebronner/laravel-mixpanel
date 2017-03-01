@@ -136,7 +136,7 @@ class MyClass
 
 If DI is impractical in certain situations, you can also manually retrieve it from the IoC:
 ```php
-$mixPanel = app('GeneaLabs\LaravelMixPanel\LaravelMixPanel');
+$mixPanel = app('mixpanel');
 ```
 
 After that you can make the usual calls to the MixPanel API:
