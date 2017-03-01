@@ -4,7 +4,6 @@ use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 use GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler;
 use GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelUserObserver;
 use GeneaLabs\LaravelMixpanel\Console\Commands\Publish;
-use GeneaLabs\LaravelMixpanel\Http\ViewComposers\AllViews;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\View\View;
 use Illuminate\HTTP\Request;
@@ -27,7 +26,6 @@ class LaravelMixpanelService extends ServiceProvider
             $authModel = config('auth.providers.users.model') ?? config('auth.model');
             $this->app->make($authModel)->observe(new LaravelMixpanelUserObserver());
             app('events')->subscribe(new LaravelMixpanelEventHandler($guard));
-            view()->composer('*', AllViews::class);
         }
     }
 
