@@ -11,7 +11,8 @@
 ## Requirements and Compatibility
 - PHP 7
 - Laravel 5.1 (LTS)
-- Laravel 5.3 (current)
+- Laravel 5.3
+- Laravel 5.4 (current)
 
 ### Legacy Versions
 - [Laravel 5.2](https://github.com/GeneaLabs/laravel-mixpanel/tree/afcf3737412c1aebfa9dd1d7687001f78bdb3956)
