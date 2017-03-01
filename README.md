@@ -55,7 +55,9 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
 - `enable-default-tracking`: (default: true) enable or disable Laravel user
  event tracking.
 
-### Customization
+## Upgrade Notes
+### Page Views
+- Page view tracking has been removed in favor of Mixpanels in-built Autotrack functionality, which tracks all page views. To turn it on, visit your Mixpanel dashboard, click Apps, Web Application, and enable Autotracking.
 
 ## Usage
 ### PHP Events
@@ -108,7 +110,6 @@ MixPanel is loaded into the IoC as a singleton. This means you don't have to man
 described in the MixPanel docs. This is already done for you in the ServiceProvider.
 
 Common user events are automatically recorded:
-- Page View
 - User Registration
 - User Deletion
 - User Login
@@ -216,20 +217,6 @@ the first name. Otherwise it will look for `first_name` and `last_name` fields i
   Track:
     Session:
       - Status: Logged Out
-  ```
-
-- View loaded:
-  ```
-  Track:
-    Page View:
-      - Url: <page URL>
-      - Route: <route name>
-      - Referrer: <referring URL>
-      - Referring Domain: <referring domain>
-      - IP (for geolocation)
-      - Browser
-      - Operating System
-      - Hardware
   ```
 
 ### Stripe Integration
