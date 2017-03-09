@@ -17,7 +17,7 @@ class MixpanelEvent
             app('mixpanel')->people->trackCharge($user->id, $event->charge);
         }
 
-        arrray_map(function ($data) {
+        array_map(function ($data) {
             app('mixpanel')->track($data);
         }, $event->trackingData);
     }
