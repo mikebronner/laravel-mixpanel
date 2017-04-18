@@ -93,23 +93,24 @@ The only other step remaining is to register the web-hook with Stripe:
    Also, choose "Send me all events" to make sure Laravel Mixpanel can make full use of the Stripe data.
 
 ### JavaScript Events & Auto-Track
+#### Blade Template (Recommended)
+First publish the necessary assets:
+```sh
+php artisan mixpanel:publish --assets
+```
+
+Then add the following to the head section of your layout template (already does
+ the init call for you, using the token from your .env file):
+```blade
+@include ('genealabs-laravel-mixpanel::partials.mixpanel')
+```
+
 #### Laravel Elixir
 Add the following lines to your `/resources/js/app.js` (or equivalent), and
  don't forget to replace `YOUR_MIXPANEL_TOKEN` with your actual token:
 ```js
 require('./../../../public/genealabs-laravel-mixpanel/js/mixpanel.js');
 mixpanel.init("YOUR_MIXPANEL_TOKEN");
-```
-
-#### Blade Template
-First publish the necessary assets:
-```sh
-php artisan mixpanel:publish --assets
-```
-
-Then add the following to the head section of your layout template:
-```blade
-@include ('genealabs-laravel-mixpanel::partials.mixpanel')
 ```
 
 ## Usage
