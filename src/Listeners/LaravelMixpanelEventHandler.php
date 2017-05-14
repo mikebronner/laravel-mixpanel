@@ -1,22 +1,14 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
+use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
 use Illuminate\Auth\Events\Attempting;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Events\Dispatcher;
-use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
 
 class LaravelMixpanelEventHandler
 {
-    protected $guard;
-
-    public function __construct(Guard $guard)
-    {
-        $this->guard = $guard;
-    }
-
     public function onUserLoginAttempt($event)
     {
         $email = $event->credentials['email'] ?? '';
@@ -35,9 +27,7 @@ class LaravelMixpanelEventHandler
             ['Session', ['Status' => 'Login Attempt Succeeded']],
         ];
 
-        if ($user
-            && ! $this->guard->getProvider()->validateCredentials($user, ['email' => $email, 'password' => $password])
-        ) {
+        if ($user && auth()->guest()) {
             $trackingData = [
                 ['Session', ['Status' => 'Login Attempt Failed']],
             ];
@@ -55,7 +45,7 @@ class LaravelMixpanelEventHandler
 
     public function onUserLogout($logout)
     {
-        $user = $logout->user ?? $logout;
+        $user = property_exists($logout, 'user') ? $logout->user : $logout;
         $trackingData = [['Session', ['Status' => 'Logged Out']]];
         event(new MixpanelEvent($user, $trackingData));
     }

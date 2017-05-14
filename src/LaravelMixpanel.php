@@ -2,11 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Mixpanel;
 use Sinergi\BrowserDetector\Browser;
 use Sinergi\BrowserDetector\Device;
 use Sinergi\BrowserDetector\Os;
 
-class LaravelMixpanel extends \Mixpanel
+class LaravelMixpanel extends Mixpanel
 {
     private $defaults;
     private $request;

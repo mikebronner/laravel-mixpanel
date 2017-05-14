@@ -4,17 +4,26 @@ use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 use GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelEventHandler;
 use GeneaLabs\LaravelMixpanel\Listeners\LaravelMixpanelUserObserver;
 use GeneaLabs\LaravelMixpanel\Console\Commands\Publish;
-use Illuminate\Contracts\Auth\Guard;
+use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
+use GeneaLabs\LaravelMixpanel\Listeners\MixpanelEvent as MixpanelEventListener;
 use Illuminate\Contracts\View\View;
 use Illuminate\HTTP\Request;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider;
 
-class LaravelMixpanelService extends ServiceProvider
+class LaravelMixpanelService extends EventServiceProvider
 {
     protected $defer = false;
+    protected $listen = [
+        MixpanelEvent::class => [
+            MixpanelEventListener::class,
+        ],
+    ];
 
-    public function boot(Request $request, Guard $guard, LaravelMixpanel $mixPanel)
+    public function boot()
     {
+        parent::boot();
+
         include __DIR__ . '/../../routes/api.php';
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'genealabs-laravel-mixpanel');
@@ -25,7 +34,7 @@ class LaravelMixpanelService extends ServiceProvider
         if (config('services.mixpanel.enable-default-tracking')) {
             $authModel = config('auth.providers.users.model') ?? config('auth.model');
             $this->app->make($authModel)->observe(new LaravelMixpanelUserObserver());
-            app('events')->subscribe(new LaravelMixpanelEventHandler($guard));
+            app('events')->subscribe(new LaravelMixpanelEventHandler());
         }
     }
 
