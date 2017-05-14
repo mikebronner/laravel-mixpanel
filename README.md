@@ -102,11 +102,7 @@ php artisan mixpanel:publish --assets
 Then add the following to the head section of your layout template (already does
  the init call for you, using the token from your .env file):
 ```blade
-@include ('genealabs-laravel-mixpanel::partials.mixpanel')
-
-<script>
-    mixpanel.init("YOUR_MIXPANEL_TOKEN");
-</script>
+@include('genealabs-laravel-mixpanel::partials.mixpanel')
 ```
 
 #### Laravel Elixir
