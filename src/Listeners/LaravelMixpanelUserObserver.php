@@ -6,33 +6,21 @@ class LaravelMixpanelUserObserver
 {
     public function created($user)
     {
-        $trackingData = [
-            ['User', ['Status' => 'Registered']],
-        ];
-        event(new MixpanelEvent($user, $trackingData));
+        event(new MixpanelEvent($user, 'User: Registered'));
     }
 
     public function saving($user)
     {
-        $trackingData = [
-            ['User', ['Status' => 'Updated']],
-        ];
-        event(new MixpanelEvent($user, $trackingData));
+        event(new MixpanelEvent($user, 'User: Updated'));
     }
 
     public function deleting($user)
     {
-        $trackingData = [
-            ['User', ['Status' => 'Deactivated']],
-        ];
-        event(new MixpanelEvent($user, $trackingData));
+        event(new MixpanelEvent($user, 'User: Deactivated'));
     }
 
     public function restored($user)
     {
-        $trackingData = [
-            ['User', ['Status' => 'Reactivated']],
-        ];
-        event(new MixpanelEvent($user, $trackingData));
+        event(new MixpanelEvent($user, 'User: Reactivated'));
     }
 }

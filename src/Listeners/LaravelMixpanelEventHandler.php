@@ -23,31 +23,25 @@ class LaravelMixpanelEventHandler
         $user = app($authModel)
             ->where('email', $email)
             ->first();
-        $trackingData = [
-            ['Session', ['Status' => 'Login Attempt Succeeded']],
-        ];
+        $eventName = 'Login Attempt Succeeded';
 
-        if ($user && auth()->guest()) {
-            $trackingData = [
-                ['Session', ['Status' => 'Login Attempt Failed']],
-            ];
+        if ($user && ! auth()->validate($event->credentials)) {
+            $eventName = 'Login Attempt Failed';
         }
 
-        event(new MixpanelEvent($user, $trackingData));
+        event(new MixpanelEvent($user, $eventName));
     }
 
     public function onUserLogin($login)
     {
         $user = $login->user ?? $login;
-        $trackingData = [['Session', ['Status' => 'Logged In']]];
-        event(new MixpanelEvent($user, $trackingData));
+        event(new MixpanelEvent($user, 'User Logged In'));
     }
 
     public function onUserLogout($logout)
     {
         $user = property_exists($logout, 'user') ? $logout->user : $logout;
-        $trackingData = [['Session', ['Status' => 'Logged Out']]];
-        event(new MixpanelEvent($user, $trackingData));
+        event(new MixpanelEvent($user, 'User Logged Out'));
     }
 
     public function subscribe(Dispatcher $events)
