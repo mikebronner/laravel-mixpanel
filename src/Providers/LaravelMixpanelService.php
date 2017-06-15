@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\HTTP\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
+use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 
 class LaravelMixpanelService extends EventServiceProvider
 {
@@ -20,9 +21,9 @@ class LaravelMixpanelService extends EventServiceProvider
         ],
     ];
 
-    public function boot()
+    public function boot(DispatcherContract $events)
     {
-        parent::boot();
+        parent::boot($events);
 
         include __DIR__ . '/../../routes/api.php';
 
