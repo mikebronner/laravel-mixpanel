@@ -11,23 +11,13 @@ class LaravelMixpanelEventHandler
 {
     public function onUserLoginAttempt($event)
     {
-        $email = $event->credentials['email'] ?? '';
-        $password = $event->credentials['password'] ?? '';
+        $email = $event->credentials['email'] ?? $event['email'] ?? '';
 
-        if (starts_with(app()->version(), '5.1.')) {
-            $email = $event['email'] ?? '';
-            $password = $event['password'] ?? '';
-        }
-
-        $authModel = config('auth.providers.users.model') ?? config('auth.model');
+        $authModel = config('auth.providers.users.model', config('auth.model'));
         $user = app($authModel)
             ->where('email', $email)
             ->first();
-        $eventName = 'Login Attempt Succeeded';
-
-        if ($user && ! auth()->validate($event->credentials)) {
-            $eventName = 'Login Attempt Failed';
-        }
+        $eventName = 'Login Attempted';
 
         event(new MixpanelEvent($user, $eventName));
     }
