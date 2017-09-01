@@ -11,6 +11,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming web-hook events that are in test mode.
 
+## [0.7.0] - 31 Aug 2017
+### Added
+- compatibility with Laravel 5.5.
+- auto-detection of package's service provider for automatic installation.
+- Console error to warn of missing ENV variable.
+
+### Updated
+- README with L5.5 particulars.
+- CHANGELOG with new entries.
+
 ## [0.5.3] - 4 Apr 2016
 ### Added
 - configuration setting to disable the default-bundled tracking hooks.

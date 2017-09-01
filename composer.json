@@ -30,5 +30,12 @@
         "psr-4": {
             "GeneaLabs\\LaravelMixpanel\\Tests\\": "tests/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "GeneaLabs\\LaravelMixpanel\\Providers\\LaravelMixpanelService"
+            ]
+        }
     }
 }

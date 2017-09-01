@@ -12,7 +12,8 @@
 - PHP 7
 - Laravel 5.1 (LTS)
 - Laravel 5.3
-- Laravel 5.4 (current)
+- Laravel 5.4
+- Laravel 5.5 (LTS, current)
 
 ### Legacy Versions
 - [Laravel 5.2](https://github.com/GeneaLabs/laravel-mixpanel/tree/afcf3737412c1aebfa9dd1d7687001f78bdb3956)
@@ -23,6 +24,7 @@
 composer require genealabs/laravel-mixpanel
 ```
 
+**Only if you are running Laravel 5.4 or below:**
 Add the service provider entry in `config\app.php`:
 ```php
 GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelService::class,
@@ -43,7 +45,7 @@ Verify that your auth configuration file `config/auth.php` has the user model
 'model' => App\User::class,
 ```
 
-Lastly, add your Mixpanel API token to your `.env` file:
+Lastly, add your Mixpanel token to your `.env` file:
 ```env
 MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
 ```
@@ -61,6 +63,10 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
  times out.
 
 ## Upgrade Notes
+### Version 0.7.0 for Laravel 5.5
+- Remove the service provider from `/config/app.php`. The service provider is now
+ auto-discovered in Laravel 5.5.
+
 ### Page Views
 - Page view tracking has been removed in favor of Mixpanels in-built Autotrack functionality, which tracks all page views. To turn it on, visit your Mixpanel dashboard, click *Applications > Autotrack > Web > etc.* and enable Autotracking.
 

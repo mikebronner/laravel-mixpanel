@@ -2,7 +2,7 @@
 
 return [
     'mixpanel' => [
-        'token' => env('MIXPANEL_TOKEN', 'add your token to your env file'),
+        'token' => env('MIXPANEL_TOKEN'),
         'enable-default-tracking' => true,
         'consumer' => 'socket',
         'connect-timeout' => 2,
