@@ -1,4 +1,4 @@
 filter:
     excluded_paths:
-        - "piblic/"
+        - "public/"
         - "tests/"
