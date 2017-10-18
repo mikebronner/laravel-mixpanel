@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class RecordStripeEvent extends FormRequest
 {
@@ -22,7 +23,7 @@ class RecordStripeEvent extends FormRequest
     {
         $data = $this->json()->all();
 
-        if (! $data || ! array_key_exists('data', $data)) {
+        if (! $data || ! ($data['data'] ?? false)) {
             return;
         }
 
@@ -90,11 +91,11 @@ class RecordStripeEvent extends FormRequest
         if ($planStatus === 'canceled') {
             $profileData = [
                 'Subscription' => 'None',
-                'Churned' => Carbon::parse($transaction['canceled_at'])->format('Y-m-d\Th:i:s'),
+                'Churned' => (new Carbon($transaction['canceled_at']))->format('Y-m-d\Th:i:s'),
                 'Plan When Churned' => $planName,
-                'Paid Lifetime' => Carbon::createFromTimestampUTC($planStart)
-                  ->diffInDays(Carbon::timestamp($transaction['ended_at'])
-                  ->timezone('UTC')) . ' days'
+                'Paid Lifetime' => (new Carbon)->createFromTimestampUTC($planStart)
+                    ->diffInDays((new Carbon(timestamp($transaction['ended_at'])))
+                        ->timezone('UTC')) . ' days'
             ];
             $trackingData = [
                 ['Subscription', ['Status' => 'Canceled', 'Upgraded' => false]],
@@ -107,9 +108,9 @@ class RecordStripeEvent extends FormRequest
                 if ($planAmount < $oldPlanAmount) {
                     $profileData = [
                         'Subscription' => $planName,
-                        'Churned' => Carbon::timestamp($transaction['ended_at'])
-                          ->timezone('UTC')
-                          ->format('Y-m-d\Th:i:s'),
+                        'Churned' => (new Carbon($transaction['ended_at']))
+                            ->timezone('UTC')
+                            ->format('Y-m-d\Th:i:s'),
                         'Plan When Churned' => $oldPlanName,
                     ];
                     $trackingData = [
