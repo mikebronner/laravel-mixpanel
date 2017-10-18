@@ -18,10 +18,7 @@
 
 ## Requirements and Compatibility
 - PHP 7
-- Laravel 5.1 (LTS)
-- Laravel 5.3
-- Laravel 5.4
-- Laravel 5.5 (LTS, current)
+- Laravel 5.5
 
 ### Legacy Versions
 - [Laravel 5.2](https://github.com/GeneaLabs/laravel-mixpanel/tree/afcf3737412c1aebfa9dd1d7687001f78bdb3956)
@@ -83,10 +80,7 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
 
 ### Stripe Web-Hook
 If you wish to take advantage of the Stripe web-hook and track revenue per user,
- you should install Cashier:
-- [Laravel 5.4](https://www.laravel.com/docs/5.4/billing)
-- [Laravel 5.3](https://www.laravel.com/docs/5.3/billing)
-- [Laravel 5.1](https://www.laravel.com/docs/5.1/billing)
+ you should install Cashier: https://www.laravel.com/docs/5.5/billing
 
 Once that has been completed, exempt the web-hook endpoint from CSRF-validation
  in `/app/Http/Middleware/VerifyCsrfToken.php`:

@@ -7,3 +7,7 @@
 /.travis.yml export-ignore
 /phpunit.xml export-ignore
 /tests export-ignore
+/webpack.mix.js export-ignore
+/yarn.lock export-ignore
+/qa-checklist.md export-ignore
+/package.json export-ignore
