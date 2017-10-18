@@ -1,4 +1,12 @@
 # MixPanel for Laravel 5
+[![Travis](https://img.shields.io/travis/GeneaLabs/laravel-mixpanel.svg)](https://travis-ci.org/GeneaLabs/laravel-mixpanel)
+[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/12e6aa84-a68b-4cd3-a8ca-10d12b11cca6.svg)](https://insight.sensiolabs.com/projects/12e6aa84-a68b-4cd3-a8ca-10d12b11cca6)
+[![Scrutinizer](https://img.shields.io/scrutinizer/g/GeneaLabs/laravel-mixpanel.svg)](https://scrutinizer-ci.com/g/GeneaLabs/laravel-mixpanel)
+[![Coveralls](https://img.shields.io/coveralls/GeneaLabs/laravel-mixpanel.svg)](https://coveralls.io/github/GeneaLabs/laravel-mixpanel)
+[![GitHub (pre-)release](https://img.shields.io/github/release/GeneaLabs/laravel-mixpanel/all.svg)](https://github.com/GeneaLabs/laravel-mixpanel)
+[![Packagist](https://img.shields.io/packagist/dt/GeneaLabs/laravel-mixpanel.svg)](https://packagist.org/packages/genealabs/laravel-mixpanel)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/GeneaLabs/laravel-mixpanel/master/LICENSE)
+
 ## Features
 - Asynchronous data transmission to Mixpanel's services. This prevents any
  delays to your application if Mixpanel is down, or slow to respond.
