@@ -49,45 +49,31 @@ class RecordStripeEvent extends FormRequest
         }
     }
 
-    private function recordCharge($transaction, $user)
+    private function recordCharge(array $transaction, $user)
     {
-        if ($transaction['paid'] && $transaction['captured'] && ! $transaction['refunded']) {
-            $charge = 0 - ($transaction['amount'] / 100);
-            $trackingData = [
-                ['Payment', [
-                    'Status' => 'Successful',
-                    'Amount' => ($transaction['amount'] / 100),
-                ]],
-            ];
+        $charge = 0;
+        $amount = $transaction['amount'] / 100;
+        $status = 'Failed';
+
+        if ($transaction['paid']) {
+            $status = 'Authorized';
+
+            if ($transaction['captured']) {
+                $status = 'Successful';
+
+                if ($transaction['refunded']) {
+                    $status = 'Refunded';
+                }
+            }
         }
 
-        if ($transaction['paid'] && $transaction['captured'] && $transaction['refunded']) {
-            $charge = 0 - ($transaction['amount'] / 100);
-            $trackingData = [
-                ['Payment', [
-                    'Status' => 'Refunded',
-                    'Amount' => ($transaction['amount'] / 100),
-                ]],
-            ];
-        }
-
-        if (! $transaction['paid'] && $transaction['captured'] && ! $transaction['refunded']) {
-            $trackingData = [
-                ['Payment', [
-                    'Status' => 'Failed',
-                    'Amount' => ($transaction['amount'] / 100),
-                ]],
-            ];
-        }
-
-        if ($transaction['paid'] && ! $transaction['captured'] && ! $transaction['refunded']) {
-            $trackingData = [
-                ['Payment', [
-                    'Status' => 'Authorized',
-                    'Amount' => ($transaction['amount'] / 100),
-                ]],
-            ];
-        }
+        $trackingData = [
+            'Payment',
+            [
+                'Status' => $status,
+                'Amount' => $amount,
+            ],
+        ];
 
         event(new MixpanelEvent($user, $trackingData, $charge));
     }

@@ -11,7 +11,7 @@ use Illuminate\HTTP\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
 
-abstract class MixpanelBaseService extends EventServiceProvider
+abstract class Service extends EventServiceProvider
 {
     protected $defer = false;
     protected $listen = [
@@ -19,6 +19,13 @@ abstract class MixpanelBaseService extends EventServiceProvider
             MixpanelEventListener::class,
         ],
     ];
+
+    public function boot()
+    {
+        parent::boot();
+
+        $this->initialize();
+    }
 
     protected function initialize()
     {
