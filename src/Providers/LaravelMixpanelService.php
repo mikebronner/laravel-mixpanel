@@ -2,24 +2,12 @@
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 
-if (starts_with(app()->version(), '5.1.')) {
-    class LaravelMixpanelService extends MixpanelBaseService
+class LaravelMixpanelService extends MixpanelBaseService
+{
+    public function boot()
     {
-        public function boot(DispatcherContract $events)
-        {
-            parent::boot($events);
+        parent::boot();
 
-            $this->initialize();
-        }
-    }
-} else {
-    class LaravelMixpanelService extends MixpanelBaseService
-    {
-        public function boot()
-        {
-            parent::boot();
-
-            $this->initialize();
-        }
+        $this->initialize();
     }
 }
