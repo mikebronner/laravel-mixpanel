@@ -1,4 +1,12 @@
 # MixPanel for Laravel 5
+[![Travis](https://img.shields.io/travis/GeneaLabs/laravel-mixpanel.svg)](https://travis-ci.org/GeneaLabs/laravel-mixpanel)
+[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/12e6aa84-a68b-4cd3-a8ca-10d12b11cca6.svg)](https://insight.sensiolabs.com/projects/12e6aa84-a68b-4cd3-a8ca-10d12b11cca6)
+[![Scrutinizer](https://img.shields.io/scrutinizer/g/GeneaLabs/laravel-mixpanel.svg)](https://scrutinizer-ci.com/g/GeneaLabs/laravel-mixpanel)
+[![Coveralls](https://img.shields.io/coveralls/GeneaLabs/laravel-mixpanel.svg)](https://coveralls.io/github/GeneaLabs/laravel-mixpanel)
+[![GitHub (pre-)release](https://img.shields.io/github/release/GeneaLabs/laravel-mixpanel/all.svg)](https://github.com/GeneaLabs/laravel-mixpanel)
+[![Packagist](https://img.shields.io/packagist/dt/GeneaLabs/laravel-mixpanel.svg)](https://packagist.org/packages/genealabs/laravel-mixpanel)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/GeneaLabs/laravel-mixpanel/master/LICENSE)
+
 ## Features
 - Asynchronous data transmission to Mixpanel's services. This prevents any
  delays to your application if Mixpanel is down, or slow to respond.
@@ -10,10 +18,7 @@
 
 ## Requirements and Compatibility
 - PHP 7
-- Laravel 5.1 (LTS)
-- Laravel 5.3
-- Laravel 5.4
-- Laravel 5.5 (LTS, current)
+- Laravel 5.5
 
 ### Legacy Versions
 - [Laravel 5.2](https://github.com/GeneaLabs/laravel-mixpanel/tree/afcf3737412c1aebfa9dd1d7687001f78bdb3956)
@@ -75,10 +80,7 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
 
 ### Stripe Web-Hook
 If you wish to take advantage of the Stripe web-hook and track revenue per user,
- you should install Cashier:
-- [Laravel 5.4](https://www.laravel.com/docs/5.4/billing)
-- [Laravel 5.3](https://www.laravel.com/docs/5.3/billing)
-- [Laravel 5.1](https://www.laravel.com/docs/5.1/billing)
+ you should install Cashier: https://www.laravel.com/docs/5.5/billing
 
 Once that has been completed, exempt the web-hook endpoint from CSRF-validation
  in `/app/Http/Middleware/VerifyCsrfToken.php`:

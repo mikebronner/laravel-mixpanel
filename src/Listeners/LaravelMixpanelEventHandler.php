@@ -30,7 +30,7 @@ class LaravelMixpanelEventHandler
 
     public function onUserLogout($logout)
     {
-        $user = property_exists($logout, 'user') ? $logout->user : $logout;
+        $user = $logout->user ?? $logout;
         event(new MixpanelEvent($user, 'User Logged Out'));
     }
 

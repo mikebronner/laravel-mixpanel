@@ -42,7 +42,9 @@ class MixpanelEvent
             '$name' => $user->name,
             '$email' => $user->email,
             '$created' => ($user->created_at
-                ? (new Carbon)->parse($user->created_at)->format('Y-m-d\Th:i:s')
+                ? (new Carbon)
+                    ->parse($user->created_at)
+                    ->format('Y-m-d\Th:i:s')
                 : null),
         ];
         array_filter($data);

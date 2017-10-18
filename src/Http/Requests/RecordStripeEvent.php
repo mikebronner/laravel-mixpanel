@@ -1,7 +1,8 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Http\Requests;
 
-use Carbon\Carbon;
+use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Carbon;
 
 class RecordStripeEvent extends FormRequest
 {
@@ -21,7 +22,7 @@ class RecordStripeEvent extends FormRequest
     {
         $data = $this->json()->all();
 
-        if (! $data || ! array_key_exists('data', $data)) {
+        if (! $data || ! ($data['data'] ?? false)) {
             return;
         }
 
@@ -48,57 +49,36 @@ class RecordStripeEvent extends FormRequest
         }
     }
 
-    private function recordCharge($transaction, $user)
+    private function recordCharge(array $transaction, $user)
     {
-        if ($transaction['paid'] && $transaction['captured'] && ! $transaction['refunded']) {
-            $charge = 0 - ($transaction['amount'] / 100);
-            $trackingData = [
-                ['Payment', [
-                    'Status' => 'Successful',
-                    'Amount' => ($transaction['amount'] / 100),
-                ]],
-            ];
+        $charge = 0;
+        $amount = $transaction['amount'] / 100;
+        $status = 'Failed';
+
+        if ($transaction['paid']) {
+            $status = 'Authorized';
+
+            if ($transaction['captured']) {
+                $status = 'Successful';
+
+                if ($transaction['refunded']) {
+                    $status = 'Refunded';
+                }
+            }
         }
 
-        if ($transaction['paid'] && $transaction['captured'] && $transaction['refunded']) {
-            $charge = 0 - ($transaction['amount'] / 100);
-            $trackingData = [
-                ['Payment', [
-                    'Status' => 'Refunded',
-                    'Amount' => ($transaction['amount'] / 100),
-                ]],
-            ];
-        }
-
-        if (! $transaction['paid'] && $transaction['captured'] && ! $transaction['refunded']) {
-            $trackingData = [
-                ['Payment', [
-                    'Status' => 'Failed',
-                    'Amount' => ($transaction['amount'] / 100),
-                ]],
-            ];
-        }
-
-        if ($transaction['paid'] && ! $transaction['captured'] && ! $transaction['refunded']) {
-            $trackingData = [
-                ['Payment', [
-                    'Status' => 'Authorized',
-                    'Amount' => ($transaction['amount'] / 100),
-                ]],
-            ];
-        }
+        $trackingData = [
+            'Payment',
+            [
+                'Status' => $status,
+                'Amount' => $amount,
+            ],
+        ];
 
         event(new MixpanelEvent($user, $trackingData, $charge));
     }
 
-    /**
-     * @todo refactor all these if statements
-     *
-     * @param          $transaction
-     * @param          $user
-     * @param array    $originalValues
-     */
-    private function recordSubscription($transaction, $user, array $originalValues = [])
+    private function recordSubscription(array $transaction, $user, array $originalValues = [])
     {
         $planStatus = array_key_exists('status', $transaction) ? $transaction['status'] : null;
         $planName = isset($transaction['plan']['name']) ? $transaction['plan']['name'] : null;
@@ -110,9 +90,11 @@ class RecordStripeEvent extends FormRequest
         if ($planStatus === 'canceled') {
             $profileData = [
                 'Subscription' => 'None',
-                'Churned' => Carbon::parse($transaction['canceled_at'])->format('Y-m-d\Th:i:s'),
+                'Churned' => (new Carbon($transaction['canceled_at']))->format('Y-m-d\Th:i:s'),
                 'Plan When Churned' => $planName,
-                'Paid Lifetime' => Carbon::createFromTimestampUTC($planStart)->diffInDays(Carbon::timestamp($transaction['ended_at'])->timezone('UTC')) . ' days'
+                'Paid Lifetime' => (new Carbon)->createFromTimestampUTC($planStart)
+                    ->diffInDays((new Carbon(timestamp($transaction['ended_at'])))
+                        ->timezone('UTC')) . ' days'
             ];
             $trackingData = [
                 ['Subscription', ['Status' => 'Canceled', 'Upgraded' => false]],
@@ -125,7 +107,9 @@ class RecordStripeEvent extends FormRequest
                 if ($planAmount < $oldPlanAmount) {
                     $profileData = [
                         'Subscription' => $planName,
-                        'Churned' => Carbon::timestamp($transaction['ended_at'])->timezone('UTC')->format('Y-m-d\Th:i:s'),
+                        'Churned' => (new Carbon($transaction['ended_at']))
+                            ->timezone('UTC')
+                            ->format('Y-m-d\Th:i:s'),
                         'Plan When Churned' => $oldPlanName,
                     ];
                     $trackingData = [
@@ -186,15 +170,10 @@ class RecordStripeEvent extends FormRequest
             }
         }
 
-        event(new MixpanelEvent($user, $trackingData, $charge, $profileData));
+        event(new MixpanelEvent($user, $trackingData, 0, $profileData));
     }
 
-    /**
-     * @param $transaction
-     *
-     * @return mixed
-     */
-    private function findStripeCustomerId($transaction)
+    private function findStripeCustomerId(array $transaction)
     {
         if (array_key_exists('customer', $transaction)) {
             return $transaction['customer'];
