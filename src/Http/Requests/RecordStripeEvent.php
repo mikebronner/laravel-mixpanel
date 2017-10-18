@@ -1,6 +1,5 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Http\Requests;
 
-use Carbon\Carbon;
 use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
