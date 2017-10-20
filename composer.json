@@ -30,6 +30,7 @@
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "laravel/laravel": "5.5.*",
+        "laravel/browser-kit-testing": "^2.0",
         "mockery/mockery": "0.9.*",
         "phpmd/phpmd": "^2.6",
         "phpunit/phpunit": "5.7.*",

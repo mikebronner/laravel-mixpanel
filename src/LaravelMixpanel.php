@@ -12,12 +12,6 @@ class LaravelMixpanel extends Mixpanel
     private $defaults;
     private $request;
 
-    /**
-     * @param Request $request
-     * @param array   $options
-     *
-     * @internal param Result $browser
-     */
     public function __construct(Request $request, array $options = [])
     {
         $this->defaults = [
@@ -33,13 +27,7 @@ class LaravelMixpanel extends Mixpanel
         );
     }
 
-    /**
-     * @param string $event
-     * @param array  $properties
-     *
-     * @internal param array $data
-     */
-    public function track($event, $properties = [])
+    public function track(string $event, array $properties = []) : array
     {
         $browserInfo = new Browser();
         $osInfo = new Os();

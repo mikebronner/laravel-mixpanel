@@ -24,6 +24,7 @@ class LaravelMixpanelEventHandler
 
     public function onUserLogin($login)
     {
+        dd('test', $login);
         $user = $login->user ?? $login;
         event(new MixpanelEvent($user, 'User Logged In'));
     }
@@ -36,10 +37,6 @@ class LaravelMixpanelEventHandler
 
     public function subscribe(Dispatcher $events)
     {
-        $events->listen('auth.attempt', self::class . '@onUserLoginAttempt');
-        $events->listen('auth.login', self::class . '@onUserLogin');
-        $events->listen('auth.logout', self::class . '@onUserLogout');
-
         $events->listen(Attempting::class, self::class . '@onUserLoginAttempt');
         $events->listen(Login::class, self::class . '@onUserLogin');
         $events->listen(Logout::class, self::class . '@onUserLogout');
