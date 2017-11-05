@@ -11,7 +11,7 @@ use Illuminate\HTTP\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
 
-abstract class Service extends EventServiceProvider
+class Service extends EventServiceProvider
 {
     protected $defer = false;
     protected $listen = [

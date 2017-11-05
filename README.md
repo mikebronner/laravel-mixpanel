@@ -33,7 +33,7 @@ composer require genealabs/laravel-mixpanel
 **Only if you are running Laravel 5.4 or below:**
 Add the service provider entry in `config\app.php`:
 ```php
-GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelService::class,
+GeneaLabs\LaravelMixpanel\Providers\Service::class,
 ```
 
 Verify that your auth configuration file `config/auth.php` has the user model
