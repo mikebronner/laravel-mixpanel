@@ -13,7 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.7.2] - 5 Nov 2017
 ### Fixed
-- inclusion of autotrack JS scripts. NPM library is broken and seems to not be maintained anymore, switched to script provided by mixpanel setup instructions.
+- inclusion of auto-track JS scripts. NPM library is broken and seems to not be maintained anymore, switched to script provided by mixpanel setup instructions.
 
 ## [0.7.1] - 18 Oct 2017
 ### Updated
