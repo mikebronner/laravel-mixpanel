@@ -1,4 +1,5 @@
 # MixPanel for Laravel 5
+[![Join the chat at https://gitter.im/GeneaLabs/laravel-mixpanel](https://badges.gitter.im/GeneaLabs/laravel-mixpanel.svg)](https://gitter.im/GeneaLabs/laravel-mixpanel?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Travis](https://img.shields.io/travis/GeneaLabs/laravel-mixpanel.svg)](https://travis-ci.org/GeneaLabs/laravel-mixpanel)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/12e6aa84-a68b-4cd3-a8ca-10d12b11cca6.svg)](https://insight.sensiolabs.com/projects/12e6aa84-a68b-4cd3-a8ca-10d12b11cca6)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/GeneaLabs/laravel-mixpanel.svg)](https://scrutinizer-ci.com/g/GeneaLabs/laravel-mixpanel)
@@ -32,7 +33,7 @@ composer require genealabs/laravel-mixpanel
 **Only if you are running Laravel 5.4 or below:**
 Add the service provider entry in `config\app.php`:
 ```php
-GeneaLabs\LaravelMixpanel\Providers\LaravelMixpanelService::class,
+GeneaLabs\LaravelMixpanel\Providers\Service::class,
 ```
 
 Verify that your auth configuration file `config/auth.php` has the user model
