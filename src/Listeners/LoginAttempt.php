@@ -1,10 +1,11 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
-use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
+use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent as Mixpanel;
+use Illuminate\Auth\Events\Attempting;
 
 class LoginAttempt
 {
-    public function handle($event)
+    public function handle(Attempting $event)
     {
         $email = $event->credentials['email'] ?? $event['email'] ?? '';
 
@@ -14,6 +15,6 @@ class LoginAttempt
             ->first();
         $eventName = 'Login Attempted';
 
-        event(new MixpanelEvent($user, $eventName));
+        event(new Mixpanel($user, $eventName));
     }
 }

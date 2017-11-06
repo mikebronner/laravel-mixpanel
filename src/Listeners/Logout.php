@@ -1,11 +1,12 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
-use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
+use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent as Mixpanel;
+use Illuminate\Auth\Events\Logout as LogoutEvent;
 
 class Logout
 {
-    public function handle($logout)
+    public function handle(LogoutEvent $logout)
     {
-        event(new MixpanelEvent($logout->user, 'User Logged Out'));
+        event(new Mixpanel($logout->user, 'User Logged Out'));
     }
 }
