@@ -11,9 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming web-hook events that are in test mode.
 
-## [WIP] - 5 Nov 2017
+## [0.7.3] - 5 Nov 2017
 ### Added
-- unit and feature tests.
+- initial integration tests.
 
 ### Changed
 - class structure as part of refactoring.
