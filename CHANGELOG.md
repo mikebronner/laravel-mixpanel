@@ -11,6 +11,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming web-hook events that are in test mode.
 
+## [WIP] - 5 Nov 2017
+### Added
+- unit and feature tests.
+
+### Changed
+- class structure as part of refactoring.
+
 ## [0.7.2] - 5 Nov 2017
 ### Fixed
 - inclusion of auto-track JS scripts. NPM library is broken and seems to not be maintained anymore, switched to script provided by mixpanel setup instructions.

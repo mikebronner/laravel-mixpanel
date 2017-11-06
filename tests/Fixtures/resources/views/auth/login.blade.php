@@ -51,9 +51,7 @@
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
-                                <input type="submit" class="btn btn-primary">
-                                    Login
-                                </input>
+                                <input type="submit" class="btn btn-primary" value="Login">
 
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     Forgot Your Password?

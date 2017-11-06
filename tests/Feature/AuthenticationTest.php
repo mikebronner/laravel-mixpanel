@@ -2,7 +2,8 @@
 
 use App\User;
 use GeneaLabs\LaravelMixpanel\Tests\FeatureTestCase;
-use GeneaLabs\LaravelMixpanel\Listeners\Attempt;
+use GeneaLabs\LaravelMixpanel\Listeners\LoginAttempt;
+use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
 use Illuminate\Auth\Events\Attempting;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
@@ -17,29 +18,28 @@ class AuthenticationTest extends FeatureTestCase
 
     public function testLoginAttempt()
     {
-        $this->expectsEvents(Attempting::class);
-        $listener = Mockery::spy(Attempt::class);
-        app()->instance(Attempt::class, $listener);
+        Event::fake([MixpanelEvent::class]);
+        $user = factory(User::class)->create();
 
         $result = $this->visit('/login')
-            ->type('test@noemail.com', 'email')
+            ->type($user->email, 'email')
             ->type('hoogabaloo', 'password')
             ->press('Login');
 
         $this->assertResponseStatus(200);
         $result->seePageIs('/login');
-        $listener->shouldHaveReceived('handle');
+        Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {
+            return ($event->user->email === $user->email && $event->eventName === 'Login Attempted');
+        });
     }
 
     public function testLoginSuccess()
     {
+        Event::fake([MixpanelEvent::class]);
         $password = 'hoogabaloo';
         $user = factory(User::class)->create([
             'password' => bcrypt($password),
         ]);
-        $this->expectsEvents(Login::class);
-        // $listener = Mockery::spy(LaravelMixpanelEventHandler::class);
-        // app()->instance(LaravelMixpanelEventHandler::class, $listener);
 
         $result = $this->visit('/login')
             ->type($user->email, 'email')
@@ -47,22 +47,23 @@ class AuthenticationTest extends FeatureTestCase
             ->press('Login');
 
         $this->assertResponseStatus(200);
-        // $listener->shouldHaveReceived('handle');
         $result->seePageIs('/home');
+        Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {
+            return ($event->user->email === $user->email && $event->eventName === 'User Logged In');
+        });
     }
 
     public function testLogoutSuccess()
     {
+        Event::fake([MixpanelEvent::class]);
         $user = factory(User::class)->create();
-        $this->expectsEvents(Logout::class);
-        // $listener = Mockery::spy(LaravelMixpanelEventHandler::class);
-        // app()->instance(LaravelMixpanelEventHandler::class, $listener);
 
-        $this->actingAs($user)
+        $result = $this->actingAs($user)
             ->post('/logout');
 
-        // $this->assertResponseStatus(200);
-        // $listener->shouldHaveReceived('handle');
         $this->assertRedirectedTo('/');
+        Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {
+            return ($event->user->email === $user->email && $event->eventName === 'User Logged Out');
+        });
     }
 }

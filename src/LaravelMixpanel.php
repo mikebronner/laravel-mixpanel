@@ -27,7 +27,7 @@ class LaravelMixpanel extends Mixpanel
         );
     }
 
-    public function track(string $event, array $properties = []) : array
+    public function track($event, $properties = [])
     {
         $browserInfo = new Browser();
         $osInfo = new Os();

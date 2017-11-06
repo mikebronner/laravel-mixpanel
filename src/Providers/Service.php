@@ -28,11 +28,9 @@ class Service extends EventServiceProvider
 
     public function boot()
     {
-        include __DIR__ . '/../../routes/api.php';
+        parent::boot();
 
-        // if (app()->environment('testing')) {
-        //     $this->loadViewsFrom(__DIR__ . '/../../tests/resources/views', 'genealabs-laravel-mixpanel');
-        // }
+        include __DIR__ . '/../../routes/api.php';
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'genealabs-laravel-mixpanel');
         $this->publishes([
@@ -42,7 +40,6 @@ class Service extends EventServiceProvider
         if (config('services.mixpanel.enable-default-tracking')) {
             $authModel = config('auth.providers.users.model') ?? config('auth.model');
             $this->app->make($authModel)->observe(new LaravelMixpanelUserObserver());
-            // app('events')->subscribe(new LaravelMixpanelEventHandler());
         }
     }
 

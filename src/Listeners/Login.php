@@ -6,8 +6,6 @@ class Login
 {
     public function handle($login)
     {
-        dd('test', $login);
-        $user = $login->user ?? $login;
-        event(new MixpanelEvent($user, 'User Logged In'));
+        event(new MixpanelEvent($login->user, 'User Logged In'));
     }
 }

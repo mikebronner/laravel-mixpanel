@@ -6,7 +6,6 @@ class Logout
 {
     public function handle($logout)
     {
-        $user = $logout->user ?? $logout;
-        event(new MixpanelEvent($user, 'User Logged Out'));
+        event(new MixpanelEvent($logout->user, 'User Logged Out'));
     }
 }
