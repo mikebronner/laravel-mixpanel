@@ -1,26 +1,26 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
-use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
+use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent as Mixpanel;
 
 class LaravelMixpanelUserObserver
 {
     public function created($user)
     {
-        event(new MixpanelEvent($user, 'User: Registered'));
+        event(new Mixpanel($user, 'User: Registered'));
     }
 
     public function saving($user)
     {
-        event(new MixpanelEvent($user, 'User: Updated'));
+        event(new Mixpanel($user, 'User: Updated'));
     }
 
     public function deleting($user)
     {
-        event(new MixpanelEvent($user, 'User: Deactivated'));
+        event(new Mixpanel($user, 'User: Deactivated'));
     }
 
     public function restored($user)
     {
-        event(new MixpanelEvent($user, 'User: Reactivated'));
+        event(new Mixpanel($user, 'User: Reactivated'));
     }
 }

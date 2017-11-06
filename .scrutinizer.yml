@@ -2,3 +2,4 @@ filter:
     excluded_paths:
         - "public/"
         - "tests/"
+        - "resources/assets/js/mixpanel.js"
