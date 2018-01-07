@@ -34,8 +34,10 @@
         "mockery/mockery": "0.9.*",
         "phpmd/phpmd": "^2.6",
         "phpunit/phpunit": "5.7.*",
-        "satooshi/php-coveralls" : "dev-master@dev",
-        "sebastian/phpcpd": "*"
+        "sebastian/phpcpd": "*",
+        "symfony/thanks": "^1.0",
+        "codedungeon/phpunit-result-printer": "^0.5.0",
+        "php-coveralls/php-coveralls": "^2.0"
     },
     "autoload-dev": {
         "psr-4": {
@@ -46,7 +48,10 @@
         "laravel": {
             "providers": [
                 "GeneaLabs\\LaravelMixpanel\\Providers\\Service"
-            ]
+            ],
+            "alias": {
+                "Mixpanel": "GeneaLabs\\LaravelMixpanel\\Facades\\Mixpanel"
+            }
         }
     }
 }

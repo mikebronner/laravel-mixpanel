@@ -1,7 +1,6 @@
 # MixPanel for Laravel 5
 [![Join the chat at https://gitter.im/GeneaLabs/laravel-mixpanel](https://badges.gitter.im/GeneaLabs/laravel-mixpanel.svg)](https://gitter.im/GeneaLabs/laravel-mixpanel?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Travis](https://img.shields.io/travis/GeneaLabs/laravel-mixpanel.svg)](https://travis-ci.org/GeneaLabs/laravel-mixpanel)
-[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/12e6aa84-a68b-4cd3-a8ca-10d12b11cca6.svg)](https://insight.sensiolabs.com/projects/12e6aa84-a68b-4cd3-a8ca-10d12b11cca6)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/GeneaLabs/laravel-mixpanel.svg)](https://scrutinizer-ci.com/g/GeneaLabs/laravel-mixpanel)
 [![Coveralls](https://img.shields.io/coveralls/GeneaLabs/laravel-mixpanel.svg)](https://coveralls.io/github/GeneaLabs/laravel-mixpanel)
 [![GitHub (pre-)release](https://img.shields.io/github/release/GeneaLabs/laravel-mixpanel/all.svg)](https://github.com/GeneaLabs/laravel-mixpanel)
@@ -77,52 +76,6 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
 - Page view tracking has been removed in favor of Mixpanels in-built Autotrack functionality, which tracks all page views. To turn it on, visit your Mixpanel dashboard, click *Applications > Autotrack > Web > etc.* and enable Autotracking.
 
 ## Usage
-### PHP Events
-
-### Stripe Web-Hook
-If you wish to take advantage of the Stripe web-hook and track revenue per user,
- you should install Cashier: https://www.laravel.com/docs/5.5/billing
-
-Once that has been completed, exempt the web-hook endpoint from CSRF-validation
- in `/app/Http/Middleware/VerifyCsrfToken.php`:
-```php
-    protected $except = [
-        'genealabs/laravel-mixpanel/stripe',
-    ];
-```
-
-The only other step remaining is to register the web-hook with Stripe:
-  Log into your Stripe account: https://dashboard.stripe.com/dashboard, and open
-   your account settings' webhook tab:
-
-  Enter your MixPanel web-hook URL, similar to the following: `http://<your server.com>/genealabs/laravel-mixpanel/stripe`:
-   ![screen shot 2015-05-31 at 1 35 01 pm](https://cloud.githubusercontent.com/assets/1791050/7903765/53ba6fe4-079b-11e5-9f92-a588bd81641d.png)
-
-  Be sure to select "Live" if you are actually running live (otherwise put into test mode and update when you go live).
-   Also, choose "Send me all events" to make sure Laravel Mixpanel can make full use of the Stripe data.
-
-### JavaScript Events & Auto-Track
-#### Blade Template (Recommended)
-First publish the necessary assets:
-```sh
-php artisan mixpanel:publish --assets
-```
-
-Then add the following to the head section of your layout template (already does
- the init call for you, using the token from your .env file):
-```blade
-@include('genealabs-laravel-mixpanel::partials.mixpanel')
-```
-
-#### Laravel Elixir
-Add the following lines to your `/resources/js/app.js` (or equivalent), and
- don't forget to replace `YOUR_MIXPANEL_TOKEN` with your actual token:
-```js
-require('./../../../public/genealabs-laravel-mixpanel/js/mixpanel.js');
-mixpanel.init("YOUR_MIXPANEL_TOKEN");
-```
-
-## Usage
 MixPanel is loaded into the IoC as a singleton. This means you don't have to manually call $mixPanel::getInstance() as
 described in the MixPanel docs. This is already done for you in the ServiceProvider.
 
@@ -154,7 +107,8 @@ class MyClass
 
 If DI is impractical in certain situations, you can also manually retrieve it from the IoC:
 ```php
-$mixPanel = app('mixpanel');
+$mixPanel = app('mixpanel'); // using app helper
+$mixPanel = Mixpanel::getFacadeRoot(); // using facade
 ```
 
 After that you can make the usual calls to the MixPanel API:
@@ -164,6 +118,49 @@ After that you can make the usual calls to the MixPanel API:
 - `$mixPanel->people->set($user->id, [$data]);`
 
   And so on ...
+
+  ### Stripe Web-Hook
+  If you wish to take advantage of the Stripe web-hook and track revenue per user,
+   you should install Cashier: https://www.laravel.com/docs/5.5/billing
+
+  Once that has been completed, exempt the web-hook endpoint from CSRF-validation
+   in `/app/Http/Middleware/VerifyCsrfToken.php`:
+  ```php
+      protected $except = [
+          'genealabs/laravel-mixpanel/stripe',
+      ];
+  ```
+
+  The only other step remaining is to register the web-hook with Stripe:
+    Log into your Stripe account: https://dashboard.stripe.com/dashboard, and open
+     your account settings' webhook tab:
+
+    Enter your MixPanel web-hook URL, similar to the following: `http://<your server.com>/genealabs/laravel-mixpanel/stripe`:
+     ![screen shot 2015-05-31 at 1 35 01 pm](https://cloud.githubusercontent.com/assets/1791050/7903765/53ba6fe4-079b-11e5-9f92-a588bd81641d.png)
+
+    Be sure to select "Live" if you are actually running live (otherwise put into test mode and update when you go live).
+     Also, choose "Send me all events" to make sure Laravel Mixpanel can make full use of the Stripe data.
+
+  ### JavaScript Events & Auto-Track
+  #### Blade Template (Recommended)
+  First publish the necessary assets:
+  ```sh
+  php artisan mixpanel:publish --assets
+  ```
+
+  Then add the following to the head section of your layout template (already does
+   the init call for you, using the token from your .env file):
+  ```blade
+  @include('genealabs-laravel-mixpanel::partials.mixpanel')
+  ```
+
+  #### Laravel Elixir
+  Add the following lines to your `/resources/js/app.js` (or equivalent), and
+   don't forget to replace `YOUR_MIXPANEL_TOKEN` with your actual token:
+  ```js
+  require('./../../../public/genealabs-laravel-mixpanel/js/mixpanel.js');
+  mixpanel.init("YOUR_MIXPANEL_TOKEN");
+  ```
 
 ### Laravel Integration
 Out of the box it will record the common events anyone would want to track. Also, if the default `$user->name` field is
@@ -340,3 +337,36 @@ Out of the box it will record the following Stripe events in MixPanel for you:
     - Churned: <date plan was downgraded>
     - Plan When Churned: <plan name prior to downgrading>
   ```
+
+# The Fine Print
+## Commitment to Quality
+During package development I try as best as possible to embrace good design and
+development practices to try to ensure that this package is as good as it can
+be. My checklist for package development includes:
+
+-   ✅ Achieve as close to 100% code coverage as possible using unit tests.
+-   ✅ Eliminate any issues identified by SensioLabs Insight and Scrutinizer.
+-   ✅ Be fully PSR1, PSR2, and PSR4 compliant.
+-   ✅ Include comprehensive documentation in README.md.
+-   ✅ Provide an up-to-date CHANGELOG.md which adheres to the format outlined
+    at <http://keepachangelog.com>.
+-   ✅ Have no PHPMD or PHPCS warnings throughout all code.
+
+## Contributing
+Please observe and respect all aspects of the included Code of Conduct <https://github.com/GeneaLabs/laravel-model-caching/blob/master/CODE_OF_CONDUCT.md>.
+
+### Reporting Issues
+When reporting issues, please fill out the included template as completely as
+possible. Incomplete issues may be ignored or closed if there is not enough
+information included to be actionable.
+
+### Submitting Pull Requests
+Please review the Contribution Guidelines <https://github.com/GeneaLabs/laravel-model-caching/blob/master/CONTRIBUTING.md>.
+Only PRs that meet all criterium will be accepted.
+
+## ❤️ Open-Source Software - Give ⭐️
+We have included the awesome `symfony/thanks` composer package as a dev
+dependency. Let your OS package maintainers know you appreciate them by starring
+the packages you use. Simply run composer thanks after installing this package.
+(And not to worry, since it's a dev-dependency it won't be installed in your
+live environment.)
