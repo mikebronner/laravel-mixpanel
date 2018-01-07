@@ -92,7 +92,7 @@ Common user events are automatically recorded:
 
 To make custom events, simple get MixPanel from the IoC using DI:
 ```php
-use GeneaLabs\LaravelMixPanel\LaravelMixPanel;
+use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
 
 class MyClass
 {
