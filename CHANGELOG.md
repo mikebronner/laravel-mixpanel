@@ -5,11 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## TODO
 - http://phppackagechecklist.com/#1,2,3,4,5,6,9,10,11,12,13,14
   Complete check list items.
-- Add unit tests.
-- Add facade(s) for use in views.
 - Detect through subscription create when a user had previously unsubscribed (churn), then resubscribes (unchurn).
 (This is already detected in subscription update.)
 - Filter any incoming web-hook events that are in test mode.
+
+## [0.7.4] - 7 Jan 2018
+### Added
+- Laravel 5.6 compatibility.
 
 ## [0.7.4] - 7 Jan 2018
 ### Added
