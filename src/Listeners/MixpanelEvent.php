@@ -1,7 +1,7 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
-use Carbon\Carbon;
 use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent as Event;
+use Illuminate\Support\Carbon;
 
 class MixpanelEvent
 {
@@ -42,7 +42,7 @@ class MixpanelEvent
             '$name' => $user->name,
             '$email' => $user->email,
             '$created' => ($user->created_at
-                ? (new Carbon)
+                ? (new Carbon())
                     ->parse($user->created_at)
                     ->format('Y-m-d\Th:i:s')
                 : null),

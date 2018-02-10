@@ -1,9 +1,6 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Events;
 
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Support\Collection;
-use Carbon\Carbon;
 
 class MixpanelEvent
 {
