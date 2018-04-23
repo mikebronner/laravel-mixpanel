@@ -20,7 +20,9 @@ class MixpanelEvent
                 app('mixpanel')->people->trackCharge($user->id, $event->charge);
             }
 
-            app('mixpanel')->track($event->eventName);
+            foreach ($event->trackingData as $eventName => $data) {
+                app('mixpanel')->track($eventName, $data);
+            }
         }
     }
 

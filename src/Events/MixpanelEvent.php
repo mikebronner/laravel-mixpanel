@@ -7,14 +7,14 @@ class MixpanelEvent
     use SerializesModels;
 
     public $charge;
-    public $eventName;
     public $profileData;
+    public $trackingData;
     public $user;
 
-    public function __construct($user, string $eventName, int $charge = 0, array $profileData = [])
+    public function __construct($user, array $trackingData, int $charge = 0, array $profileData = [])
     {
         $this->charge = $charge;
-        $this->eventName = $eventName;
+        $this->trackingData = $trackingData;
         $this->profileData = $profileData;
         $this->user = $user;
     }

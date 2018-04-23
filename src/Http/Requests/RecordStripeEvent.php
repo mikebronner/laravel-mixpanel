@@ -170,7 +170,9 @@ class RecordStripeEvent extends FormRequest
             }
         }
 
-        event(new MixpanelEvent($user, $trackingData, 0, $profileData));
+        if ($trackingData) {
+            event(new MixpanelEvent($user, $trackingData, 0, $profileData));
+        }
     }
 
     private function findStripeCustomerId(array $transaction)
