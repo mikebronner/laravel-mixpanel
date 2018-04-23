@@ -13,8 +13,7 @@ class LoginAttempt
         $user = app($authModel)
             ->where('email', $email)
             ->first();
-        $eventName = 'Login Attempted';
 
-        event(new Mixpanel($user, $eventName));
+        event(new Mixpanel($user, ['Login Attempted']));
     }
 }

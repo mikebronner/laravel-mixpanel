@@ -7,6 +7,6 @@ class Login
 {
     public function handle(LoginEvent $login)
     {
-        event(new Mixpanel($login->user, 'User Logged In'));
+        event(new Mixpanel($login->user, ['User Logged In']));
     }
 }
