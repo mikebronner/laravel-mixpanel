@@ -29,7 +29,7 @@ class AuthenticationTest extends FeatureTestCase
         $this->assertResponseStatus(200);
         $result->seePageIs('/login');
         Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {
-            return ($event->user->email === $user->email && $event->eventName === 'Login Attempted');
+            return ($event->user->email === $user->email && $event->name() === 'Login Attempted');
         });
     }
 
@@ -49,7 +49,7 @@ class AuthenticationTest extends FeatureTestCase
         $this->assertResponseStatus(200);
         $result->seePageIs('/home');
         Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {
-            return ($event->user->email === $user->email && $event->eventName === 'User Logged In');
+            return ($event->user->email === $user->email && $event->name() === 'User Logged In');
         });
     }
 
@@ -63,7 +63,7 @@ class AuthenticationTest extends FeatureTestCase
 
         $this->assertRedirectedTo('/');
         Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {
-            return ($event->user->email === $user->email && $event->eventName === 'User Logged Out');
+            return ($event->user->email === $user->email && $event->name() === 'User Logged Out');
         });
     }
 }

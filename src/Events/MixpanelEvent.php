@@ -18,4 +18,15 @@ class MixpanelEvent
         $this->profileData = $profileData;
         $this->user = $user;
     }
+
+    public function name() : string
+    {
+        $name = array_keys($this->trackingData)[0];
+
+        if ($name === 0) {
+            $name = $this->trackingData[0];
+        }
+
+        return $name;
+    }
 }
