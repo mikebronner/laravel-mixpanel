@@ -79,6 +79,7 @@ class RecordStripeEvent extends FormRequest
 
     private function recordSubscription(array $transaction, $user, array $originalValues = [])
     {
+        $trackingData = [];
         $planStatus = array_key_exists('status', $transaction) ? $transaction['status'] : null;
         $planName = isset($transaction['plan']['name']) ? $transaction['plan']['name'] : null;
         $planStart = array_key_exists('start', $transaction) ? $transaction['start'] : null;
@@ -169,9 +170,7 @@ class RecordStripeEvent extends FormRequest
             }
         }
 
-        if ($trackingData) {
-            event(new MixpanelEvent($user, $trackingData, 0, $profileData));
-        }
+        event(new MixpanelEvent($user, $trackingData, 0, $profileData));
     }
 
     private function findStripeCustomerId(array $transaction)
