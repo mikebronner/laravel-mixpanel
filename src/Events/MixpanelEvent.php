@@ -1,6 +1,7 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Events;
 
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class MixpanelEvent
 {
@@ -19,14 +20,9 @@ class MixpanelEvent
         $this->user = $user;
     }
 
-    public function name() : string
+    public function names() : Collection
     {
-        $name = array_keys($this->trackingData)[0];
-
-        if ($name === 0) {
-            $name = $this->trackingData[0];
-        }
-
-        return $name;
+        return collect($this->trackingData)
+            ->keys();
     }
 }

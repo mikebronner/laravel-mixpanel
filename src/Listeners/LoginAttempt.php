@@ -14,6 +14,6 @@ class LoginAttempt
             ->where('email', $email)
             ->first();
 
-        event(new Mixpanel($user, ['Login Attempted']));
+        event(new Mixpanel($user, ['Login Attempted' => []]));
     }
 }

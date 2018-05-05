@@ -68,8 +68,7 @@ class RecordStripeEvent extends FormRequest
         }
 
         $trackingData = [
-            'Payment',
-            [
+            'Payment' => [
                 'Status' => $status,
                 'Amount' => $amount,
             ],
@@ -97,8 +96,8 @@ class RecordStripeEvent extends FormRequest
                         ->timezone('UTC')) . ' days'
             ];
             $trackingData = [
-                ['Subscription', ['Status' => 'Canceled', 'Upgraded' => false]],
-                ['Churn! :-('],
+                'Subscription' => ['Status' => 'Canceled', 'Upgraded' => false],
+                'Churn! :-(' => [],
             ];
         }
 
@@ -113,12 +112,12 @@ class RecordStripeEvent extends FormRequest
                         'Plan When Churned' => $oldPlanName,
                     ];
                     $trackingData = [
-                        ['Subscription', [
+                        'Subscription' => [
                             'Upgraded' => false,
                             'FromPlan' => $oldPlanName,
                             'ToPlan' => $planName,
-                        ]],
-                        ['Churn! :-('],
+                        ],
+                        'Churn! :-(' => [],
                     ];
                 }
 
@@ -127,12 +126,12 @@ class RecordStripeEvent extends FormRequest
                         'Subscription' => $planName,
                     ];
                     $trackingData = [
-                        ['Subscription', [
+                        'Subscription' => [
                             'Upgraded' => true,
                             'FromPlan' => $oldPlanName,
                             'ToPlan' => $planName,
-                        ]],
-                        ['Unchurn! :-)'],
+                        ],
+                        'Unchurn! :-)' => [],
                     ];
                 }
             } else {
@@ -141,12 +140,12 @@ class RecordStripeEvent extends FormRequest
                         'Subscription' => $planName,
                     ];
                     $trackingData = [
-                        ['Subscription', [
+                        'Subscription' => [
                             'Upgraded' => true,
                             'FromPlan' => 'Trial',
                             'ToPlan' => $planName,
-                        ]],
-                        ['Unchurn! :-)'],
+                        ],
+                        'Unchurn! :-)' => [],
                     ];
                 }
             }
@@ -156,7 +155,7 @@ class RecordStripeEvent extends FormRequest
                     'Subscription' => $planName,
                 ];
                 $trackingData = [
-                    ['Subscription', ['Status' => 'Created']],
+                    'Subscription' => ['Status' => 'Created'],
                 ];
             }
 
@@ -165,7 +164,7 @@ class RecordStripeEvent extends FormRequest
                     'Subscription' => 'Trial',
                 ];
                 $trackingData = [
-                    ['Subscription', ['Status' => 'Trial']],
+                    'Subscription' => ['Status' => 'Trial'],
                 ];
             }
         }
