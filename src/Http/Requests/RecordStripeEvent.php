@@ -79,6 +79,7 @@ class RecordStripeEvent extends FormRequest
 
     private function recordSubscription(array $transaction, $user, array $originalValues = [])
     {
+        $profileData = [];
         $trackingData = [];
         $planStatus = array_key_exists('status', $transaction) ? $transaction['status'] : null;
         $planName = isset($transaction['plan']['name']) ? $transaction['plan']['name'] : null;
