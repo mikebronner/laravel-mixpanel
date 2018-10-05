@@ -9,6 +9,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming web-hook events that are in test mode.
 
+## [0.7.5] - 5 Oct 2018
+### Added
+- Laravel 5.7 compatibility.
+
+### Updated
+- Stripe API compatibility.
+
 ## [0.7.4] - 7 Jan 2018
 ### Added
 - Laravel 5.6 compatibility.

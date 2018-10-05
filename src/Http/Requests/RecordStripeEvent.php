@@ -91,11 +91,14 @@ class RecordStripeEvent extends FormRequest
         if ($planStatus === 'canceled') {
             $profileData = [
                 'Subscription' => 'None',
-                'Churned' => Carbon::createFromTimestamp($transaction['canceled_at'])->format('Y-m-d\Th:i:s'),
+                'Churned' => (new Carbon)
+                    ->createFromTimestamp($transaction['canceled_at'])
+                    ->format('Y-m-d\Th:i:s'),
                 'Plan When Churned' => $planName,
-                'Paid Lifetime' => (new Carbon)->createFromTimestampUTC($planStart)
-                    ->diffInDays(Carbon::createFromTimestamp($transaction['ended_at'])
-                        ->timezone('UTC')) . ' days'
+                'Paid Lifetime' => (new Carbon)
+                    ->createFromTimestampUTC($planStart)
+                    ->diffInDays((new Carbon)->createFromTimestamp($transaction['ended_at'])
+                    ->timezone('UTC')) . ' days'
             ];
             $trackingData = [
                 'Subscription' => ['Status' => 'Canceled', 'Upgraded' => false],
