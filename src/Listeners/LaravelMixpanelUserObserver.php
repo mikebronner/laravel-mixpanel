@@ -6,21 +6,29 @@ class LaravelMixpanelUserObserver
 {
     public function created($user)
     {
-        event(new Mixpanel($user, ['User: Registered' => []]));
+        if (config("services.mixpanel.enable-default-tracking")) {
+            event(new Mixpanel($user, ['User: Registered' => []]));
+        }
     }
 
     public function saving($user)
     {
-        event(new Mixpanel($user, ['User: Updated' => []]));
+        if (config("services.mixpanel.enable-default-tracking")) {
+            event(new Mixpanel($user, ['User: Updated' => []]));
+        }
     }
 
     public function deleting($user)
     {
-        event(new Mixpanel($user, ['User: Deactivated' => []]));
+        if (config("services.mixpanel.enable-default-tracking")) {
+            event(new Mixpanel($user, ['User: Deactivated' => []]));
+        }
     }
 
     public function restored($user)
     {
-        event(new Mixpanel($user, ['User: Reactivated' => []]));
+        if (config("services.mixpanel.enable-default-tracking")) {
+            event(new Mixpanel($user, ['User: Reactivated' => []]));
+        }
     }
 }

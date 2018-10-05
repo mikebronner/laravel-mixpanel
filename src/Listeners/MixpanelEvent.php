@@ -9,7 +9,7 @@ class MixpanelEvent
     {
         $user = $event->user;
 
-        if ($user) {
+        if ($user && config("services.mixpanel.enable-default-tracking")) {
             $profileData = $this->getProfileData($user);
             $profileData = array_merge($profileData, $event->profileData);
 

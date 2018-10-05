@@ -7,13 +7,15 @@ class LoginAttempt
 {
     public function handle(Attempting $event)
     {
-        $email = $event->credentials['email'] ?? $event['email'] ?? '';
+        if (config("services.mixpanel.enable-default-tracking")) {
+            $email = $event->credentials['email'] ?? $event['email'] ?? '';
 
-        $authModel = config('auth.providers.users.model', config('auth.model'));
-        $user = app($authModel)
-            ->where('email', $email)
-            ->first();
+            $authModel = config('auth.providers.users.model', config('auth.model'));
+            $user = app($authModel)
+                ->where('email', $email)
+                ->first();
 
-        event(new Mixpanel($user, ['Login Attempted' => []]));
+            event(new Mixpanel($user, ['Login Attempted' => []]));
+        }
     }
 }
