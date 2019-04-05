@@ -24,19 +24,18 @@
         "illuminate/queue": "5.5 - 5.8",
         "illuminate/support": "5.5 - 5.8",
         "mixpanel/mixpanel-php": "*",
-        "sinergi/browser-detector": "~5.0"
+        "sinergi/browser-detector": "*"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
+        "fzaninotto/faker": "*",
         "laravel/laravel": "5.8",
-        "laravel/browser-kit-testing": "^4.0",
-        "mockery/mockery": "0.9.*",
-        "phpmd/phpmd": "^2.6",
+        "laravel/browser-kit-testing": "*",
+        "mockery/mockery": "*",
+        "phpmd/phpmd": "*",
         "phpunit/phpunit": "*",
         "sebastian/phpcpd": "*",
-        "symfony/thanks": "^1.0",
-        "codedungeon/phpunit-result-printer": "*",
-        "php-coveralls/php-coveralls": "^2.0"
+        "symfony/thanks": "*",
+        "php-coveralls/php-coveralls": "*"
     },
     "autoload-dev": {
         "psr-4": {
