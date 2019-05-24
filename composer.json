@@ -28,7 +28,7 @@
     },
     "require-dev": {
         "fzaninotto/faker": "*",
-        "laravel/laravel": "5.8",
+        "laravel/laravel": "5.8.17",
         "laravel/browser-kit-testing": "*",
         "mockery/mockery": "*",
         "phpmd/phpmd": "*",
