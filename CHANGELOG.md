@@ -9,6 +9,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming web-hook events that are in test mode.
 
+## [0.8.1] - 2019-07-28
+### Fixed
+- tracking of user information.
+
+## [0.8.0] - 2019-04-05
+### Added
+- Laravel 5.8 compatibility.
+
 ## [0.7.11] - 5 Oct 2018
 ### Added
 - Laravel 5.7 compatibility.
