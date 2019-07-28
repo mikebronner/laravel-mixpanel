@@ -27,7 +27,7 @@ class LaravelMixpanel extends Mixpanel
         );
     }
 
-    public function getData()
+    protected function getData() : array
     {
         $browserInfo = new Browser();
         $osInfo = new Os();
@@ -52,14 +52,13 @@ class LaravelMixpanel extends Mixpanel
             $data['$browser'] = 'Robot';
         }
 
-        return $data;
+        return array_filter($data);
     }
 
     public function track($event, $properties = [])
     {
-        $data = array_filter($this->getData());
         $properties = array_filter($properties);
         
-        parent::track($event, $properties + $data);
+        parent::track($event, $properties + $this->getData());
     }
 }
