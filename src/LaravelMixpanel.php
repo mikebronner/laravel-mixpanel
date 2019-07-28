@@ -27,7 +27,7 @@ class LaravelMixpanel extends Mixpanel
         );
     }
 
-    public function track($event, $properties = [])
+    public function getData()
     {
         $browserInfo = new Browser();
         $osInfo = new Os();
@@ -35,6 +35,7 @@ class LaravelMixpanel extends Mixpanel
         $browserVersion = trim(str_replace('unknown', '', $browserInfo->getName() . ' ' . $browserInfo->getVersion()));
         $osVersion = trim(str_replace('unknown', '', $osInfo->getName() . ' ' . $osInfo->getVersion()));
         $hardwareVersion = trim(str_replace('unknown', '', $deviceInfo->getName()));
+
         $data = [
             'Url' => $this->request->getUri(),
             'Operating System' => $osVersion,
@@ -46,13 +47,19 @@ class LaravelMixpanel extends Mixpanel
                 : null),
             'ip' => $this->request->ip(),
         ];
-        $data = array_filter($data);
-        $properties = array_filter($properties);
 
         if ((! array_key_exists('$browser', $data)) && $browserInfo->isRobot()) {
             $data['$browser'] = 'Robot';
         }
 
-        parent::track($event, $data + $properties);
+        return $data;
+    }
+
+    public function track($event, $properties = [])
+    {
+        $data = array_filter($this->getData());
+        $properties = array_filter($properties);
+        
+        parent::track($event, $properties + $data);
     }
 }
