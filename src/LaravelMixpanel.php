@@ -1,4 +1,6 @@
-<?php namespace GeneaLabs\LaravelMixpanel;
+<?php
+
+namespace GeneaLabs\LaravelMixpanel;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -9,17 +11,20 @@ use Sinergi\BrowserDetector\Os;
 
 class LaravelMixpanel extends Mixpanel
 {
+    private $callbackResults;
     private $defaults;
     private $request;
 
     public function __construct(Request $request, array $options = [])
     {
+        $this->callbackResults = [];
         $this->defaults = [
             'consumer' => config('services.mixpanel.consumer', 'socket'),
             'connect_timeout' => config('services.mixpanel.connect-timeout', 2),
             'timeout' => config('services.mixpanel.timeout', 2),
         ];
         $this->request = $request;
+
 
         parent::__construct(
             config('services.mixpanel.token'),
@@ -58,7 +63,13 @@ class LaravelMixpanel extends Mixpanel
     public function track($event, $properties = [])
     {
         $properties = array_filter($properties);
+        $data = $properties + $this->getData();
+
+        if ($callbackClass = config("services.mixpanel.data_callback_class")) {
+            $data = (new $callbackClass)->process($data);
+            $data = array_filter($data);
+        }
         
-        parent::track($event, $properties + $this->getData());
+        parent::track($event, $data);
     }
 }

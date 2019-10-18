@@ -1,4 +1,6 @@
-<?php namespace GeneaLabs\LaravelMixpanel\Tests\Unit\Facades;
+<?php
+
+namespace GeneaLabs\LaravelMixpanel\Tests\Unit\Facades;
 
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
 use GeneaLabs\LaravelMixpanel\LaravelMixpanel;

@@ -7,5 +7,6 @@ return [
         'consumer' => 'socket',
         'connect-timeout' => 2,
         'timeout' => 2,
+        "data_callback_class" => null,
     ]
 ];

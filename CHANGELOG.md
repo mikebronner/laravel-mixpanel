@@ -9,6 +9,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming web-hook events that are in test mode.
 
+## [0.9.1] - 2019-10-18
+### Added
+- functionality to inject custom data points into track events.
+
+### Fixed
+- Laravel 6.x compatibility.
+
+## [0.9.0] - 2019-08-28
+### Added
+- Laravel 6.0 compatibility.
+
 ## [0.8.1] - 2019-07-28
 ### Fixed
 - tracking of user information.

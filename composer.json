@@ -14,27 +14,28 @@
         }
     },
     "require": {
-        "illuminate/auth": "5.5 - 6.0",
-        "illuminate/config": "5.5 - 6.0",
-        "illuminate/console": "5.5 - 6.0",
-        "illuminate/events": "5.5 - 6.0",
-        "illuminate/http": "5.5 - 6.0",
-        "illuminate/routing": "5.5 - 6.0",
-        "illuminate/queue": "5.5 - 6.0",
-        "illuminate/support": "5.5 - 6.0",
-        "mixpanel/mixpanel-php": "*",
-        "sinergi/browser-detector": "*"
+        "illuminate/auth": "^5.5|^6.0",
+        "illuminate/config": "^5.5|^6.0",
+        "illuminate/console": "^5.5|^6.0",
+        "illuminate/events": "^5.5|^6.0",
+        "illuminate/http": "^5.5|^6.0",
+        "illuminate/routing": "^5.5|^6.0",
+        "illuminate/queue": "^5.5|^6.0",
+        "illuminate/support": "^5.5|^6.0",
+        "mixpanel/mixpanel-php": "^2.7",
+        "sinergi/browser-detector": "^6.1"
     },
     "require-dev": {
-        "fzaninotto/faker": "*",
-        "laravel/laravel": "dev-develop@dev",
-        "laravel/browser-kit-testing": "*",
-        "mockery/mockery": "*",
-        "phpmd/phpmd": "*",
-        "phpunit/phpunit": "*",
-        "sebastian/phpcpd": "*",
-        "symfony/thanks": "*",
-        "php-coveralls/php-coveralls": "*"
+        "fzaninotto/faker": "^1.8",
+        "laravel/laravel": "^6.0",
+        "laravel/browser-kit-testing": "^5.1",
+        "mockery/mockery": "^1.2",
+        "phpmd/phpmd": "^2.7",
+        "phpunit/phpunit": "^8.4",
+        "sebastian/phpcpd": "^4.1",
+        "symfony/thanks": "^1.0",
+        "php-coveralls/php-coveralls": "^2.1",
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "autoload-dev": {
         "psr-4": {

@@ -66,6 +66,8 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
  connections timeout.
 - `services.mixpanel.timeout`: (default: 2) set the number of seconds after which event tracking
  times out.
+- `services.mixpanel.data_callback_class`: (default: null) manipulate the data
+  being passed back to mixpanel for the track events.
 
 ## Upgrade Notes
 ### Version 0.7.0 for Laravel 5.5
@@ -232,6 +234,36 @@ the first name. Otherwise it will look for `first_name` and `last_name` fields i
     Session:
       - Status: Logged Out
   ```
+### Tracking Data Manipulation
+If you need to make changes or additions to the data being tracked, create a
+  class that implements `\GeneaLabs\LaravelMixpanel\Interfaces\DataCallback`:
+
+```php
+<?php
+
+namespace App;
+
+use GeneaLabs\LaravelMixpanel\Interfaces\DataCallback;
+
+class MixpanelUserData implements DataCallback
+{
+    public function process(array $data = []) : array
+    {
+        $data["test"] = "value";
+
+        return $data;
+    }
+}
+```
+
+Then register this class in your `services` configuration:
+
+```php
+    'mixpanel' => [
+      // ...
+        "data_callback_class" => \App\MixpanelUserData::class,
+    ]
+```
 
 ### Stripe Integration
 Many L5 sites are running Cashier to manage their subscriptions. This package creates an API webhook endpoint that keeps
