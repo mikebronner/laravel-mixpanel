@@ -8,7 +8,7 @@
 [![Packagist](https://img.shields.io/packagist/dt/GeneaLabs/laravel-mixpanel.svg)](https://packagist.org/packages/genealabs/laravel-mixpanel)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/GeneaLabs/laravel-mixpanel/master/LICENSE)
 
-[![Mixpanel for Laravel masthead image.](https://repository-images.githubusercontent.com/42419266/0f534200-f1b5-11e9-9ca7-57b0e1fe7764)]
+![Mixpanel for Laravel masthead image.](https://repository-images.githubusercontent.com/42419266/0f534200-f1b5-11e9-9ca7-57b0e1fe7764)
 
 ## Features
 - Asynchronous data transmission to Mixpanel's services. This prevents any
