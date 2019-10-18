@@ -9,7 +9,7 @@ trait CreatesApplication
     public function createApplication()
     {
         $this->copyFixtures([
-            __DIR__ . '/Fixtures/app/Http/Controllers/HomeController.php' => __DIR__ . '/../vendor/laravel/laravel/app/Http/Controllers/HomeController.php',
+            __DIR__ . '/Fixtures/App/Http/Controllers/HomeController.php' => __DIR__ . '/../vendor/laravel/laravel/app/Http/Controllers/HomeController.php',
             __DIR__ . '/Fixtures/resources/views/home.blade.php' => __DIR__ . '/../vendor/laravel/laravel/resources/views/home.blade.php',
             __DIR__ . '/Fixtures/resources/views/auth/login.blade.php' => __DIR__ . '/../vendor/laravel/laravel/resources/views/auth/login.blade.php',
             __DIR__ . '/Fixtures/resources/views/auth/register.blade.php' => __DIR__ . '/../vendor/laravel/laravel/resources/views/auth/register.blade.php',
