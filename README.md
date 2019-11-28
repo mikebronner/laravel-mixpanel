@@ -1,4 +1,5 @@
 # MixPanel for Laravel 5
+
 [![Join the chat at https://gitter.im/GeneaLabs/laravel-mixpanel](https://badges.gitter.im/GeneaLabs/laravel-mixpanel.svg)](https://gitter.im/GeneaLabs/laravel-mixpanel?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Travis](https://img.shields.io/travis/GeneaLabs/laravel-mixpanel.svg)](https://travis-ci.org/GeneaLabs/laravel-mixpanel)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/GeneaLabs/laravel-mixpanel.svg)](https://scrutinizer-ci.com/g/GeneaLabs/laravel-mixpanel)
@@ -6,6 +7,8 @@
 [![GitHub (pre-)release](https://img.shields.io/github/release/GeneaLabs/laravel-mixpanel/all.svg)](https://github.com/GeneaLabs/laravel-mixpanel)
 [![Packagist](https://img.shields.io/packagist/dt/GeneaLabs/laravel-mixpanel.svg)](https://packagist.org/packages/genealabs/laravel-mixpanel)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/GeneaLabs/laravel-mixpanel/master/LICENSE)
+
+![Mixpanel for Laravel masthead image.](https://repository-images.githubusercontent.com/42419266/0f534200-f1b5-11e9-9ca7-57b0e1fe7764)
 
 ## Features
 - Asynchronous data transmission to Mixpanel's services. This prevents any
