@@ -27,8 +27,8 @@
     },
     "require-dev": {
         "fzaninotto/faker": "^1.8",
-        "laravel/laravel": "dev-develop@dev",
-        "laravel/browser-kit-testing": "dev-master@dev",
+        "laravel/laravel": "^7.0",
+        "laravel/browser-kit-testing": "^6.0",
         "phpmd/phpmd": "^2.7",
         "phpunit/phpunit": "^8.5",
         "sebastian/phpcpd": "^5.0",
