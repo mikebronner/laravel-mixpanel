@@ -2,6 +2,7 @@
 
 return [
     'mixpanel' => [
+        'host' => 'api.mixpanel.com',
         'token' => env('MIXPANEL_TOKEN'),
         'enable-default-tracking' => true,
         'consumer' => 'socket',
