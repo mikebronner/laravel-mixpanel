@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 (This is already detected in subscription update.)
 - Filter any incoming web-hook events that are in test mode.
 
-## [0.10.2] - 2020-08-05
+## [0.10.3] - 2020-08-05
 ### Added
 - configuration option for MixPanel Host.
 
