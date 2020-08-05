@@ -60,6 +60,7 @@ MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
 
 ## Configuration
 ### Default Values
+- `services.mixpanel.host`: (default: api.mixpanel.com) the api host to use.
 - `services.mixpanel.token`: pulls the 'MIXPANEL_TOKEN' value from your `.env`
  file.
 - `services.mixpanel.enable-default-tracking`: (default: true) enable or disable Laravel user
