@@ -19,11 +19,15 @@ class LaravelMixpanel extends Mixpanel
     {
         $this->callbackResults = [];
         $this->defaults = [
-            'host' => config('services.mixpanel.host', 'api.mixpanel.com'),
             'consumer' => config('services.mixpanel.consumer', 'socket'),
             'connect_timeout' => config('services.mixpanel.connect-timeout', 2),
             'timeout' => config('services.mixpanel.timeout', 2),
         ];
+
+        if (config('services.mixpanel.host')) {
+            $this->defaults["host"] = config('services.mixpanel.host');
+        }
+
         $this->request = $request;
 
 

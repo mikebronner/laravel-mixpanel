@@ -11,6 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.setPublicPath('public')
-  .js('resources/assets/js/mixpanel.js', 'genealabs-laravel-mixpanel/js')
-  .version();
+mix
+    .setPublicPath('public')
+    .js('resources/assets/js/mixpanel.js', 'genealabs-laravel-mixpanel/js')
+    .version()
+;
