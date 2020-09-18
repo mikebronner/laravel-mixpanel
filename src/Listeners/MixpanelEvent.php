@@ -10,11 +10,18 @@ class MixpanelEvent
         $user = $event->user;
 
         if ($user && config("services.mixpanel.enable-default-tracking")) {
+
+            $userKey = $user->getKey();
+
+            if (method_exists($user, 'getMixPanelKey')) {
+                $userKey = $user->getMixPanelKey();
+            }
+
             $profileData = $this->getProfileData($user);
             $profileData = array_merge($profileData, $event->profileData);
 
-            app('mixpanel')->identify($user->getKey());
-            app('mixpanel')->people->set($user->getKey(), $profileData, request()->ip());
+            app('mixpanel')->identify($userKey);
+            app('mixpanel')->people->set($userKey, $profileData, request()->ip());
 
             if ($event->charge !== 0) {
                 app('mixpanel')->people->trackCharge($user->id, $event->charge);

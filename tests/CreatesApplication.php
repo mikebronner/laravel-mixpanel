@@ -17,6 +17,7 @@ trait CreatesApplication
             __DIR__ . '/Fixtures/resources/views/auth/passwords/reset.blade.php' => __DIR__ . '/../vendor/laravel/laravel/resources/views/auth/passwords/email.blade.php',
             __DIR__ . '/Fixtures/resources/views/layouts/app.blade.php' => __DIR__ . '/../vendor/laravel/laravel/resources/views/layouts/app.blade.php',
             __DIR__ . '/Fixtures/routes/web.php' => __DIR__ . '/../vendor/laravel/laravel/routes/web.php',
+            __DIR__ . '/Fixtures/config/app.php' => __DIR__ . '/../vendor/laravel/laravel/config/app.php',
         ]);
         $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
         $app->make(Kernel::class)->bootstrap();
