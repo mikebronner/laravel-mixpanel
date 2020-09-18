@@ -28,6 +28,7 @@
     "require-dev": {
         "fzaninotto/faker": "^1.8",
         "laravel/laravel": "^7.0",
+        "laravel/ui": "^2.0",
         "laravel/browser-kit-testing": "^6.0",
         "phpmd/phpmd": "^2.7",
         "phpunit/phpunit": "^8.5",
