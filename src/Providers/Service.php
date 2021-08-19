@@ -29,7 +29,6 @@ class Service extends EventServiceProvider
     public function boot()
     {
         parent::boot();
-
         include __DIR__ . '/../../routes/api.php';
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'genealabs-laravel-mixpanel');
@@ -45,6 +44,8 @@ class Service extends EventServiceProvider
 
     public function register()
     {
+        parent::register();
+        
         $this->mergeConfigFrom(__DIR__ . '/../../config/services.php', 'services');
         $this->commands(Publish::class);
         $this->app->singleton('mixpanel', LaravelMixpanel::class);
