@@ -45,6 +45,8 @@ class Service extends EventServiceProvider
 
     public function register()
     {
+        parent::register();
+        
         $this->mergeConfigFrom(__DIR__ . '/../../config/services.php', 'services');
         $this->commands(Publish::class);
         $this->app->singleton('mixpanel', LaravelMixpanel::class);
