@@ -8,6 +8,11 @@
 
 ![Mixpanel for Laravel masthead image.](https://repository-images.githubusercontent.com/42419266/0f534200-f1b5-11e9-9ca7-57b0e1fe7764)
 
+## Sponsors
+We like to thank the following sponsors for their generosity. Please take a moment to check them out.
+
+- [LIX](https://lix-it.com)
+
 ## Features
 - Asynchronous data transmission to Mixpanel's services. This prevents any
  delays to your application if Mixpanel is down, or slow to respond.
