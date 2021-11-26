@@ -24,7 +24,7 @@ We like to thank the following sponsors for their generosity. Please take a mome
 
 ## Requirements and Compatibility
 - PHP >= 7.2
-- Laravel >= 7.0
+- Laravel >= 8.0
 
 ### Legacy Versions
 - [Laravel 5.2](https://github.com/GeneaLabs/laravel-mixpanel/tree/afcf3737412c1aebfa9dd1d7687001f78bdb3956)
