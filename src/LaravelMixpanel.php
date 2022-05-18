@@ -22,6 +22,7 @@ class LaravelMixpanel extends Mixpanel
             'consumer' => config('services.mixpanel.consumer', 'socket'),
             'connect_timeout' => config('services.mixpanel.connect-timeout', 2),
             'timeout' => config('services.mixpanel.timeout', 2),
+            'debug' => config('services.mixpanel.debug', false),
         ];
 
         if (config('services.mixpanel.host')) {
