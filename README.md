@@ -46,20 +46,21 @@ We like to thank the following sponsors for their generosity. Please take a mome
 
 ## Configuration
 ### Default Values
-- `services.mixpanel.host`: pulls the 'MIXPANEL_HOST' value from your `.env`
+- `mixpanel.host`: pulls the 'MIXPANEL_HOST' value from your `.env`
     file.
-- `services.mixpanel.token`: pulls the 'MIXPANEL_TOKEN' value from your `.env`
+- `mixpanel.token`: pulls the 'MIXPANEL_TOKEN' value from your `.env`
     file.
-- `services.mixpanel.enable-default-tracking`: (default: true) enable or disable
+- `mixpanel.enable-default-tracking`: (default: true) enable or disable
     Laravel user event tracking.
-- `services.mixpanel.consumer`: (default: socket) set the Guzzle adapter you
+- `mixpanel.consumer`: (default: socket) set the Guzzle adapter you
     want to use.
-- `services.mixpanel.connect-timeout`: (default: 2) set the number of seconds
+- `mixpanel.connect-timeout`: (default: 2) set the number of seconds
     after which connections timeout.
-- `services.mixpanel.timeout`: (default: 2) set the number of seconds after
+- `mixpanel.timeout`: (default: 2) set the number of seconds after
     which event tracking times out.
-- `services.mixpanel.data_callback_class`: (default: null) manipulate the data
+- `mixpanel.data_callback_class`: (default: null) manipulate the data
     being passed back to mixpanel for the track events.
+Mixpanel config can be published and customized using `php artisan vendor:publish --tag=mixpanel-config`
 
 ## Upgrade Notes
 ### Version 0.7.0 for Laravel 5.5
