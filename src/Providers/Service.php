@@ -37,17 +37,25 @@ class Service extends EventServiceProvider
             __DIR__ . '/../../public' => public_path(),
         ], 'assets');
 
-        if (config('services.mixpanel.enable-default-tracking')) {
+        if (config('mixpanel.enable-default-tracking')) {
             $authModel = config('auth.providers.users.model') ?? config('auth.model');
             $this->app->make($authModel)->observe(new LaravelMixpanelUserObserver());
         }
+
+        if ($this->app->runningInConsole()) {
+
+            $this->publishes([
+                __DIR__ . '/../../config/mixpanel.php' => config_path('blogpackage.php'),
+            ], 'mixpanel-config');
+        
+          }
     }
 
     public function register()
     {
         parent::register();
         
-        $this->mergeConfigFrom(__DIR__ . '/../../config/services.php', 'services');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/mixpanel.php', 'mixpanel');
         $this->commands(Publish::class);
         $this->app->singleton('mixpanel', LaravelMixpanel::class);
     }

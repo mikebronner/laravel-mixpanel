@@ -19,20 +19,20 @@ class LaravelMixpanel extends Mixpanel
     {
         $this->callbackResults = [];
         $this->defaults = [
-            'consumer' => config('services.mixpanel.consumer', 'socket'),
-            'connect_timeout' => config('services.mixpanel.connect-timeout', 2),
-            'timeout' => config('services.mixpanel.timeout', 2),
+            'consumer' => config('mixpanel.consumer', 'socket'),
+            'connect_timeout' => config('mixpanel.connect-timeout', 2),
+            'timeout' => config('mixpanel.timeout', 2),
         ];
 
-        if (config('services.mixpanel.host')) {
-            $this->defaults["host"] = config('services.mixpanel.host');
+        if (config('mixpanel.host')) {
+            $this->defaults["host"] = config('mixpanel.host');
         }
 
         $this->request = $request;
 
 
         parent::__construct(
-            config('services.mixpanel.token'),
+            config('mixpanel.token'),
             array_merge($this->defaults, $options)
         );
     }
