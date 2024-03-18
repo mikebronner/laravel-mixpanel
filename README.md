@@ -41,7 +41,7 @@ We like to thank the following sponsors for their generosity. Please take a mome
     ```
 3. Add the MixPanel Host domain only if you need to change your MixPanel host from the default:
     ```env
-    MIXPANEL_TOKEN=xxxxxxxxxxxxxxxxxxxxxx
+    MIXPANEL_HOST=xxxxxxxxxxxxxxxxxxxxxx
     ```
 
 ## Configuration
