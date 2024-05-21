@@ -31,7 +31,7 @@ class RecordStripeEvent extends FormRequest
             ? $data['data']['previous_attributes']
             : [];
         $stripeCustomerId = $this->findStripeCustomerId($transaction);
-        $authModel = config('auth.providers.users.model') ?? config('auth.model');
+        $authModel = config('cashier.model') ?? config('auth.providers.users.model') ?? config('auth.model');
         $user = app($authModel)->where('stripe_id', $stripeCustomerId)->first();
 
         if (! $user) {
