@@ -23,7 +23,7 @@ We like to thank the following sponsors for their generosity. Please take a mome
  Blade template use.
 
 ## Requirements and Compatibility
-- PHP >= 7.2
+- PHP >= 8.2 (including 8.5)
 - Laravel >= 8.0
 
 ### Legacy Versions
