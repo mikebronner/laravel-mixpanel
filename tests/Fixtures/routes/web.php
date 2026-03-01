@@ -59,4 +59,4 @@ Route::get('password/reset', function () {
     return view('auth.passwords.email');
 })->name('password.request');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->middleware('auth')->name('home');

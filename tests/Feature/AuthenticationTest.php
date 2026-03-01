@@ -1,16 +1,10 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Tests\Feature;
 
-use App\User;
+use GeneaLabs\LaravelMixpanel\Tests\Fixtures\App\User;
 use GeneaLabs\LaravelMixpanel\Tests\FeatureTestCase;
-use GeneaLabs\LaravelMixpanel\Listeners\LoginAttempt;
 use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
-use Illuminate\Auth\Events\Attempting;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Auth\Events\Logout;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Event;
-use Mockery;
 
 class AuthenticationTest extends FeatureTestCase
 {
@@ -19,7 +13,7 @@ class AuthenticationTest extends FeatureTestCase
     public function testLoginAttempt()
     {
         Event::fake([MixpanelEvent::class]);
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $result = $this->visit('/login')
             ->type($user->email, 'email')
@@ -37,7 +31,7 @@ class AuthenticationTest extends FeatureTestCase
     {
         Event::fake([MixpanelEvent::class]);
         $password = 'hoogabaloo';
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => bcrypt($password),
         ]);
 
@@ -56,7 +50,7 @@ class AuthenticationTest extends FeatureTestCase
     public function testLogoutSuccess()
     {
         Event::fake([MixpanelEvent::class]);
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $result = $this->actingAs($user)
             ->post('/logout');
