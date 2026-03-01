@@ -14,6 +14,7 @@
         }
     },
     "require": {
+        "php": "^8.2",
         "illuminate/auth": "^10.0|^11.0|^12.0|^13.0",
         "illuminate/config": "^10.0|^11.0|^12.0|^13.0",
         "illuminate/console": "^10.0|^11.0|^12.0|^13.0",
@@ -28,7 +29,6 @@
         "fakerphp/faker": "^1.8",
         "laravel/browser-kit-testing": "^7.0",
         "laravel/laravel": "^11.0",
-        "laravel/ui": "^4.0",
         "php-coveralls/php-coveralls": "^2.4",
         "phpmd/phpmd": "^2.9",
         "phpunit/phpunit": "^10",

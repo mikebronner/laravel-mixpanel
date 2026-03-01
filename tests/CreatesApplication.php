@@ -4,7 +4,6 @@ namespace GeneaLabs\LaravelMixpanel\Tests;
 
 use GeneaLabs\LaravelMixpanel\Providers\Service;
 use Illuminate\Contracts\Console\Kernel;
-use Laravel\Ui\UiServiceProvider;
 
 trait CreatesApplication
 {
@@ -23,7 +22,6 @@ trait CreatesApplication
         $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
         $app->make(Kernel::class)->bootstrap();
         $app->register(Service::class);
-        $app->register(UiServiceProvider::class);
 
         return $app;
     }
