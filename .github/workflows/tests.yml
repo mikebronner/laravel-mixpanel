@@ -13,10 +13,21 @@ jobs:
       fail-fast: false
       matrix:
         php: ['8.2', '8.3', '8.4']
-        laravel: ['10.*', '11.*', '12.*', '13.*']
+        laravel: ['10', '11', '12', '13']
+        include:
+          - laravel: '10'
+            testbench: '^8.0'
+          - laravel: '11'
+            testbench: '^9.0'
+          - laravel: '12'
+            testbench: '^10.0'
+          - laravel: '13'
+            testbench: '^11.0'
         exclude:
           - php: '8.2'
-            laravel: '13.*'
+            laravel: '13'
+          - php: '8.2'
+            laravel: '12'
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
@@ -30,9 +41,9 @@ jobs:
           extensions: mbstring
           coverage: none
 
-      - name: Set Laravel version
+      - name: Set Testbench version
         run: |
-          composer require "illuminate/auth:${{ matrix.laravel }}" "illuminate/config:${{ matrix.laravel }}" "illuminate/console:${{ matrix.laravel }}" "illuminate/events:${{ matrix.laravel }}" "illuminate/http:${{ matrix.laravel }}" "illuminate/queue:${{ matrix.laravel }}" "illuminate/routing:${{ matrix.laravel }}" --no-interaction --no-update
+          composer require "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
 
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --no-progress

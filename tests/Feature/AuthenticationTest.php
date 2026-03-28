@@ -1,29 +1,43 @@
-<?php namespace GeneaLabs\LaravelMixpanel\Tests\Feature;
+<?php
+
+namespace GeneaLabs\LaravelMixpanel\Tests\Feature;
 
 use GeneaLabs\LaravelMixpanel\Tests\Fixtures\App\User;
-use GeneaLabs\LaravelMixpanel\Tests\FeatureTestCase;
+use GeneaLabs\LaravelMixpanel\Tests\TestCase;
 use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 
-class AuthenticationTest extends FeatureTestCase
+class AuthenticationTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
+
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config(['services.mixpanel.enable-default-tracking' => true]);
+    }
 
     public function testLoginAttempt()
     {
         Event::fake([MixpanelEvent::class]);
         $user = User::factory()->create();
 
-        $result = $this->visit('/login')
-            ->type($user->email, 'email')
-            ->type('hoogabaloo', 'password')
-            ->press('Login');
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ]);
 
-        $this->assertResponseStatus(200);
-        $result->seePageIs('/login');
+        $response->assertStatus(302);
+        $response->assertRedirect();
         Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {
-            return ($event->user->email === $user->email && $event->names()->contains('Login Attempted'));
+            return $event->user->email === $user->email && $event->names()->contains('Login Attempted');
         });
     }
 
@@ -35,15 +49,14 @@ class AuthenticationTest extends FeatureTestCase
             'password' => bcrypt($password),
         ]);
 
-        $result = $this->visit('/login')
-            ->type($user->email, 'email')
-            ->type($password, 'password')
-            ->press('Login');
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => $password,
+        ]);
 
-        $this->assertResponseStatus(200);
-        $result->seePageIs('/home');
+        $response->assertRedirect('/home');
         Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {
-            return ($event->user->email === $user->email && $event->names()->contains('User Logged In'));
+            return $event->user->email === $user->email && $event->names()->contains('User Logged In');
         });
     }
 
@@ -52,12 +65,12 @@ class AuthenticationTest extends FeatureTestCase
         Event::fake([MixpanelEvent::class]);
         $user = User::factory()->create();
 
-        $result = $this->actingAs($user)
+        $response = $this->actingAs($user)
             ->post('/logout');
 
-        $this->assertRedirectedTo('/');
+        $response->assertRedirect('/');
         Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {
-            return ($event->user->email === $user->email && $event->names()->contains('User Logged Out'));
+            return $event->user->email === $user->email && $event->names()->contains('User Logged Out');
         });
     }
 }
