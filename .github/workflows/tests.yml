@@ -26,8 +26,6 @@ jobs:
         exclude:
           - php: '8.2'
             laravel: '13'
-          - php: '8.2'
-            laravel: '12'
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
