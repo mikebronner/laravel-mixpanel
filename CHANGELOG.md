@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+- Laravel 13 support.
+
+### Changed
+- Switched test infrastructure from `laravel/laravel` + `laravel/browser-kit-testing` to `orchestra/testbench`.
+- Modernized `phpunit.xml` for PHPUnit 10+.
+- CI matrix now tests PHP 8.2–8.4 × Laravel 10–13 with correct exclusions.
+
+### Removed
+- `laravel/browser-kit-testing` dev dependency.
+- `laravel/laravel` dev dependency (replaced by `orchestra/testbench`).
+- `sebastian/phpcpd` dev dependency (abandoned).
+- `symfony/thanks` dev dependency.
+
 ## TODO
 - http://phppackagechecklist.com/#1,2,3,4,5,6,9,10,11,12,13,14
   Complete check list items.
