@@ -21,7 +21,7 @@ class AuthenticationTest extends TestCase
     {
         parent::setUp();
 
-        config(['services.mixpanel.enable-default-tracking' => true]);
+        config(['mixpanel.enable-default-tracking' => true]);
     }
 
     public function testLoginAttempt()
