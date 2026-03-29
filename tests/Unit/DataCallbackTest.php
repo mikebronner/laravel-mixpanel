@@ -3,9 +3,9 @@
 namespace GeneaLabs\LaravelMixpanel\Tests\Unit;
 
 use GeneaLabs\LaravelMixpanel\Tests\Fixtures\App\MixpanelUserData;
-use GeneaLabs\LaravelMixpanel\Tests\UnitTestCase;
+use GeneaLabs\LaravelMixpanel\Tests\TestCase;
 
-class DataCallbackTest extends UnitTestCase
+class DataCallbackTest extends TestCase
 {
     public function testDataCallbackClassReturnsArray()
     {

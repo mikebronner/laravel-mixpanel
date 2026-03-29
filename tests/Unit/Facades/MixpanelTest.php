@@ -4,12 +4,12 @@ namespace GeneaLabs\LaravelMixpanel\Tests\Unit\Facades;
 
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
 use GeneaLabs\LaravelMixpanel\LaravelMixpanel;
-use GeneaLabs\LaravelMixpanel\Tests\UnitTestCase;
+use GeneaLabs\LaravelMixpanel\Tests\TestCase;
 
 /**
  * @SuppressWarnings(PHPMD.StaticAccess)
  */
-class MixpanelTest extends UnitTestCase
+class MixpanelTest extends TestCase
 {
     public function testFacadeCanBeReferenced()
     {
