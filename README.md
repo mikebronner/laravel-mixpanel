@@ -23,8 +23,13 @@ We like to thank the following sponsors for their generosity. Please take a mome
  Blade template use.
 
 ## Requirements and Compatibility
-- PHP >= 8.2 (including 8.5)
-- Laravel >= 8.0
+
+| Laravel | PHP   | Package |
+|---------|-------|---------|
+| 10.x    | ^8.1  | ^2.0    |
+| 11.x    | ^8.2  | ^2.0    |
+| 12.x    | ^8.2  | ^2.0    |
+| 13.x    | ^8.3  | ^2.0    |
 
 ### Legacy Versions
 - [Laravel 5.2](https://github.com/GeneaLabs/laravel-mixpanel/tree/afcf3737412c1aebfa9dd1d7687001f78bdb3956)
