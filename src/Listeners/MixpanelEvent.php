@@ -1,6 +1,7 @@
 <?php namespace GeneaLabs\LaravelMixpanel\Listeners;
 
 use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent as Event;
+use GeneaLabs\LaravelMixpanel\Interfaces\HasCustomMixpanelKey;
 use Illuminate\Support\Carbon;
 
 class MixpanelEvent
@@ -10,7 +11,7 @@ class MixpanelEvent
         $user = $event->user;
 
         if ($user && config("services.mixpanel.enable-default-tracking")) {
-            $userKey = method_exists($user, 'getMixpanelKey')
+            $userKey = $user instanceof HasCustomMixpanelKey
                 ? $user->getMixpanelKey()
                 : $user->getKey();
             $profileData = $this->getProfileData($user);

@@ -1,24 +1,17 @@
 <?php
 
-namespace GeneaLabs\LaravelMixpanel\Tests\Unit;
-
 use GeneaLabs\LaravelMixpanel\Tests\Fixtures\App\MixpanelUserData;
-use GeneaLabs\LaravelMixpanel\Tests\TestCase;
 
-class DataCallbackTest extends TestCase
-{
-    public function testDataCallbackClassReturnsArray()
-    {
-        $data = (new MixpanelUserData)->process();
+test('data callback class returns array', function () {
+    $data = (new MixpanelUserData)->process();
 
-        $this->assertIsArray($data);
-    }
+    expect($data)->toBeArray();
+});
 
-    public function testDataCallbackArrayContainsValue()
-    {
-        $data = (new MixpanelUserData)->process();
+test('data callback array contains value', function () {
+    $data = (new MixpanelUserData)->process();
 
-        $this->assertArrayHasKey("test", $data);
-        $this->assertEquals("value", $data["test"]);
-    }
-}
+    expect($data)
+        ->toHaveKey('test')
+        ->and($data['test'])->toBe('value');
+});

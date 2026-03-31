@@ -1,161 +1,126 @@
 <?php
 
-namespace GeneaLabs\LaravelMixpanel\Tests\Feature;
-
 use GeneaLabs\LaravelMixpanel\Events\MixpanelEvent;
 use GeneaLabs\LaravelMixpanel\Listeners\MixpanelEvent as MixpanelEventListener;
 use GeneaLabs\LaravelMixpanel\Tests\Fixtures\App\User;
 use GeneaLabs\LaravelMixpanel\Tests\Fixtures\App\UserWithMixpanelKey;
-use GeneaLabs\LaravelMixpanel\Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mockery;
 
-class MixpanelKeyTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
+});
 
-    protected function defineDatabaseMigrations(): void
-    {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
-    }
+test('default key uses getKey', function () {
+    $user = User::factory()->create();
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    $peopleMock = Mockery::mock();
+    $peopleMock->shouldReceive('set')
+        ->once()
+        ->withArgs(fn ($key) => $key === $user->getKey());
+    $peopleMock->shouldNotReceive('trackCharge');
 
-        config(['services.mixpanel.enable-default-tracking' => true]);
-    }
+    $mixpanelMock = Mockery::mock();
+    $mixpanelMock->people = $peopleMock;
+    $mixpanelMock->shouldReceive('identify')
+        ->once()
+        ->with($user->getKey());
+    $mixpanelMock->shouldReceive('track')
+        ->once();
 
-    public function testDefaultKeyUsesGetKey(): void
-    {
-        $user = User::factory()->create();
+    $this->app->instance('mixpanel', $mixpanelMock);
+    config(['services.mixpanel.enable-default-tracking' => true]);
 
-        $peopleMock = Mockery::mock();
-        $peopleMock->shouldReceive('set')
-            ->once()
-            ->withArgs(function ($key) use ($user) {
-                return $key === $user->getKey();
-            });
-        $peopleMock->shouldNotReceive('trackCharge');
+    $event = new MixpanelEvent($user, ['Test Event' => []]);
+    (new MixpanelEventListener())->handle($event);
+});
 
-        $mixpanelMock = Mockery::mock();
-        $mixpanelMock->people = $peopleMock;
-        $mixpanelMock->shouldReceive('identify')
-            ->once()
-            ->with($user->getKey());
-        $mixpanelMock->shouldReceive('track')
-            ->once();
+test('custom key uses getMixpanelKey', function () {
+    $baseUser = User::factory()->create();
+    $user = UserWithMixpanelKey::find($baseUser->id);
+    $expectedKey = 'custom-key-' . $user->getKey();
 
-        $this->app->instance('mixpanel', $mixpanelMock);
+    $peopleMock = Mockery::mock();
+    $peopleMock->shouldReceive('set')
+        ->once()
+        ->withArgs(fn ($key) => $key === $expectedKey);
+    $peopleMock->shouldNotReceive('trackCharge');
 
-        $event = new MixpanelEvent($user, ['Test Event' => []]);
-        (new MixpanelEventListener())->handle($event);
-    }
+    $mixpanelMock = Mockery::mock();
+    $mixpanelMock->people = $peopleMock;
+    $mixpanelMock->shouldReceive('identify')
+        ->once()
+        ->with($expectedKey);
+    $mixpanelMock->shouldReceive('track')
+        ->once();
 
-    public function testCustomKeyUsesGetMixpanelKey(): void
-    {
-        config(['services.mixpanel.enable-default-tracking' => false]);
-        $baseUser = User::factory()->create();
-        config(['services.mixpanel.enable-default-tracking' => true]);
+    $this->app->instance('mixpanel', $mixpanelMock);
+    config(['services.mixpanel.enable-default-tracking' => true]);
 
-        $user = UserWithMixpanelKey::find($baseUser->id);
-        $expectedKey = 'custom-key-' . $user->getKey();
+    $event = new MixpanelEvent($user, ['Test Event' => []]);
+    (new MixpanelEventListener())->handle($event);
+});
 
-        $peopleMock = Mockery::mock();
-        $peopleMock->shouldReceive('set')
-            ->once()
-            ->withArgs(function ($key) use ($expectedKey) {
-                return $key === $expectedKey;
-            });
-        $peopleMock->shouldNotReceive('trackCharge');
+test('custom key used for trackCharge', function () {
+    $baseUser = User::factory()->create();
+    $user = UserWithMixpanelKey::find($baseUser->id);
+    $expectedKey = 'custom-key-' . $user->getKey();
 
-        $mixpanelMock = Mockery::mock();
-        $mixpanelMock->people = $peopleMock;
-        $mixpanelMock->shouldReceive('identify')
-            ->once()
-            ->with($expectedKey);
-        $mixpanelMock->shouldReceive('track')
-            ->once();
+    $peopleMock = Mockery::mock();
+    $peopleMock->shouldReceive('set')
+        ->once()
+        ->withArgs(fn ($key) => $key === $expectedKey);
+    $peopleMock->shouldReceive('trackCharge')
+        ->once()
+        ->with($expectedKey, 2999);
 
-        $this->app->instance('mixpanel', $mixpanelMock);
+    $mixpanelMock = Mockery::mock();
+    $mixpanelMock->people = $peopleMock;
+    $mixpanelMock->shouldReceive('identify')
+        ->once()
+        ->with($expectedKey);
+    $mixpanelMock->shouldReceive('track')
+        ->once();
 
-        $event = new MixpanelEvent($user, ['Test Event' => []]);
-        (new MixpanelEventListener())->handle($event);
-    }
+    $this->app->instance('mixpanel', $mixpanelMock);
+    config(['services.mixpanel.enable-default-tracking' => true]);
 
-    public function testCustomKeyUsedForTrackCharge(): void
-    {
-        config(['services.mixpanel.enable-default-tracking' => false]);
-        $baseUser = User::factory()->create();
-        config(['services.mixpanel.enable-default-tracking' => true]);
+    $event = new MixpanelEvent($user, ['Purchase' => []], 2999);
+    (new MixpanelEventListener())->handle($event);
+});
 
-        $user = UserWithMixpanelKey::find($baseUser->id);
-        $expectedKey = 'custom-key-' . $user->getKey();
+test('default key used for trackCharge', function () {
+    $user = User::factory()->create();
 
-        $peopleMock = Mockery::mock();
-        $peopleMock->shouldReceive('set')
-            ->once()
-            ->withArgs(function ($key) use ($expectedKey) {
-                return $key === $expectedKey;
-            });
-        $peopleMock->shouldReceive('trackCharge')
-            ->once()
-            ->with($expectedKey, 2999);
+    $peopleMock = Mockery::mock();
+    $peopleMock->shouldReceive('set')
+        ->once()
+        ->withArgs(fn ($key) => $key === $user->getKey());
+    $peopleMock->shouldReceive('trackCharge')
+        ->once()
+        ->with($user->getKey(), 500);
 
-        $mixpanelMock = Mockery::mock();
-        $mixpanelMock->people = $peopleMock;
-        $mixpanelMock->shouldReceive('identify')
-            ->once()
-            ->with($expectedKey);
-        $mixpanelMock->shouldReceive('track')
-            ->once();
+    $mixpanelMock = Mockery::mock();
+    $mixpanelMock->people = $peopleMock;
+    $mixpanelMock->shouldReceive('identify')
+        ->once()
+        ->with($user->getKey());
+    $mixpanelMock->shouldReceive('track')
+        ->once();
 
-        $this->app->instance('mixpanel', $mixpanelMock);
+    $this->app->instance('mixpanel', $mixpanelMock);
+    config(['services.mixpanel.enable-default-tracking' => true]);
 
-        $event = new MixpanelEvent($user, ['Purchase' => []], 2999);
-        (new MixpanelEventListener())->handle($event);
-    }
+    $event = new MixpanelEvent($user, ['Purchase' => []], 500);
+    (new MixpanelEventListener())->handle($event);
+});
 
-    public function testDefaultKeyUsedForTrackCharge(): void
-    {
-        $user = User::factory()->create();
+test('no tracking when disabled', function () {
+    $user = User::factory()->create();
 
-        $peopleMock = Mockery::mock();
-        $peopleMock->shouldReceive('set')
-            ->once()
-            ->withArgs(function ($key) use ($user) {
-                return $key === $user->getKey();
-            });
-        $peopleMock->shouldReceive('trackCharge')
-            ->once()
-            ->with($user->getKey(), 500);
+    $mixpanelMock = Mockery::mock();
+    $mixpanelMock->shouldNotReceive('identify');
 
-        $mixpanelMock = Mockery::mock();
-        $mixpanelMock->people = $peopleMock;
-        $mixpanelMock->shouldReceive('identify')
-            ->once()
-            ->with($user->getKey());
-        $mixpanelMock->shouldReceive('track')
-            ->once();
+    $this->app->instance('mixpanel', $mixpanelMock);
 
-        $this->app->instance('mixpanel', $mixpanelMock);
-
-        $event = new MixpanelEvent($user, ['Purchase' => []], 500);
-        (new MixpanelEventListener())->handle($event);
-    }
-
-    public function testNoTrackingWhenDisabled(): void
-    {
-        config(['services.mixpanel.enable-default-tracking' => false]);
-
-        $user = UserWithMixpanelKey::factory()->create();
-
-        $mixpanelMock = Mockery::mock();
-        $mixpanelMock->shouldNotReceive('identify');
-
-        $this->app->instance('mixpanel', $mixpanelMock);
-
-        $event = new MixpanelEvent($user, ['Test Event' => []]);
-        (new MixpanelEventListener())->handle($event);
-    }
-}
+    $event = new MixpanelEvent($user, ['Test Event' => []]);
+    (new MixpanelEventListener())->handle($event);
+});

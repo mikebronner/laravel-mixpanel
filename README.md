@@ -26,7 +26,6 @@ We like to thank the following sponsors for their generosity. Please take a mome
 
 | Laravel | PHP   | Package |
 |---------|-------|---------|
-| 10.x    | ^8.1  | ^2.0    |
 | 11.x    | ^8.2  | ^2.0    |
 | 12.x    | ^8.2  | ^2.0    |
 | 13.x    | ^8.3  | ^2.0    |
@@ -266,6 +265,33 @@ Then register this class in your `services` configuration:
         "data_callback_class" => \App\MixpanelUserData::class,
     ]
 ```
+
+### Custom Mixpanel Distinct ID
+By default, the package uses `$user->getKey()` (typically the primary key) as the
+  Mixpanel distinct ID for identifying users. If you need to use a different
+  identifier, implement the `HasCustomMixpanelKey` interface on your User model:
+
+```php
+<?php
+
+namespace App\Models;
+
+use GeneaLabs\LaravelMixpanel\Interfaces\HasCustomMixpanelKey;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable implements HasCustomMixpanelKey
+{
+    public function getMixpanelKey(): string
+    {
+        return $this->uuid;
+    }
+}
+```
+
+The return value of `getMixpanelKey()` will be used as the distinct ID for all
+  Mixpanel calls, including `identify()`, `people->set()`, and
+  `people->trackCharge()`. If the interface is not implemented, the package falls
+  back to `$user->getKey()`.
 
 ### Stripe Integration
 Many L5 sites are running Cashier to manage their subscriptions. This package creates an API webhook endpoint that keeps

@@ -2,7 +2,9 @@
 
 namespace GeneaLabs\LaravelMixpanel\Tests\Fixtures\App;
 
-class UserWithMixpanelKey extends User
+use GeneaLabs\LaravelMixpanel\Interfaces\HasCustomMixpanelKey;
+
+class UserWithMixpanelKey extends User implements HasCustomMixpanelKey
 {
     protected $table = 'users';
 
