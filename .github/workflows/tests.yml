@@ -15,10 +15,10 @@ jobs:
         php: ['8.2', '8.3', '8.4', '8.5']
         laravel: ['11', '12', '13']
         exclude:
-          - php: '8.5'
-            laravel: '10'
           - php: '8.2'
             laravel: '13'
+          - php: '8.5'
+            laravel: '11'
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
@@ -32,12 +32,8 @@ jobs:
           extensions: mbstring
           coverage: none
 
-      - name: Set Testbench version
-        run: |
-          composer require "illuminate/support:${{ matrix.laravel }}" --no-interaction --no-update
-
       - name: Install dependencies
-        run: composer update --prefer-dist --no-interaction --no-progress
+        run: composer update --prefer-dist --no-interaction --no-progress --with "laravel/framework:^${{ matrix.laravel }}.0"
 
       - name: Run tests
         run: vendor/bin/pest
