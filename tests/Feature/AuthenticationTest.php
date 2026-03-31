@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
     $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
-    config(['services.mixpanel.enable-default-tracking' => true]);
+    config(['mixpanel.enable-default-tracking' => true]);
 });
 
 test('login attempt dispatches mixpanel event', function () {

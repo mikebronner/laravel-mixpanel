@@ -39,11 +39,9 @@ class Service extends EventServiceProvider
             __DIR__ . '/../../public' => public_path(),
         ], 'assets');
 
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/../../config/mixpanel.php' => config_path('mixpanel.php'),
-            ], 'mixpanel-config');
-        }
+        $this->publishes([
+            __DIR__ . '/../../config/mixpanel.php' => config_path('mixpanel.php'),
+        ], 'mixpanel-config');
 
         if (config('mixpanel.enable-default-tracking')) {
             $authModel = config('auth.providers.users.model') ?? config('auth.model');

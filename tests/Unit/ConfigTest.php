@@ -3,6 +3,7 @@
 namespace GeneaLabs\LaravelMixpanel\Tests\Unit;
 
 use GeneaLabs\LaravelMixpanel\Tests\TestCase;
+use ReflectionMethod;
 
 class ConfigTest extends TestCase
 {
@@ -22,27 +23,25 @@ class ConfigTest extends TestCase
 
     public function testLegacyConfigFallback()
     {
-        // Simulate legacy config by setting services.mixpanel values
-        // and clearing the mixpanel values
         config(['mixpanel.token' => null]);
         config(['services.mixpanel' => [
             'token' => 'legacy-token-value',
         ]]);
 
-        // Re-trigger the migration by calling the provider's boot
         $provider = $this->app->getProvider(\GeneaLabs\LaravelMixpanel\Providers\Service::class);
-        $provider->boot();
+        $method = new ReflectionMethod($provider, 'migrateDeprecatedConfig');
+        $method->invoke($provider);
 
         $this->assertEquals('legacy-token-value', config('mixpanel.token'));
     }
 
     public function testMixpanelConfigPublishTag()
     {
-        $this->artisan('vendor:publish', ['--tag' => 'mixpanel-config', '--force' => true]);
-
-        $this->assertFileExists(config_path('mixpanel.php'));
-
-        // Clean up
-        @unlink(config_path('mixpanel.php'));
+        try {
+            $this->artisan('vendor:publish', ['--tag' => 'mixpanel-config', '--force' => true]);
+            $this->assertFileExists(config_path('mixpanel.php'));
+        } finally {
+            @unlink(config_path('mixpanel.php'));
+        }
     }
 }

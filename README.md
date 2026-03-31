@@ -85,6 +85,15 @@ new `config/mixpanel.php` file:
    `config('mixpanel.*')`
 
 ## Upgrade Notes
+### 🚨 Version 13.0.0 (Breaking Change)
+Configuration has moved from `config/services.php` (`services.mixpanel.*`) to a
+dedicated `config/mixpanel.php` file. If you reference Mixpanel config values
+directly (e.g. `config('services.mixpanel.token')`), you must update them to
+`config('mixpanel.token')`. The package will automatically fall back to legacy
+`services.mixpanel.*` values for keys that are not set in the new config, but
+this fallback will be removed in a future release. See
+[Migrating from services.mixpanel](#migrating-from-servicesmixpanel) for steps.
+
 ### Version 0.7.0 for Laravel 5.5
 - Remove the service provider from `/config/app.php`. The service provider is
     now auto-discovered in Laravel 5.5.
