@@ -30,6 +30,8 @@ class Service extends EventServiceProvider
     {
         parent::boot();
 
+        $this->migrateDeprecatedConfig();
+
         include __DIR__ . '/../../routes/api.php';
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'genealabs-laravel-mixpanel');
@@ -37,7 +39,11 @@ class Service extends EventServiceProvider
             __DIR__ . '/../../public' => public_path(),
         ], 'assets');
 
-        if (config('services.mixpanel.enable-default-tracking')) {
+        $this->publishes([
+            __DIR__ . '/../../config/mixpanel.php' => config_path('mixpanel.php'),
+        ], 'mixpanel-config');
+
+        if (config('mixpanel.enable-default-tracking')) {
             $authModel = config('auth.providers.users.model') ?? config('auth.model');
             $this->app->make($authModel)->observe(new LaravelMixpanelUserObserver());
         }
@@ -46,8 +52,8 @@ class Service extends EventServiceProvider
     public function register()
     {
         parent::register();
-        
-        $this->mergeConfigFrom(__DIR__ . '/../../config/services.php', 'services');
+
+        $this->mergeConfigFrom(__DIR__ . '/../../config/mixpanel.php', 'mixpanel');
         $this->commands(Publish::class);
         $this->app->singleton('mixpanel', LaravelMixpanel::class);
     }
@@ -55,5 +61,27 @@ class Service extends EventServiceProvider
     public function provides() : array
     {
         return ['genealabs-laravel-mixpanel'];
+    }
+
+    /**
+     * Migrate deprecated config from services.mixpanel to mixpanel.
+     *
+     * Users who still have config/services.php with a 'mixpanel' key
+     * will have those values used as fallbacks for any mixpanel config
+     * values that are not explicitly set.
+     */
+    protected function migrateDeprecatedConfig(): void
+    {
+        $legacy = config('services.mixpanel');
+
+        if (! is_array($legacy)) {
+            return;
+        }
+
+        foreach ($legacy as $key => $value) {
+            if (config("mixpanel.{$key}") === null && $value !== null) {
+                config(["mixpanel.{$key}" => $value]);
+            }
+        }
     }
 }

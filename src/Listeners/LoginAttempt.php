@@ -7,7 +7,7 @@ class LoginAttempt
 {
     public function handle(Attempting $event)
     {
-        if (config("services.mixpanel.enable-default-tracking")) {
+        if (config("mixpanel.enable-default-tracking")) {
             $email = data_get($event, "credentials.email")
                 ?: data_get($event, "email")
                 ?: "";

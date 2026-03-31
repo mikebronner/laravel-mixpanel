@@ -7,7 +7,7 @@ class Logout
 {
     public function handle(LogoutEvent $logout)
     {
-        if (config("services.mixpanel.enable-default-tracking")) {
+        if (config("mixpanel.enable-default-tracking")) {
             event(new Mixpanel($logout->user, ['User Logged Out' => []]));
         }
     }

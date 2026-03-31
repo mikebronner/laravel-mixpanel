@@ -49,23 +49,51 @@ We like to thank the following sponsors for their generosity. Please take a mome
     ```
 
 ## Configuration
+### Publishing the Config
+You can publish the configuration file to customize it:
+```sh
+php artisan vendor:publish --tag=mixpanel-config
+```
+
+This will create a `config/mixpanel.php` file in your application.
+
 ### Default Values
-- `services.mixpanel.host`: pulls the 'MIXPANEL_HOST' value from your `.env`
+- `mixpanel.host`: pulls the 'MIXPANEL_HOST' value from your `.env`
     file.
-- `services.mixpanel.token`: pulls the 'MIXPANEL_TOKEN' value from your `.env`
+- `mixpanel.token`: pulls the 'MIXPANEL_TOKEN' value from your `.env`
     file.
-- `services.mixpanel.enable-default-tracking`: (default: true) enable or disable
+- `mixpanel.enable-default-tracking`: (default: true) enable or disable
     Laravel user event tracking.
-- `services.mixpanel.consumer`: (default: socket) set the Guzzle adapter you
+- `mixpanel.consumer`: (default: socket) set the Guzzle adapter you
     want to use.
-- `services.mixpanel.connect-timeout`: (default: 2) set the number of seconds
+- `mixpanel.connect-timeout`: (default: 2) set the number of seconds
     after which connections timeout.
-- `services.mixpanel.timeout`: (default: 2) set the number of seconds after
+- `mixpanel.timeout`: (default: 2) set the number of seconds after
     which event tracking times out.
-- `services.mixpanel.data_callback_class`: (default: null) manipulate the data
+- `mixpanel.data_callback_class`: (default: null) manipulate the data
     being passed back to mixpanel for the track events.
 
+### Migrating from services.mixpanel
+If you are upgrading from a previous version that used `config/services.php`
+for Mixpanel configuration, the package will automatically fall back to your
+existing `services.mixpanel.*` values. However, we recommend migrating to the
+new `config/mixpanel.php` file:
+
+1. Run `php artisan vendor:publish --tag=mixpanel-config`
+2. Remove the `mixpanel` key from your `config/services.php`
+3. Update any direct references from `config('services.mixpanel.*')` to
+   `config('mixpanel.*')`
+
 ## Upgrade Notes
+### 🚨 Version 13.0.0 (Breaking Change)
+Configuration has moved from `config/services.php` (`services.mixpanel.*`) to a
+dedicated `config/mixpanel.php` file. If you reference Mixpanel config values
+directly (e.g. `config('services.mixpanel.token')`), you must update them to
+`config('mixpanel.token')`. The package will automatically fall back to legacy
+`services.mixpanel.*` values for keys that are not set in the new config, but
+this fallback will be removed in a future release. See
+[Migrating from services.mixpanel](#migrating-from-servicesmixpanel) for steps.
+
 ### Version 0.7.0 for Laravel 5.5
 - Remove the service provider from `/config/app.php`. The service provider is
     now auto-discovered in Laravel 5.5.
@@ -257,13 +285,10 @@ class MixpanelUserData implements DataCallback
 }
 ```
 
-Then register this class in your `services` configuration:
+Then register this class in your `mixpanel` configuration (`config/mixpanel.php`):
 
 ```php
-    'mixpanel' => [
-      // ...
-        "data_callback_class" => \App\MixpanelUserData::class,
-    ]
+    "data_callback_class" => \App\MixpanelUserData::class,
 ```
 
 ### Custom Mixpanel Distinct ID

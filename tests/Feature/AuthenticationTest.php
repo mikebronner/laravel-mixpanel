@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
     $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
-    config(['services.mixpanel.enable-default-tracking' => true]);
+    config(['mixpanel.enable-default-tracking' => true]);
 });
 
 test('login attempt dispatches mixpanel event', function () {
@@ -18,6 +18,7 @@ test('login attempt dispatches mixpanel event', function () {
         'password' => 'wrong-password',
     ]);
 
+    config(['mixpanel.enable-default-tracking' => true]);
     $response->assertStatus(302);
     $response->assertRedirect();
     Event::assertDispatched(MixpanelEvent::class, function ($event) use ($user) {

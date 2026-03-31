@@ -23,8 +23,8 @@ abstract class TestCase extends OrchestraTestCase
             'prefix' => '',
         ]);
 
-        $app['config']->set('services.mixpanel.token', '68dffdba4c272b791a2d4883b43ccfd7');
-        $app['config']->set('services.mixpanel.enable-default-tracking', false);
+        $app['config']->set('mixpanel.token', '68dffdba4c272b791a2d4883b43ccfd7');
+        $app['config']->set('mixpanel.enable-default-tracking', false);
 
         $app['config']->set('auth.providers.users.model', \GeneaLabs\LaravelMixpanel\Tests\Fixtures\App\User::class);
     }
